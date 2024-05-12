@@ -1,4 +1,10 @@
+import { useState } from "react";
+
 export default function CriarConta() {
+  function NextPage() {
+    window.location.replace("./criarconta2")
+  }
+
   return (
     <>
       <header className='bg-primary-green flex flex-col p-5'>
@@ -19,7 +25,7 @@ export default function CriarConta() {
           <span className='text-base font-bold'>
             Preencha os campos a seguir:
           </span>
-          
+
           <form className='flex flex-col gap-5'>
             <input
               className='w-full border-black border-b-2 outline-none'
@@ -90,8 +96,10 @@ export default function CriarConta() {
           </div>
         </section>
 
-        <section className="w-full h-24 mt-20 flex items-center justify-center p-5">
-          <button className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>Continuar</button>
+        <section className='w-full h-24 mt-20 flex items-center justify-center p-5'>
+          <button className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2' onClick={NextPage}>
+            Continuar
+          </button>
         </section>
       </main>
     </>
