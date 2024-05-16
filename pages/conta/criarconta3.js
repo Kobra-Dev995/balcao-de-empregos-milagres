@@ -6,7 +6,7 @@ export default function CriarContaPasso2() {
       <header className='bg-primary-green flex flex-col p-5'>
         <h1 className='text-white text-xl font-bold'>Criar Conta</h1>
         <span className='mt-4 text-white text-base my-2'>
-          Processo para criar conta
+          Progresso para criar conta
         </span>
         <section className='flex items-center justify-start relative'>
           <div className='bg-slate-700 w-full h-2 text-transparent rounded absolute'></div>
@@ -16,26 +16,37 @@ export default function CriarContaPasso2() {
         </section>
       </header>
 
-      <main>
-        <span>Por favor, digite o código que enviamos agora para:</span>
+      <main className='h-[80vh] flex justify-between flex-col'>
+        <div className='space-y-5 pt-32'>
+          <span className='flex justify-center text-center'>
+            Por favor, digite o código que <br /> enviamos agora para:
+          </span>
 
-        <span>exemplo@gmail.com</span>
+          <span className='font-bold flex justify-center'>
+            exemplo@gmail.com
+          </span>
 
-        <div>
-          <span>0</span>
-          <span>1</span>
-          <span>1</span>
-          <span>-</span>
-          <span>2</span>
-          <span>6</span>
-          <span>3</span>
+          <div className='flex justify-evenly font-bold text-2xl'>
+            <span className=''>0</span>
+            <span>0</span>
+            <span>0</span>
+            <span>-</span>
+            <span>0</span>
+            <span>0</span>
+            <span>0</span>
+          </div>
+
+          <span className='flex justify-center'>
+            Não recebeu?{' '}
+            <Link href='' className='underline pl-1'>
+              Enviar novamente
+            </Link>
+          </span>
         </div>
 
-        <span>
-          Não recebeu? <Link href=''>Eviar novamente</Link>
-        </span>
-
-        <button>Finalizar</button>
+        <div className='flex justify-end px-5'>
+          <button className='btn btn-primary '>Finalizar</button>
+        </div>
       </main>
     </>
   );

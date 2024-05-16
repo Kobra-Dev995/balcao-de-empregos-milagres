@@ -13,12 +13,20 @@ module.exports = {
         'primary-green': '#14A74F',
       },
       fontFamily: {
-        'martel': 'Martel',
+        martel: 'Martel',
       },
     },
   },
   plugins: [
     // https://daisyui.com/docs/
     require('daisyui'),
+    require('rippleui'),
   ],
+  daisyui: {
+    // prefix: 'daisy',
+    themes: ['light', 'dark', 'cupcake'],
+  },
+  rippleui: {
+    // prefix: 'ripple',
+  },
 };
