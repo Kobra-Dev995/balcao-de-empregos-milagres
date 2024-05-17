@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        fotofundo: "url('/fotoprincipal.jpg')",
+      },
       colors: {
         'primary-blue': '#5182BB',
         'secundary-blue': '#2F2361',

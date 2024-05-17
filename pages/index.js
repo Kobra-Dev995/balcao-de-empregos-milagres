@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
-
   return (
     <>
       <main className='w-full min-h-screen flex flex-col justify-center p-5'>
@@ -87,7 +86,7 @@ export default function Home() {
                 className='text-primary-blue underline'
                 href='./conta/criarconta'
               >
-                Cadraste-se
+                Cadastre-se
               </Link>
             </span>
           </div>

@@ -1,5 +1,9 @@
 import Link from 'next/link';
 
+function NextPage() {
+  window.location.replace('./criarconta3');
+}
+
 export default function CriarContaPasso2() {
   return (
     <>
@@ -80,12 +84,17 @@ export default function CriarContaPasso2() {
                 type='file'
               />
             </div>
-            <div className='w-full flex justify-center'>Selecione seu currículo no formato PDF</div>
+            <div className='w-full flex justify-center'>
+              Selecione seu currículo no formato PDF
+            </div>
           </section>
         </section>
 
         <section className='w-full h-24 flex items-center justify-center p-5'>
-          <button className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>
+          <button
+            className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+            onClick={NextPage}
+          >
             Continuar
           </button>
         </section>
