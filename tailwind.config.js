@@ -14,6 +14,7 @@ module.exports = {
         'primary-blue': '#5182BB',
         'secundary-blue': '#2F2361',
         'primary-green': '#14A74F',
+        'primary-red': '#EE1F28',
       },
       fontFamily: {
         martel: 'Martel',
