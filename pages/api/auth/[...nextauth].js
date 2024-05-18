@@ -1,6 +1,5 @@
 import nextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { signOut } from 'next-auth/react';
 
 export const authOptions = {
   providers: [

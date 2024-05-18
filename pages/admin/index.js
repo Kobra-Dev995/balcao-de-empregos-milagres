@@ -1,10 +1,9 @@
-import Conexao from '@/componets/conexao';
+import Conexao from '@/componets/Conexao';
 
 export default function Page() {
   return (
     <>
-      <h1>ooooooo</h1>
-      <Conexao/>
+      <h1>TEla de login adm</h1>
     </>
   );
 }
