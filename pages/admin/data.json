@@ -1,0 +1,19 @@
+{
+    "error": {
+      "message": "Cannot create property 'email' on string 'https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c'",
+      "stack": "TypeError: Cannot create property 'email' on string 'https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c'\n",
+      "aud": "351075261714-n7bla8lpp6agjb5fto8af7qufqemm8nn.apps.googleusercontent.com",
+      "sub": "110571724802128970044",
+      "email": "yeridsonruan995@gmail.com",
+      "email_verified": true,
+      "at_hash": "6rwNqGi26N49EqiUvAeXwA",
+      "name": "Ruan Nascimento",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c",
+      "given_name": "Ruan",
+      "family_name": "Nascimento",
+      "iat": 1716042725,
+      "exp": 1716046325
+    },
+
+    "message": "Cannot create property 'email' on string 'https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c'"
+}

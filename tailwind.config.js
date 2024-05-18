@@ -26,7 +26,7 @@ module.exports = {
     require('rippleui'),
   ],
   daisyui: {
-    // prefix: 'daisy',
+    prefix: 'daisy-',
     themes: ['light', 'dark', 'cupcake'],
   },
   rippleui: {

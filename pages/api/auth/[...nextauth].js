@@ -6,19 +6,20 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      profile(profile) {
-        return(
-            profile.email,
-            profile.name,
-            profile.picture 
-        )
-      },
+      // profile(profile) {
+      //   return(
+      //       profile.email,
+      //       profile.name,
+      //       profile.picture
+      //   )
+      // },
     }),
   ],
   pages: {
     signIn: '/admin',
-    signOut: '/'
-  }
+    signOut: '/',
+  },
 };
 
 export default nextAuth(authOptions);
+export { authOptions as GET, authOptions as POST }
