@@ -7,7 +7,7 @@ export default function teste() {
 
     return (
         <>
-            <h1>opaa</h1>
+            <h1>opaa cobra choca</h1>
         </>
     )
 }
