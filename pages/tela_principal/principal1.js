@@ -26,6 +26,7 @@ export default function principal() {
             Balcão de Empregos
           </span>
         </header>
+
         <div className='bg-fotofundo bg-cover w-full h-52 mt-4 pl-4 pt-7'>
           <span className='text-4xl font-black text-gray-50 tracking-wide'>
             Balcão <br /> de <br /> Empregos
