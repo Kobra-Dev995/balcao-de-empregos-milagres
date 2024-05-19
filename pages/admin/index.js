@@ -9,9 +9,8 @@ export default function Page() {
 
   return (
     <>
-      {status === 'unauthenticated' ? replace('/conta/login') : <h1>TEla de login adm <b> {session?.user.name} </b></h1>}
+      {status === 'unauthenticated' ? replace('/conta/login') : console.error('Você Não Tem Permissão') }
       
-
       <br />
       <button onClick={() => signOut()} className='daisy-btn daisy-btn-error'>Sign out</button>
       <br/>
