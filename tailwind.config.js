@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         fotofundo: "url('/fotoprincipal.jpg')",
+        fotoconta: "url('/fundoperfil.jpg')",
       },
       colors: {
         'primary-blue': '#5182BB',
