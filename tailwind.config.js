@@ -26,6 +26,7 @@ module.exports = {
     // https://daisyui.com/docs/
     require('daisyui'),
     require('rippleui'),
+    require('@sira-ui/tailwind'),
   ],
   daisyui: {
     // prefix: 'daisy',
