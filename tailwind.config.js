@@ -9,12 +9,13 @@ module.exports = {
     extend: {
       backgroundImage: {
         fotofundo: "url('/fotoprincipal.jpg')",
+        fotoconta: "url('/fundoperfil.jpg')",
       },
       colors: {
         'primary-blue': '#5182BB',
         'secundary-blue': '#2F2361',
         'primary-green': '#14A74F',
-        'primary-red': '#EE1F28',
+        'primary-red': '#EE1F28',
       },
       fontFamily: {
         martel: 'Martel',
@@ -25,6 +26,7 @@ module.exports = {
     // https://daisyui.com/docs/
     require('daisyui'),
     require('rippleui'),
+    require('@sira-ui/tailwind'),
   ],
   daisyui: {
     prefix: 'daisy-',
