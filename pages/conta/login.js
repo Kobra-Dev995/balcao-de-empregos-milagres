@@ -3,13 +3,15 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
-  const { data: session, status } = useSession()
-  const {replace} = useRouter()
+  const { data: session, status } = useSession();
+  const { replace } = useRouter();
 
   return (
     <>
       <Provider>
-        {status === 'authenticated' ? replace('/admin') : console.warn('Você não tem conta')}
+        {status === 'authenticated'
+          ? replace('/admin')
+          : console.warn('Você não tem conta')}
 
         <div className='w-full h-screen flex items-center justify-center'>
           <button
@@ -23,3 +25,5 @@ export default function Login() {
     </>
   );
 }
+
+// apenas para commitar
