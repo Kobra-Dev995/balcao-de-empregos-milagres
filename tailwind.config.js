@@ -23,16 +23,16 @@ module.exports = {
     },
   },
   plugins: [
-    // https://daisyui.com/docs/
     require('daisyui'),
     require('rippleui'),
-    require('@sira-ui/tailwind'),
+    // duas bibliotecas
+    require('@sira-ui/tailwind')({
+      excludedThemes: ['dark', 'light', 'whateverTheme'],
+      prefix: 'sira-',
+    }),
   ],
   daisyui: {
     prefix: 'daisy-',
     themes: ['light', 'dark', 'cupcake'],
-  },
-  rippleui: {
-    // prefix: 'ripple',
   },
 };

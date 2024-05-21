@@ -24,7 +24,7 @@ export default function Page() {
   return (
     <>
       {status === 'unauthenticated'
-        ? replace('/conta/login')
+        ? replace('/')
         : console.error('Você Não Tem Permissão')}
 
       <h1>{session?.user.name}</h1>
