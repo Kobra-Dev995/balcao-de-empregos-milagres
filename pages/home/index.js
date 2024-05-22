@@ -1,4 +1,3 @@
-import SideBar from '@/componets/SideBar';
 
 export default function home() {
   return (
