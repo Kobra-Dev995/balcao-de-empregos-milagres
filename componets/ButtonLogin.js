@@ -9,9 +9,7 @@ export default function ButtonLogin({ Text, children }) {
   return (
     <>
       <Provider>
-        {status === 'authenticated'
-          ? replace('/admin')
-          : console.warn('Você não tem conta')}
+        {status === 'authenticated' ? replace('/admin') : false}
 
         <button
           onClick={() => signIn('google', { callbackUrl: '/admin' })}
