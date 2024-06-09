@@ -10,7 +10,7 @@ export const authOptions = {
   ],
   pages: {
     signIn: '/admin',
-    signOut: '/',
+    signOut: '/home',
   },
 };
 

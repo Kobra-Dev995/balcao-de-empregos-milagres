@@ -35,7 +35,7 @@ export default function LoginScreen() {
               Já Possui uma conta?
             </span>
 
-            <form className='flex flex-col gap-3' onSubmit={formSubmit}>
+            <form className='flex items-center flex-col gap-3' onSubmit={formSubmit}>
               <label className='form-control w-full max-w-xs flex flex-col'>
                 <div className='label'>
                   <span className='label-text pl-2 font-medium'>Email</span>
