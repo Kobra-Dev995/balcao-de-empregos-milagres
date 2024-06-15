@@ -9,10 +9,8 @@ export default function ButtonLogin({ Text, children }) {
   return (
     <>
       <Provider>
-        {status === 'authenticated' ? replace('/admin') : false}
-
         <button
-          onClick={() => signIn('google', { callbackUrl: '/admin' })}
+          onClick={() => signIn('google', { callbackUrl: '/home' })}
           className='bg-[#EAEDFF] w-10/12 flex items-center justify-center gap-2 text-base font-semibold py-2 px-5 rounded-lg'
           type='button'
         >

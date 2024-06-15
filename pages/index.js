@@ -2,11 +2,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 import ButtonLogin from '@/componets/ButtonLogin';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function LoginScreen() {
   const [emailLogin, setEmailLogin] = useState();
   const [passwordLogin, setPasswordLogin] = useState();
-  const {push} = useRouter()
+  const { push } = useRouter();
 
   function formSubmit(e) {
     e.preventDefault();
@@ -15,6 +16,16 @@ export default function LoginScreen() {
     setPasswordLogin(e.target[1].value);
 
     console.log(emailLogin, passwordLogin);
+  }
+
+  function togglePass() {
+    const input = document.getElementById('Senha_User');
+
+    if (input.type == 'password') {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
   }
 
   return (
@@ -30,21 +41,23 @@ export default function LoginScreen() {
         </section>
 
         <section className='w-full flex flex-col'>
-          <section className='flex flex-col'>
+          <section className='flex flex-col px-5'>
             <span className='w-full font- text-base font-bold flex justify-center mb-4'>
               Já Possui uma conta?
             </span>
 
-            <form className='flex items-center flex-col gap-3' onSubmit={formSubmit}>
-              <label className='form-control w-full max-w-xs flex flex-col'>
-                <div className='label'>
+            <form
+              className='flex items-center flex-col gap-3'
+              onSubmit={formSubmit}
+            >
+              <label className='form-control w-full max-w-lg flex flex-col'>
+                <div className='label w-full '>
                   <span className='label-text pl-2 font-medium'>Email</span>
                 </div>
-
-                <label className='input input-bordered flex items-center gap-2'>
+                <label className='input max-w-full flex justify-between items-center gap-2'>
                   <input
                     type='text'
-                    className='grow input w-full border-none'
+                    className='input rounded-none border-x-0 w-full'
                     placeholder='Digite aqui'
                     required
                   />
@@ -59,17 +72,16 @@ export default function LoginScreen() {
                   </svg>
                 </label>
               </label>
-
-              <label className='form-control w-full max-w-xs flex flex-col'>
-                <div className='label'>
-                  <span className='label-text pl-2 font-medium'>Senha</span>
+              <label className='form-control w-full max-w-lg flex flex-col'>
+                <div className='label w-full '>
+                  <span className='label-text pl-2 font-medium'>Email</span>
                 </div>
-
-                <label className='input input-bordered flex items-center gap-2'>
+                <label className='input max-w-full flex justify-between items-center gap-2'>
                   <input
+                    id='Senha_User'
                     type='password'
-                    className='grow input w-full border-none'
-                    placeholder='********'
+                    className='input rounded-none border-x-0 w-full'
+                    placeholder='Senha'
                     required
                   />
                   <svg
@@ -86,14 +98,33 @@ export default function LoginScreen() {
                   </svg>
                 </label>
               </label>
+              <label className='form-control w-full max-w-lg flex flex-col'>
+                <div className='form-field'>
+                  <div className='form-control justify-between'>
+                    <label className='flex gap-2'>
+                      <input
+                        type='checkbox'
+                        className='checkbox'
+                        onChange={togglePass}
+                      />
+                      <span>Mostrar Senha</span>
+                    </label>
+                    {/* <label className='form-label'>
+                      <a className='link link-underline-hover link-primary text-sm'>
+                        Forgot your password?
+                      </a>
+                    </label> */}
+                  </div>
+                </div>
+              </label>
 
-              <div className='w-full flex justify-center mt-3'>
+              <label className='form-control w-full max-w-lg flex justify-center'>
                 <input
-                  className='cursor-pointer w-1/2 bg-primary-blue text-white font-bold px-4 py-2 rounded-lg'
+                  className='w-full cursor-pointer bg-primary-blue text-white font-bold px-4 py-2 rounded-lg'
                   type='submit'
                   value='Login'
                 />
-              </div>
+              </label>
             </form>
           </section>
 
@@ -108,13 +139,14 @@ export default function LoginScreen() {
               </ButtonLogin>
             </section>
           </section>
-          <div className='w-full flex justify-center my-4'>
-            <span className='text-base font-medium'>
-              Não tem uma conta?{' '}
-              <button onClick={() => {push('/conta/criarconta')}} className='daisy-link daisy-link-info'>
-                Cadastre-se
-              </button>
-            </span>
+          <div className='w-full flex gap-2 justify-center my-4'>
+            <span className='text-base font-medium'>Não tem uma conta?</span>
+            <Link
+              href={'/conta/criarconta'}
+              className='daisy-link daisy-link-info font-semibold'
+            >
+              Cadastre-se
+            </Link>
           </div>
         </section>
 
