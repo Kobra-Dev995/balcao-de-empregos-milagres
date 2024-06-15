@@ -28,7 +28,12 @@ export default function vagas() {
 
         <div className='bg-fotoconta bg-cover w-full h-28 mt-4 pl-4 pt-7 '>
           <div className='w-24 rounded-full ml-4 mt-8'>
-            <img src='/fotoperfil1.png' />
+            <Image
+              alt='foto de perfil'
+              height={1200}
+              width={1200}
+              src='/fotoperfil1.png'
+            />
           </div>
         </div>
         <div className='card-body'>
