@@ -1,9 +1,15 @@
 import MenuPage from '@/componets/MenuHamburger';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function home() {
+  const [imageUser, setImageUser] = useState('/');
+  const { data: session, status } = useSession();
+
+
   return (
     <>
       <Head>
@@ -174,17 +180,14 @@ export default function home() {
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
             {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-7p- w-full'>
-              <Image
-                src='/fotoPerfioTela.png'
-                width='47'
-                height='47'
-                alt='foto'
-              />
-              <span className='font-semibold text-base'>Dr. Fran</span>
+              <Image src={imageUser} width='47' height='47' alt='foto' />{' '}
+              <span className='font-semibold text-base'>
+                {session?.user.name}
+              </span>
             </div>
 
             <li>
-              <Link href='/home'>Inicio</Link>
+              <Link href='/home'>Inicio {session?.user.image}</Link>
             </li>
             <li>
               <Link href=''>Conta</Link>

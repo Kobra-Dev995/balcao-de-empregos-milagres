@@ -38,7 +38,17 @@ const withPWA = nextPWA({
 });
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ... other options you like
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com/',
+        port: '',
+        pathname:
+          '',
+      },
+    ],
+  },
 };
 
 export default withPWA(nextConfig);
