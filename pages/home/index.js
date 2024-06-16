@@ -1,14 +1,14 @@
+'use client';
+
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
-export default function home() {
+export default function Home() {
   // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();
-  const [imageUser, setImageUser] = useState(session?.user.image);
   const { replace } = useRouter();
 
   return (
@@ -199,11 +199,7 @@ export default function home() {
               </figure>
 
               <span className='font-semibold text-base'>
-                {!session?.user.image ? (
-                  'Seja bem vindo!'
-                ) : (
-                  session.user.name
-                )}
+                {!session?.user.image ? 'Seja bem vindo!' : session.user.name}
               </span>
             </div>
 
