@@ -199,7 +199,11 @@ export default function home() {
               </figure>
 
               <span className='font-semibold text-base'>
-                {session?.user.name}
+                {!session?.user.image ? (
+                  'Seja bem vindo!'
+                ) : (
+                  session.user.name
+                )}
               </span>
             </div>
 
