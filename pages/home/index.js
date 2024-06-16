@@ -1,17 +1,25 @@
-import MenuPage from '@/componets/MenuHamburger';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function home() {
-  const [imageUser, setImageUser] = useState('/');
+  // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();
+  const [imageUser, setImageUser] = useState(session?.user.image);
+  const { replace } = useRouter();
+  console.log(session?.user);
 
+  const link =
+    'https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c';
+  const semdominio = link.slice(8);
 
   return (
     <>
+      {status === 'unauthenticated' ? replace('/') : false}
+
       <Head>
         <title>Tela Home - Novos Empregos</title>
       </Head>
@@ -20,8 +28,9 @@ export default function home() {
         <div className='daisy-drawer-content'>
           <main>
             <header className='flex justify-start gap-5 pt-3 pl-3 items-center'>
-              <label htmlFor='my-drawer'>
+              <label htmlFor='my-drawer' className='cursor-pointer'>
                 <svg
+                  className='cursor-pointer'
                   width='28'
                   height='21'
                   viewBox='0 0 28 21'
@@ -179,21 +188,34 @@ export default function home() {
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
             {/* Sidebar content here */}
-            <div className='flex justify-start items-center gap-7p- w-full'>
-              <Image src={imageUser} width='47' height='47' alt='foto' />{' '}
+            <div className='flex justify-start items-center gap-2 w-full'>
+              <figure className=''>
+                {/* {!session?.user.image ? (
+                  <Image src={`/`} width='47' height='47' alt='' />
+                ) : (
+                  <Image
+                    src={`${session.user.image}`}
+                    width='47'
+                    height='47'
+                    alt=''
+                  />
+                )} */}
+                <Image src={`/fotoperfil.jpg`} width='47' height='47' alt='' />
+              </figure>
+
               <span className='font-semibold text-base'>
                 {session?.user.name}
               </span>
             </div>
 
             <li>
-              <Link href='/home'>Inicio {session?.user.image}</Link>
+              <Link href='/home'>Inicio</Link>
             </li>
             <li>
-              <Link href=''>Conta</Link>
+              <Link href='/'>Conta</Link>
             </li>
             <li>
-              <Link href=''>Cursos</Link>
+              <Link href='/'>Cursos</Link>
             </li>
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
@@ -202,7 +224,7 @@ export default function home() {
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
             <li>
-              <Link href=''>Configurações</Link>
+              <Link href='/'>Configurações</Link>
             </li>
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
@@ -215,7 +237,7 @@ export default function home() {
               </Link>
             </li>
             <li>
-              <Link href=''>Sair da Conta</Link>
+              <button onClick={() => signOut()}>Sair da Conta</button>
             </li>
           </ul>
         </div>
