@@ -10,11 +10,6 @@ export default function home() {
   const { data: session, status } = useSession();
   const [imageUser, setImageUser] = useState(session?.user.image);
   const { replace } = useRouter();
-  console.log(session?.user);
-
-  const link =
-    'https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c';
-  const semdominio = link.slice(8);
 
   return (
     <>
@@ -189,7 +184,7 @@ export default function home() {
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
             {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-2 w-full'>
-              <figure className=''>
+              <figure className='bg-blue-400'>
                 {/* {!session?.user.image ? (
                   <Image src={`/`} width='47' height='47' alt='' />
                 ) : (
