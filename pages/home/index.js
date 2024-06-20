@@ -13,11 +13,10 @@ export default function Home() {
 
   return (
     <>
-      {status === 'unauthenticated' ? replace('/') : false}
-
       <Head>
         <title>Tela Home - Novos Empregos</title>
       </Head>
+
       <div className='daisy-drawer'>
         <input id='my-drawer' type='checkbox' className='daisy-drawer-toggle' />
         <div className='daisy-drawer-content'>
@@ -58,15 +57,15 @@ export default function Home() {
                   Há 114 vaga(s) disponível(is)
                 </span>
               </div>
-              <div className='card w-96 bg-base-100 shadow-xl m-5'>
+              <div className='w-full bg-base-100 flex justify-center items-center shadow-xl m-5'>
                 {/*  <Image
-            className=''
-            src='/check.svg'
-            width='100'
-            height='100'
-            alt='CheckSVG'
-          /> */}
-                <div className='card-body'>
+                      className=''
+                      src='/check.svg'
+                      width='100'
+                      height='100'
+                      alt='CheckSVG'
+                    /> */}
+                <div className='daisy-card-body w-full flex flex-col justify-center lg:w-1/2'>
                   <h2 className='card-title font-semibold'>
                     Vagas de Emprego!
                   </h2>
@@ -185,8 +184,13 @@ export default function Home() {
             {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
-                {/* {!session?.user.image ? (
-                  <Image src={`/`} width='47' height='47' alt='' />
+                {!session?.user.image ? (
+                  <Image
+                    src={`/fotoperfil.jpg`}
+                    width='47'
+                    height='47'
+                    alt=''
+                  />
                 ) : (
                   <Image
                     src={`${session.user.image}`}
@@ -194,8 +198,7 @@ export default function Home() {
                     height='47'
                     alt=''
                   />
-                )} */}
-                <Image src={`/fotoperfil.jpg`} width='47' height='47' alt='' />
+                )}
               </figure>
 
               <span className='font-semibold text-base'>

@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CriarConta() {
@@ -37,26 +38,23 @@ export default function CriarConta() {
 
           <form className='flex flex-col gap-5'>
             <input
-              className='w-full border-black border-b-2 outline-none'
-              type='text'
-              placeholder='Nome Completo'
-            />
-
-            <input
+              required
               type='text'
               placeholder='Nome Completo'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
-
             <input
-              className='w-full border-black border-b-2 outline-none'
-              type='text'
+              required
+              type='date'
               placeholder='Data de Nascimento'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              className='w-full border-black border-b-2 outline-none'
-              type='text'
-              placeholder='Telefone'
+              required
+              type='tel'
+              placeholder='Número de Celular'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
+              maxLength={'11'}
             />
           </form>
         </section>
@@ -67,7 +65,7 @@ export default function CriarConta() {
           </span>
 
           <div className='flex flex-wrap gap-8'>
-            <select className='select select-success w-full max-w-xs'>
+            <select required className='select select-success w-full max-w-xs'>
               <option disabled selected>
                 Selecione a cidade
               </option>
@@ -77,34 +75,10 @@ export default function CriarConta() {
               <option>Abaiara</option>
             </select>
 
-            {/* <select name='Estados'>
-              <option value='CE' key='0'>
-                Ceará
-              </option>
-              <option value='SP' key='1'>
-                São Paulo
-              </option>
-            </select>
-
-            <select name='Cidades'>
-              <option value='abaiara' key='0'>
-                Abaiara
-              </option>
-              <option value='barro' key='1'>
-                Barro
-              </option>
-              <option value='crato' key='2'>
-                Crato
-              </option>
-              <option value='milagres' key='3'>
-                Milagres
-              </option>
-            </select> */}
-
             <input
-              className='w-full border-black border-b-2 outline-none'
               type='text'
               placeholder='Endereço'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
           </div>
         </section>
@@ -112,19 +86,29 @@ export default function CriarConta() {
         <section className='flex flex-col gap-5 pt-5'>
           <span className='text-base font-semibold'>Escolaridade:</span>
           <div>
-            <select name='Escolaridade'>
-              <option value='ensino_medio_completo' key='0'>
-                Ensino Médio Completo
-              </option>
-              <option value='ensino_medio_incompleto' key='1'>
-                Ensino Médio Incompleto
-              </option>
-            </select>
+            <form>
+              <select
+                required
+                name='Escolaridade'
+                className='select select-success w-full max-w-xs'
+              >
+                <option disabled selected>
+                  Selecione o seu nível de escolaridade
+                </option>
+                <option value='ensino_medio_completo' key='0'>
+                  Ensino Médio Completo
+                </option>
+                <option value='ensino_medio_incompleto' key='1'>
+                  Ensino Médio Incompleto
+                </option>
+              </select>
+            </form>
           </div>
         </section>
 
         <section className='w-full h-24 mt-20 flex items-center justify-center p-5'>
           <button
+            type='submit'
             className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
             onClick={NextPage}
           >

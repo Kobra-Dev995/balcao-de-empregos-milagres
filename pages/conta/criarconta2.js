@@ -1,10 +1,11 @@
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
-function NextPage() {
-  window.location.replace('./criarconta3');
-}
 
 export default function CriarContaPasso2() {
+  function NextPage() {
+    window.location.replace('./criarconta3');
+  }
   return (
     <>
       <header className='bg-primary-green flex flex-col p-5'>
@@ -12,12 +13,23 @@ export default function CriarContaPasso2() {
         <span className='mt-4 text-white text-base my-2'>
           Processo para criar conta
         </span>
-        <section className='flex items-center justify-start relative'>
+
+        <ul className='daisy-steps daisy-steps-horizontal'>
+          <li className='daisy-step daisy-step-warning text-zinc-100'>
+            Dados pessoais
+          </li>
+          <li className='daisy-step daisy-step-warning text-zinc-100'>
+            Criar conta
+          </li>
+          <li className='daisy-step text-zinc-100'>Verificar conta</li>
+        </ul>
+
+        {/* <section className='flex items-center justify-start relative'>
           <div className='bg-slate-700 w-full h-2 text-transparent rounded absolute'></div>
-          <div className='bg-[#FDEE00] w-2/3 h-2 text-transparent rounded absolute'>
+          <div className='bg-[#FDEE00] w-1/3 h-2 text-transparent rounded absolute'>
             Progresso 1/3
           </div>
-        </section>
+        </section> */}
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
@@ -68,12 +80,13 @@ export default function CriarContaPasso2() {
             Escolha o que deseja fazer:
           </span>
           <div className='flex gap-8'>
-            <button className='border-slate-300 border-2 p-3 rounded-xl text-base font-medium bg-[#14A74F] text-white'>
-              Quero trabalhar
-            </button>
-            <button className='border-slate-300 border-2 p-3 rounded-xl text-base font-normal text-black'>
-              Quero Contratar
-            </button>
+            <select className='select select-success w-full max-w-xs'>
+              <option disabled selected>
+                Selecione
+              </option>
+              <option>Quero trabalhar</option>
+              <option>Quero contratar</option>
+            </select>
           </div>
 
           <section className='flex flex-col gap-5'>
