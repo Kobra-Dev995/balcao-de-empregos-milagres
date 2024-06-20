@@ -5,17 +5,24 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function LoginScreen() {
-  const [emailLogin, setEmailLogin] = useState();
-  const [passwordLogin, setPasswordLogin] = useState();
+  const [emailLogin, setEmailLogin] = useState('');
+  const [passwordLogin, setPasswordLogin] = useState('');
   const { push } = useRouter();
 
   function formSubmit(e) {
     e.preventDefault();
+    let inputEmailValue = e.target[0].value;
+    let inputPasswordValue = e.target[1].value;
 
-    setEmailLogin(e.target[0].value);
-    setPasswordLogin(e.target[1].value);
+    setEmailLogin(inputEmailValue);
+    setPasswordLogin(inputPasswordValue);
 
-    console.log(emailLogin, passwordLogin);
+    if (emailLogin && passwordLogin) {
+      push('/home');
+    }
+
+    inputEmailValue = '';
+    inputPasswordValue = '';
   }
 
   function togglePass() {
