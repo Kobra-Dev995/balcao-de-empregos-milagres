@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server';
 
 const resend = new Resend('re_7f6J9MLo_EXAucX6TqqETzpqjvBxZkKo1');
 
-
 // export default async function POST() {
 //   try {
 //     const data = await resend.emails.send({
@@ -83,7 +82,7 @@ const TemplateEmail = `
 `
 
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req, res) => {
   const { data, error } = await resend.emails.send({
     from: 'Balcao de Empregos <delivered@resend.dev>',
     to: 'yeridsonruan995@gmail.com',

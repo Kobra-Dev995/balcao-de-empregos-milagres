@@ -1,4 +1,3 @@
-import SideBar from '@/componets/SideBar';
 import { Html, Head, Main, NextScript } from 'next/document';
 
 export default function Document() {
