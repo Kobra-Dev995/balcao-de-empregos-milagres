@@ -89,7 +89,7 @@ export default function CriarContaPasso2() {
 
           <span className='flex justify-center'>
             Não recebeu?{' '}
-            <Link href='' className='underline pl-1'>
+            <Link href='/api/send' className='underline pl-1'>
               Enviar novamente
             </Link>
           </span>

@@ -3,9 +3,6 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function ButtonLogin({ Text, children }) {
-  const { data: session, status } = useSession();
-  const { replace } = useRouter();
-
   return (
     <>
       <Provider>

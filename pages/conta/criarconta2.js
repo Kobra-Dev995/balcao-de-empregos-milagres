@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-
 export default function CriarContaPasso2() {
   function NextPage() {
     window.location.replace('./criarconta3');
@@ -45,6 +44,11 @@ export default function CriarContaPasso2() {
               placeholder='Como Podemos Chama-lo?'
             />
             <input
+              type='text'
+              placeholder='Endereço'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
+            />
+            <input
               className='w-full border-black border-b-2 outline-none'
               type='email'
               placeholder='Digite seu email'
@@ -64,7 +68,7 @@ export default function CriarContaPasso2() {
                 <span>Letras Minúsculas</span>
                 <span>Números</span>
                 <span>Símbolos @ ! _ $</span>
-              </span>
+              </span> 
             </div>
 
             <input

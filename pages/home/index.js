@@ -210,11 +210,9 @@ export default function Home() {
               <Link href='/home'>Inicio</Link>
             </li>
             <li>
-              <Link href='/'>Conta</Link>
+              <Link href='/home/conta'>Conta</Link>
             </li>
-            <li>
-              <Link href='/'>Cursos</Link>
-            </li>
+            
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
@@ -222,7 +220,7 @@ export default function Home() {
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
             <li>
-              <Link href='/'>Configurações</Link>
+              <Link href='/home'>Configurações</Link>
             </li>
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
@@ -230,8 +228,13 @@ export default function Home() {
               </Link>
             </li>
             <li>
-              <Link href='https://www.infojobs.com.br/vagas-de-emprego-jovem+aprendiz-em-milagres,-ce.aspx'>
+              <Link href='https://1mio.com.br/'>
                 Jovem Aprendiz
+              </Link>
+            </li>
+            <li>
+              <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                Empreendedor
               </Link>
             </li>
             <li>

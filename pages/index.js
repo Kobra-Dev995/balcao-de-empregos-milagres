@@ -1,14 +1,15 @@
 import Image from 'next/image';
 import { useState } from 'react';
-import ButtonLogin from '@/componets/ButtonLogin';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { signIn, signOut } from 'next-auth/react';
+//import ButtonLogin from '@/componets/ButtonLogin';
 
 export default function LoginScreen() {
   const [emailLogin, setEmailLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
   const { push } = useRouter();
-
+  
   function formSubmit(e) {
     e.preventDefault();
     let inputEmailValue = e.target[0].value;
@@ -38,13 +39,24 @@ export default function LoginScreen() {
   return (
     <>
       <main className='w-full min-h-screen flex flex-col justify-center p-5'>
-        <section className='w-full p-4 flex justify-center items-center'>
-          <Image
-            src='./logo-balcao-de-empregos.svg'
-            width='262'
-            height='116'
-            alt='Logo Balcão de Empregos Milagres-CE'
-          />
+        <section className='w-full p-4 gap-14 flex justify-center items-center'>
+          <figure className='w-56'>
+            <Image
+              src='./logo-balcao-de-empregos.svg'
+              width='262'
+              height='116'
+              alt='Logo Balcão de Empregos Milagres-CE'
+            />
+          </figure>
+
+          <figure className='w-40'>
+            <Image
+              src='/SEMANA MEI.jpg'
+              width='262'
+              height='116'
+              alt='Logo Balcão de Empregos Milagres-CE'
+            />
+          </figure>
         </section>
 
         <section className='w-full flex flex-col'>
@@ -140,10 +152,15 @@ export default function LoginScreen() {
               <span className='font-semibold text-base'>Ou</span>
             </div>
 
-            <section className='w-full flex flex-col items-center gap-3'>
-              <ButtonLogin Text='Google'>
+            <section className='w-full  flex justify-center items-center gap-3'>
+              <button
+                onClick={() => signIn('google', { callbackUrl: '/home' })}
+                className='bg-[#EAEDFF] w-full max-w-lg flex items-center justify-center gap-2 text-base font-semibold py-2 px-5 rounded-lg'
+                type='button'
+              >
                 <Image src='./google-icon.svg' width='15' height='15' alt='' />
-              </ButtonLogin>
+                google
+              </button>
             </section>
           </section>
           <div className='w-full flex gap-2 justify-center my-4'>

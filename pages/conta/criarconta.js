@@ -6,6 +6,16 @@ export default function CriarConta() {
     window.location.replace('./criarconta2');
   }
 
+  function dataAtualFormatada() {
+    var data = new Date(),
+      dia = data.getDate().toString(),
+      diaF = dia.length == 1 ? '0' + dia : dia,
+      mes = (data.getMonth() + 1).toString(), //+1 pois no getMonth Janeiro começa com zero.
+      mesF = mes.length == 1 ? '0' + mes : mes,
+      anoF = data.getFullYear();
+    return diaF + '/' + mesF + '/' + anoF;
+  }
+
   return (
     <>
       <header className='bg-primary-green flex flex-col p-5'>
@@ -44,8 +54,9 @@ export default function CriarConta() {
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              required
-              type='date'
+              required 
+              type='number'
+              onChange={(e) => dataAtualFormatada(e.target.value)}
               placeholder='Data de Nascimento'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
@@ -65,7 +76,10 @@ export default function CriarConta() {
           </span>
 
           <div className='flex flex-wrap gap-8'>
-            <select required className='select select-success w-full max-w-xs'>
+            <select
+              required
+              className='daisy-select daisy-select-success w-full max-w-xs'
+            >
               <option disabled selected>
                 Selecione a cidade
               </option>
@@ -74,35 +88,6 @@ export default function CriarConta() {
               <option>Mauriti</option>
               <option>Abaiara</option>
             </select>
-
-            <input
-              type='text'
-              placeholder='Endereço'
-              className='daisy-input daisy-input-bordered daisy-input-success w-full'
-            />
-          </div>
-        </section>
-
-        <section className='flex flex-col gap-5 pt-5'>
-          <span className='text-base font-semibold'>Escolaridade:</span>
-          <div>
-            <form>
-              <select
-                required
-                name='Escolaridade'
-                className='select select-success w-full max-w-xs'
-              >
-                <option disabled selected>
-                  Selecione o seu nível de escolaridade
-                </option>
-                <option value='ensino_medio_completo' key='0'>
-                  Ensino Médio Completo
-                </option>
-                <option value='ensino_medio_incompleto' key='1'>
-                  Ensino Médio Incompleto
-                </option>
-              </select>
-            </form>
           </div>
         </section>
 

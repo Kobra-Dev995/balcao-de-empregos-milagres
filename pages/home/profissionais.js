@@ -38,6 +38,23 @@ export default function Profissionais() {
             </header>
 
             <div className='flex justify-end mt-7 items-center'>
+              <div className='daisy-dropdown'>
+                <div tabIndex={0} role='button' className='daisy-btn m-1'>
+                  Filtrar
+                </div>
+                <ul
+                  tabIndex={0}
+                  className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
+                >
+                  <li>
+                    <a>Milagres</a>
+                  </li>
+                  <li>
+                    <a>Barro</a>
+                  </li>
+                </ul>
+              </div>
+
               <label className='outline-none input input-bordered flex items-center gap-2 mx-4'>
                 <input
                   type='text'
@@ -57,29 +74,6 @@ export default function Profissionais() {
                   />
                 </svg>
               </label>
-
-              <button
-                className='daisy-btn'
-                onClick={() =>
-                  document.getElementById('my_modal_1').showModal()
-                }
-              >
-                open modal
-              </button>
-              <dialog id='my_modal_1' className='daisy-modal'>
-                <div className='daisy-modal-box'>
-                  <h3 className='font-bold text-lg px-4'>Filtrar Pesquisa</h3>
-                  <p className='py-4 px-4'>
-                    Press ESC key or click the button below to close
-                  </p>
-                  <div className='daisy-modal-action'>
-                    <form method='dialog'>
-                      {/* if there is a button in form, it will close the modal */}
-                      <button className='daisy-btn'>Close</button>
-                    </form>
-                  </div>
-                </div>
-              </dialog>
             </div>
 
             <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
@@ -259,10 +253,7 @@ export default function Profissionais() {
               <Link href='/home'>Inicio</Link>
             </li>
             <li>
-              <Link href='/'>Conta</Link>
-            </li>
-            <li>
-              <Link href='/'>Cursos</Link>
+              <Link href='/home/conta'>Conta</Link>
             </li>
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
@@ -271,7 +262,7 @@ export default function Profissionais() {
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
             <li>
-              <Link href='/'>Configurações</Link>
+              <Link href='/home'>Configurações</Link>
             </li>
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
@@ -279,8 +270,13 @@ export default function Profissionais() {
               </Link>
             </li>
             <li>
-              <Link href='https://www.infojobs.com.br/vagas-de-emprego-jovem+aprendiz-em-milagres,-ce.aspx'>
+              <Link href='https://1mio.com.br/'>
                 Jovem Aprendiz
+              </Link>
+            </li>
+            <li>
+              <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                Empreendedor
               </Link>
             </li>
             <li>
