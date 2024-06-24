@@ -22,13 +22,7 @@ export default function CriarContaPasso2() {
           </li>
           <li className='daisy-step text-zinc-100'>Verificar conta</li>
         </ul>
-
-        {/* <section className='flex items-center justify-start relative'>
-          <div className='bg-slate-700 w-full h-2 text-transparent rounded absolute'></div>
-          <div className='bg-[#FDEE00] w-1/3 h-2 text-transparent rounded absolute'>
-            Progresso 1/3
-          </div>
-        </section> */}
+        
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
