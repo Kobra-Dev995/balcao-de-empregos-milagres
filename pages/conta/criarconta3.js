@@ -1,14 +1,22 @@
 import next from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 
 export default function CriarContaPasso2() {
-
   function NextPage() {
     window.location.replace('/home');
   }
 
+  function mudar(e){
+    console.log(e.target);
+  }
+
   return (
     <>
+      <Head>
+        <title>Pagina para Criar a Conta</title>
+      </Head>
+
       <header className='bg-primary-green flex flex-col p-5'>
         <h1 className='text-white text-xl font-bold'>Criar Conta</h1>
         <span className='mt-4 text-white text-base my-2'>
@@ -47,44 +55,45 @@ export default function CriarContaPasso2() {
 
           <div className='flex justify-evenly lg:justify-center lg:gap-3 font-bold text-2xl'>
             <input
+              onKeyUp={mudar}
+              tabIndex={1}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
             <input
+              tabIndex={2}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
             <input
+              tabIndex={3}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
 
             <span>-</span>
 
             <input
+              tabIndex={4}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
             <input
+              tabIndex={5}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
             <input
+              tabIndex={6}
               type='tel'
               maxLength={'1'}
-              className='daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
             />
-            {/* <span className=''>0</span>
-            <span>0</span>
-            <span>-</span>
-            <span>0</span>
-            <span>0</span>
-            <span>0</span> */}
           </div>
 
           <span className='flex justify-center'>
@@ -96,7 +105,13 @@ export default function CriarContaPasso2() {
         </div>
 
         <div className='flex justify-end px-5 py-6'>
-          <button className='daisy-btn daisy-btn-primary' onClick={NextPage}>Finalizar</button>
+          <button
+            tabIndex={7}
+            className='daisy-btn daisy-btn-primary'
+            onClick={NextPage}
+          >
+            Finalizar
+          </button>
         </div>
       </main>
     </>

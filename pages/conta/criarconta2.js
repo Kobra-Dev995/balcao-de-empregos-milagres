@@ -39,24 +39,19 @@ export default function CriarContaPasso2() {
 
           <form className='flex flex-col gap-5'>
             <input
-              className='w-full border-black border-b-2 outline-none'
               type='text'
               placeholder='Como Podemos Chama-lo?'
-            />
-            <input
-              type='text'
-              placeholder='Endereço'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              className='w-full border-black border-b-2 outline-none'
               type='email'
               placeholder='Digite seu email'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              className='w-full border-black border-b-2 outline-none'
               type='password'
               placeholder='Criar uma Senha'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
 
             <div className='text-[#A71414] flex flex-col'>
@@ -68,13 +63,13 @@ export default function CriarContaPasso2() {
                 <span>Letras Minúsculas</span>
                 <span>Números</span>
                 <span>Símbolos @ ! _ $</span>
-              </span> 
+              </span>
             </div>
 
             <input
-              className='w-full border-black border-b-2 outline-none'
               type='password'
               placeholder='Repita a senha'
+              className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
           </form>
         </section>
