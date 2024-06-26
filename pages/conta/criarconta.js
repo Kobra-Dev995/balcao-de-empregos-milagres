@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function CriarConta() {
   const [telefone, setTelefone] = useState('');
   const [birthday, setBirthday] = useState('');
-  const {push} = useRouter();
+  const { push } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();
@@ -13,13 +13,19 @@ export default function CriarConta() {
     const response = await fetch('/api/responseForm', {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({name:formData.get('user_name'),birthday:formData.get('user_birthday'),phone:formData.get('user_phone'),city:formData.get('user_city'),neighborhood:formData.get('user_neighborhood')}),
+      body: JSON.stringify({
+        name: formData.get('user_name'),
+        birthday: formData.get('user_birthday'),
+        phone: formData.get('user_phone'),
+        city: formData.get('user_city'),
+        neighborhood: formData.get('user_neighborhood'),
+      }),
     });
 
-    if (response.status == 200){
+    if (response.status == 200) {
       push('/conta/criarconta2');
     } else {
       alert('Erro ao criar conta :(\nTente novamente mais tarde');

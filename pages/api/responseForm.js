@@ -8,14 +8,27 @@ let arry = [
   },
 ];
 
-export default async function handler(req, res) {
+// export default async function handler(req, res) {
+//   const data = await req.body;
+//   const dataObj = await data;
+//   if (data) {
+//     arry.push(dataObj);
+//   }
+//   console.log('----------dados do formulario------------');
+//   console.log(`Pessoa adicioada: ${data.name}`);
+//   console.log('----------dados do formulaio------------');
+//   res.status(200).json(arry);
+// }
+
+export default async function Page2(req, res) {
   const data = await req.body;
   const dataObj = await data;
   if (data) {
     arry.push(dataObj);
   }
   console.log('----------dados do formulario------------');
-  console.log(`Pessoa adicioada: ${data.name}`);
+  console.log(`Pessoa adicioada: ${data.nickname}`);
   console.log('----------dados do formulaio------------');
+
   res.status(200).json(arry);
 }

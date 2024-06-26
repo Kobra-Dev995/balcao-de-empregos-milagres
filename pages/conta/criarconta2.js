@@ -1,10 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function CriarContaPasso2() {
-  function NextPage() {
-    window.location.replace('./criarconta3');
-  }
+  const { push } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();
@@ -20,13 +19,14 @@ export default function CriarContaPasso2() {
         nickname: formData.get('user_nickname'),
         email: formData.get('user_email'),
         password: formData.get('user_password'),
-        typeJob: formData.get('user_typeJob'),
-        cv: formData.get('user_cv')
+        serviceType: formData.get('user_serviceType'),
+        curriculum: formData.get('user_curriculum'),
       }),
     });
 
+    console.log('enviou');
     if (response.status == 200) {
-      push('/conta/criarconta3');
+      //push('/conta/criarconta3');
     } else {
       alert('Erro ao criar conta :(\nTente novamente mais tarde');
     }
@@ -35,6 +35,82 @@ export default function CriarContaPasso2() {
   async function testeAPI() {
     const req = await fetch('/api/responseForm');
     console.log(JSON.parse(await req.text()));
+  }
+
+  const [passwordLetterM, setPasswordLetterM] = useState(false);
+  const [passwordLetterm, setPasswordLetterm] = useState(false);
+  const [passwordNumber, setPasswordNumber] = useState(false);
+  const [passwordChar, setPasswordChar] = useState(false);
+  const [passwordLength, setPasswordLength] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState(false);
+
+  function handlePassword(e) {
+    const password = e.target.value;
+    let passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_])[\d\w\W]{8,}$/;
+    const passwordLetterM1 = /^(?=.*[A-Z])[\d\w\W]{1,}$/;
+    const passwordLetterm1 = /^(?=.*[a-z])[\d\w\W]{1,}$/;
+    const passwordNumber1 = /^(?=.*[0-9])[\d\w\W]{1,}$/;
+    const passwordChar1 = /^(?=.*[!@#$%^&*_])[\d\w\W]{1,}$/;
+    const passwordLength1 = /^[\d\w\W]{8,}$/;
+
+    if (passwordLetterM1.test(password)) {
+      setPasswordLetterM(true);
+    } else {
+      setPasswordLetterM(false);
+    }
+
+    if (passwordLetterm1.test(password)) {
+      setPasswordLetterm(true);
+    } else {
+      setPasswordLetterm(false);
+    }
+
+    if (passwordNumber1.test(password)) {
+      setPasswordNumber(true);
+    } else {
+      setPasswordNumber(false);
+    }
+
+    if (passwordChar1.test(password)) {
+      setPasswordChar(true);
+    } else {
+      setPasswordChar(false);
+    }
+
+    if (passwordLength1.test(password)) {
+      setPasswordLength(true);
+    } else {
+      setPasswordLength(false);
+    }
+
+    const result = passwordRegex.test(password);
+    console.log(result);
+  }
+
+  function handlePasswordCheck(e) {
+    const password1 = e.target.parentNode.childNodes[3].value;
+    const passwordCheck1 = e.target.value;
+
+    if (password1 === passwordCheck1) {
+      setPasswordCheck(true);
+    } else {
+      setPasswordCheck(false);
+    }
+  }
+
+  function handleCurriculum(e) {
+    let imgPreview = document.getElementById('imgpreview');
+    if (e.target.files && e.target.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        console.log(event.target.result);
+        imgPreview.setAttribute('src', event.target.result);
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      imgPreview.setAttribute('src', '/logo-balcao-de-empregos.svg');
+    }
   }
 
   return (
@@ -63,6 +139,7 @@ export default function CriarContaPasso2() {
           id='form'
           onSubmit={HandleSubmit}
           method='POST'
+          encType='multipart/form-data'
           className='flex flex-col gap-5'
         >
           <section className='flex flex-col gap-5'>
@@ -84,19 +161,61 @@ export default function CriarContaPasso2() {
             />
             <input
               type='password'
+              onChange={handlePassword}
               placeholder='Criar uma Senha'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
 
-            <div className='text-[#A71414] flex flex-col'>
+            <div
+              className={
+                passwordLetterM &&
+                passwordLetterm &&
+                passwordNumber &&
+                passwordChar &&
+                passwordLength
+                  ? 'text-[#20a714]'
+                  : '' + 'text-[#A71414] flex flex-col'
+              }
+            >
               <span className='text-base font-semibold'>
                 A senha deve conter:
               </span>
               <span className='text-sm flex flex-col'>
-                <span className='text-[#20a714]'>Letras Maiúsculas</span>
-                <span>Letras Minúsculas</span>
-                <span>Números</span>
-                <span>Símbolos @ ! _ $</span>
+                <span
+                  className={
+                    passwordLetterM ? 'text-[#20a714]' : 'text-[#A71414]'
+                  }
+                >
+                  Letras Maiúsculas
+                </span>
+                <span
+                  className={
+                    passwordLetterm ? 'text-[#20a714]' : 'text-[#A71414]'
+                  }
+                >
+                  Letras Minúsculas
+                </span>
+                <span
+                  className={
+                    passwordNumber ? 'text-[#20a714]' : 'text-[#A71414]'
+                  }
+                >
+                  Números
+                </span>
+
+                <span
+                  className={passwordChar ? 'text-[#20a714]' : 'text-[#A71414]'}
+                >
+                  Símbolos
+                </span>
+
+                <span
+                  className={
+                    passwordLength ? 'text-[#20a714]' : 'text-[#A71414]'
+                  }
+                >
+                  8 Caracteres
+                </span>
               </span>
             </div>
 
@@ -104,7 +223,12 @@ export default function CriarContaPasso2() {
               type='password'
               name='user_password'
               placeholder='Repita a senha'
-              className='daisy-input daisy-input-bordered daisy-input-success w-full'
+              onChange={handlePasswordCheck}
+              className={`daisy-input daisy-input-bordered daisy-input-success w-full ${
+                passwordCheck
+                  ? 'border-green-700 focus:outline-green-700 focus:border-green-700'
+                  : 'border-red-700 focus:outline-red-700 focus:border-red-700'
+              }`}
             />
           </section>
 
@@ -115,15 +239,13 @@ export default function CriarContaPasso2() {
             <div className='flex gap-8'>
               <select
                 defaultValue={'Trabalhar'}
-                name='user_typeJob'
+                name='user_serviceType'
                 className='select select-success w-full max-w-xs'
               >
                 <option disabled value={'default'}>
                   Selecione
                 </option>
-                <option value={'Trabalhar'} selected>
-                  Quero trabalhar
-                </option>
+                <option value={'Trabalhar'}>Quero trabalhar</option>
                 <option value={'Contratar'}>Quero contratar</option>
               </select>
             </div>
@@ -134,11 +256,15 @@ export default function CriarContaPasso2() {
                 <input
                   className='cursor-pointer text-sm w-full h-full p-4'
                   type='file'
-                  name='user_cv'
+                  accept='image/*'
+                  formEncType='multipart/form-data'
+                  name='user_curriculum'
+                  onChange={handleCurriculum}
                 />
               </div>
-              <div className='w-full flex justify-center'>
+              <div className='w-full flex flex-col items-center'>
                 Selecione seu currículo no formato PDF
+                <img src='' alt='nada' id='imgpreview' />
               </div>
             </section>
           </section>
