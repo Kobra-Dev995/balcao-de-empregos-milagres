@@ -1,22 +1,29 @@
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CriarConta() {
   const [telefone, setTelefone] = useState('');
   const [birthday, setBirthday] = useState('');
+  const {push} = useRouter();
 
-  function NextPage(e) {
-    // e.preventDefault();
-    const formData = new FormData(document.querySelector('#form'));
+  async function HandleSubmit(event) {
+    event.preventDefault();
 
-    const data = {
-      name: formData.get('user_name'),
-      tel: formData.get('user_telephone'),
-      birthday: formData.get('user_birthday'),
-      city: formData.get('user_city'),
+    const formData = new FormData(event.target);
+    const response = await fetch('/api/responseForm', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({name:formData.get('user_name'),birthday:formData.get('user_birthday'),phone:formData.get('user_phone'),city:formData.get('user_city'),neighborhood:formData.get('user_neighborhood')}),
+    });
+
+    if (response.status == 200){
+      push('/conta/criarconta2');
+    } else {
+      alert('Erro ao criar conta :(\nTente novamente mais tarde');
     }
-    
-    console.log(data);
-    return data;
   }
 
   function handleTelefone(event) {
@@ -39,11 +46,17 @@ export default function CriarConta() {
     setBirthday(result);
   }
 
+  async function testeAPI() {
+    const req = await fetch('/api/responseForm');
+    console.log(JSON.parse(await req.text()));
+  }
+
   return (
     <>
-      {}
       <header className='bg-primary-green flex flex-col p-5'>
-        <h1 className='text-white text-xl font-bold'>Criar Conta</h1>
+        <h1 className='text-white text-xl font-bold' onClick={testeAPI}>
+          Criar Conta
+        </h1>
         <span className='mt-4 text-white text-base my-2'>
           Processo para criar conta
         </span>
@@ -58,7 +71,12 @@ export default function CriarConta() {
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
-        <form id='form' onSubmit={NextPage} method='POST' className='flex flex-col gap-5'>
+        <form
+          id='form'
+          onSubmit={HandleSubmit}
+          method='POST'
+          className='flex flex-col gap-5'
+        >
           <section className='flex flex-col gap-5'>
             <span className='text-base font-bold'>
               Preencha os campos a seguir:
@@ -99,12 +117,12 @@ export default function CriarConta() {
 
             <div className='flex flex-wrap gap-8'>
               <select
-                defaultValue={'DEFAULT'}
+                defaultValue={'Milagres'}
                 required
                 name='user_city'
                 className='daisy-select daisy-select-success w-full max-w-xs'
               >
-                <option value='DEFAULT' disabled>
+                <option value='default' disabled>
                   Selecione a cidade
                 </option>
                 <option value={'Milagres'}>Milagres</option>
