@@ -3,51 +3,68 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CriarContaPasso2() {
-  const { push } = useRouter();
-
-  async function HandleSubmit(event) {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const response = await fetch('/api/responseForm', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        nickname: formData.get('user_nickname'),
-        email: formData.get('user_email'),
-        password: formData.get('user_password'),
-        serviceType: formData.get('user_serviceType'),
-        curriculum: formData.get('user_curriculum'),
-      }),
-    });
-
-    console.log('enviou');
-    if (response.status == 200) {
-      //push('/conta/criarconta3');
-    } else {
-      alert('Erro ao criar conta :(\nTente novamente mais tarde');
-    }
-  }
-
-  async function testeAPI() {
-    const req = await fetch('/api/responseForm');
-    console.log(JSON.parse(await req.text()));
-  }
-
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
   const [passwordNumber, setPasswordNumber] = useState(false);
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
+  const { push } = useRouter();
+
+  async function HandleSubmit(event) {
+    event.preventDefault();
+
+    if (
+      passwordLetterM &&
+      passwordLetterm &&
+      passwordNumber &&
+      passwordChar &&
+      passwordLength
+    ) {
+      if (!passwordCheck) {
+        alert('Confirme sua senha!');
+        return;
+      }
+
+      const formData = new FormData(event.target);
+      const response = await fetch('/api/responseForm', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nickname: formData.get('nickname'),
+          email: formData.get('email'),
+          password: formData.get('password'),
+          serviceType: formData.get('serviceType'),
+          bio: formData.get('bio'),
+        }),
+      });
+
+      console.log('enviou');
+
+      if (response.status == 200) {
+        console.log('api recebeu');
+        push('/conta/criarconta3');
+      } else {
+        alert('Erro ao criar conta :(\nTente novamente mais tarde');
+      }
+    } else {
+      alert('Preencha todos os campos corretamente!');
+    }
+  }
+
+  async function testeAPI() {
+    const req = await fetch('/api/responseForm');
+
+    console.log(JSON.parse(await req.text()));
+  }
 
   function handlePassword(e) {
     const password = e.target.value;
     let passwordRegex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_])[\d\w\W]{8,}$/;
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_.])[\d\w\W]{8,}$/;
     const passwordLetterM1 = /^(?=.*[A-Z])[\d\w\W]{1,}$/;
     const passwordLetterm1 = /^(?=.*[a-z])[\d\w\W]{1,}$/;
     const passwordNumber1 = /^(?=.*[0-9])[\d\w\W]{1,}$/;
@@ -85,7 +102,6 @@ export default function CriarContaPasso2() {
     }
 
     const result = passwordRegex.test(password);
-    console.log(result);
   }
 
   function handlePasswordCheck(e) {
@@ -110,6 +126,25 @@ export default function CriarContaPasso2() {
       reader.readAsDataURL(e.target.files[0]);
     } else {
       imgPreview.setAttribute('src', '/logo-balcao-de-empregos.svg');
+    }
+  }
+
+  function ShowPasswordUser() {
+    const input = document.getElementById('Senha_User');
+
+    if (input.type == 'password') {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
+    }
+  }
+  function togglePassCheck() {
+    const input = document.getElementById('Senha_UserCheck');
+
+    if (input.type == 'password') {
+      input.type = 'text';
+    } else {
+      input.type = 'password';
     }
   }
 
@@ -148,23 +183,42 @@ export default function CriarContaPasso2() {
             </span>
 
             <input
+              required
               type='text'
-              name='user_nickname'
+              name='nickname'
               placeholder='Como Podemos Chama-lo?'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
+              required
               type='email'
-              name='user_email'
+              name='email'
               placeholder='Digite seu email'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
+              required
+              id='Senha_User'
               type='password'
               onChange={handlePassword}
               placeholder='Criar uma Senha'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
+
+            <label className='form-control w-full max-w-lg flex flex-col'>
+              <div className='form-field'>
+                <div className='form-control justify-between'>
+                  <label className='flex gap-2'>
+                    <input
+                      type='checkbox'
+                      className='checkbox'
+                      onChange={ShowPasswordUser}
+                    />
+                    <span>Mostrar Senha</span>
+                  </label>
+                </div>
+              </div>
+            </label>
 
             <div
               className={
@@ -220,8 +274,9 @@ export default function CriarContaPasso2() {
             </div>
 
             <input
+              required
               type='password'
-              name='user_password'
+              name='password'
               placeholder='Repita a senha'
               onChange={handlePasswordCheck}
               className={`daisy-input daisy-input-bordered daisy-input-success w-full ${
@@ -238,8 +293,9 @@ export default function CriarContaPasso2() {
             </span>
             <div className='flex gap-8'>
               <select
+                required
                 defaultValue={'Trabalhar'}
-                name='user_serviceType'
+                name='serviceType'
                 className='select select-success w-full max-w-xs'
               >
                 <option disabled value={'default'}>
@@ -250,22 +306,29 @@ export default function CriarContaPasso2() {
               </select>
             </div>
 
-            <section className='flex flex-col gap-5'>
-              <span className='text-base font-semibold'>Currículo:</span>
-              <div className='bg-[#EAEDFF] w-full h-40 flex flex-col items-center justify-around rounded-md'>
+            <section className='flex flex-col items-center gap-5'>
+              <span className='text-base font-semibold w-full'>Biografia:</span>
+              <textarea
+                required
+                className='daisy-textarea daisy-textarea-success w-10/12'
+                name='bio'
+                cols={60}
+                rows={8}
+                placeholder='Escreva um pouco sobre você...'
+              ></textarea>
+              {/* <div className='bg-[#EAEDFF] w-full h-40 flex flex-col items-center justify-around rounded-md'>
                 <input
                   className='cursor-pointer text-sm w-full h-full p-4'
                   type='file'
                   accept='image/*'
                   formEncType='multipart/form-data'
-                  name='user_curriculum'
+                  name='curriculum'
                   onChange={handleCurriculum}
                 />
               </div>
               <div className='w-full flex flex-col items-center'>
                 Selecione seu currículo no formato PDF
-                <img src='' alt='nada' id='imgpreview' />
-              </div>
+              </div> */}
             </section>
           </section>
 

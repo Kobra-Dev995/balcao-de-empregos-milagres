@@ -1,14 +1,25 @@
 import next from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function CriarContaPasso2() {
-  function NextPage() {
-    window.location.replace('/home');
+  const [userEmail, setUserEmail] = useState('');
+
+  function mudar(e) {
+    console.log(e.target);
   }
 
-  function mudar(e){
-    console.log(e.target);
+  async function testeAPI() {
+    const req = await fetch('/api/responseForm');
+    const obj = JSON.parse(await req.text());
+    console.log(obj[1]);
+
+    if (obj[1] != undefined) {
+      setUserEmail(obj[1].email);
+    } else {
+      setUserEmail('exemplo@gmail.com');
+    }
   }
 
   return (
@@ -18,7 +29,9 @@ export default function CriarContaPasso2() {
       </Head>
 
       <header className='bg-primary-green flex flex-col p-5'>
-        <h1 className='text-white text-xl font-bold'>Criar Conta</h1>
+        <h1 className='text-white text-xl font-bold' onClick={testeAPI}>
+          Criar Conta
+        </h1>
         <span className='mt-4 text-white text-base my-2'>
           Processo para criar conta
         </span>
@@ -49,9 +62,7 @@ export default function CriarContaPasso2() {
             Por favor, digite o código que <br /> enviamos agora para:
           </span>
 
-          <span className='font-bold flex justify-center'>
-            exemplo@gmail.com
-          </span>
+          <span className='font-bold flex justify-center'>{userEmail}</span>
 
           <div className='flex justify-evenly lg:justify-center lg:gap-3 font-bold text-2xl'>
             <input
@@ -105,11 +116,7 @@ export default function CriarContaPasso2() {
         </div>
 
         <div className='flex justify-end px-5 py-6'>
-          <button
-            tabIndex={7}
-            className='daisy-btn daisy-btn-primary'
-            onClick={NextPage}
-          >
+          <button tabIndex={7} className='daisy-btn daisy-btn-primary'>
             Finalizar
           </button>
         </div>

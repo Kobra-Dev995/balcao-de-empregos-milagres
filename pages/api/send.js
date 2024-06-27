@@ -39,7 +39,9 @@ const resend = new Resend('re_7f6J9MLo_EXAucX6TqqETzpqjvBxZkKo1');
 //   res.status(200).json(data);
 // };
 
-const codigo = '123456'
+
+
+const codigo = '224098'
 const logoLink = 'https://balcao-de-empregos-milagres.vercel.app/logo-balcao-de-empregos.svg'
 const logo = '/logo-balcao-de-empregos.svg'
 

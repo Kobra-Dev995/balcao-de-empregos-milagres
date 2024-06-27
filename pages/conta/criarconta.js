@@ -17,16 +17,19 @@ export default function CriarConta() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: formData.get('user_name'),
-        birthday: formData.get('user_birthday'),
-        phone: formData.get('user_phone'),
-        city: formData.get('user_city'),
-        neighborhood: formData.get('user_neighborhood'),
+        name: formData.get('name'),
+        birthday: formData.get('birthday'),
+        phone: formData.get('phone'),
+        city: formData.get('city'),
+        neighborhood: formData.get('neighborhood'),
       }),
     });
 
+    console.log('Enviado');
+    
     if (response.status == 200) {
-      push('/conta/criarconta2');
+      console.log('API recebeu');
+      //push('/conta/criarconta2');
     } else {
       alert('Erro ao criar conta :(\nTente novamente mais tarde');
     }
@@ -54,7 +57,8 @@ export default function CriarConta() {
 
   async function testeAPI() {
     const req = await fetch('/api/responseForm');
-    console.log(JSON.parse(await req.text()));
+    const obj = JSON.parse(await req.text());
+    console.log(obj);
   }
 
   return (
@@ -92,7 +96,7 @@ export default function CriarConta() {
               required
               type='text'
               placeholder='Nome Completo'
-              name='user_name'
+              name='name'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
@@ -100,7 +104,7 @@ export default function CriarConta() {
               type='text'
               onChange={handleBirthday}
               placeholder='Data de Nascimento'
-              name='user_birthday'
+              name='birthday'
               value={birthday}
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
@@ -109,7 +113,7 @@ export default function CriarConta() {
               type='text'
               onChange={handleTelefone}
               placeholder='Número de Celular'
-              name='user_phone'
+              name='phone'
               value={telefone}
               autoComplete='true'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
@@ -125,7 +129,7 @@ export default function CriarConta() {
               <select
                 defaultValue={'Milagres'}
                 required
-                name='user_city'
+                name='city'
                 className='daisy-select daisy-select-success w-full max-w-xs'
               >
                 <option value='default' disabled>
@@ -142,7 +146,7 @@ export default function CriarConta() {
               required
               type='text'
               placeholder='Bairro'
-              name='user_neighborhood'
+              name='neighborhood'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
           </section>
