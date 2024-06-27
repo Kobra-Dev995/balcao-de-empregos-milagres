@@ -26,10 +26,10 @@ export default function CriarConta() {
     });
 
     console.log('Enviado');
-    
+
     if (response.status == 200) {
       console.log('API recebeu');
-      //push('/conta/criarconta2');
+      push('/conta/criarconta2');
     } else {
       alert('Erro ao criar conta :(\nTente novamente mais tarde');
     }
