@@ -39,19 +39,20 @@ export default function LoginScreen() {
   return (
     <>
       <main className='w-full min-h-screen flex flex-col justify-center p-5'>
-        <section className='w-full p-4 gap-14 flex justify-center items-center'>
-          <figure className='w-56'>
+        <section className='w-full min-h-80 p-4 gap-14 flex flex-col md:flex-row-reverse justify-center items-center'>
+
+          <figure className='w-32 md:w-40'>
             <Image
-              src='./logo-balcao-de-empregos.svg'
+              src='/SEMANA MEI.jpg'
               width='262'
               height='116'
               alt='Logo Balcão de Empregos Milagres-CE'
             />
           </figure>
 
-          <figure className='w-40'>
+          <figure className='w-72 md:w-56'>
             <Image
-              src='/SEMANA MEI.jpg'
+              src='/BALCAO DE EMPREGO.png'
               width='262'
               height='116'
               alt='Logo Balcão de Empregos Milagres-CE'
