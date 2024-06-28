@@ -38,6 +38,7 @@ export default function LoginScreen() {
 
   return (
     <>
+
       <main className='w-full min-h-screen flex flex-col justify-center p-5'>
         <section className='w-full min-h-80 p-4 gap-14 flex flex-col md:flex-row-reverse justify-center items-center'>
 
