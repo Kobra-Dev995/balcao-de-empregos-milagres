@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function CriarConta() {
   const [telefone, setTelefone] = useState('');
   const [birthday, setBirthday] = useState('');
-  const { push } = useRouter();
+  const { push,replace } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();
@@ -151,10 +151,17 @@ export default function CriarConta() {
             />
           </section>
 
-          <section className='w-full h-24 flex items-center justify-center p-5'>
+          <section className='w-full h-24 flex items-center justify-between p-5'>
+            <button
+              type='button'
+              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              onClick={() => replace('/')}
+            >
+              Cancelar
+            </button>
             <button
               type='submit'
-              className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
             >
               Continuar
             </button>

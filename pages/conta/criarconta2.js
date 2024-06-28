@@ -8,7 +8,7 @@ export default function CriarContaPasso2() {
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();
@@ -331,9 +331,17 @@ export default function CriarContaPasso2() {
             </section>
           </section>
 
-          <section className='w-full h-24 flex items-center justify-center p-5'>
+          <section className='w-full h-24 flex items-center justify-between p-5'>
             <button
-              className='w-9/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              type='button'
+              onClick={() => replace('/')}
+            >
+              Cancelar
+            </button>
+            
+            <button
+              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
               type='submit'
             >
               Continuar

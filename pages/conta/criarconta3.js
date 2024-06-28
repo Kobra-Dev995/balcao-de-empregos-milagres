@@ -1,10 +1,12 @@
 import next from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CriarContaPasso2() {
   const [userEmail, setUserEmail] = useState('');
+  const { replace } = useRouter();
 
   function mudar(e) {
     console.log(e.target);
@@ -13,7 +15,7 @@ export default function CriarContaPasso2() {
   async function testeAPI() {
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
-    console.log(obj[1]);
+    console.log(obj);
 
     if (obj[1] != undefined) {
       setUserEmail(obj[1].email);
@@ -115,7 +117,14 @@ export default function CriarContaPasso2() {
           </span>
         </div>
 
-        <div className='flex justify-end px-5 py-6'>
+        <div className='flex justify-end gap-7 px-5 py-6'>
+          <button
+            tabIndex={7}
+            className='daisy-btn daisy-btn-primary'
+            onClick={() => replace('/')}
+          >
+            Cancelar
+          </button>
           <button tabIndex={7} className='daisy-btn daisy-btn-primary'>
             Finalizar
           </button>

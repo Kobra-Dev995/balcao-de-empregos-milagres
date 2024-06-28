@@ -13,32 +13,29 @@ let arry = [
   },
 ];
 
+let obj1 = {};
+let obj2 = {};
+
 export default async function Page1(req, res) {
   const data = await req.body;
 
-  // receber o primeiro formulario
-  // receber o segundo formulario e adicionar ao primeiro
-  // adicionar os dois formularios ao array
-
-  const dataObj = await data;
-  if (data) {
-    arry.push(dataObj);
+  if (data.name) {
+    obj1 = await data
   }
+
+  if (data.nickname) {
+    obj2 = await data
+  }
+
+  let objTemp;
+
+  if (data.nickname) {
+    objTemp = Object.assign(obj1, obj2);
+    arry.push(objTemp);
+  }
+
   console.log('----------dados do formulario------------');
-  console.log(`Pessoa adicioada: ${data.name}`);
+  console.log(`Pessoa adicioada: ${data.name || data.nickname}`);
   console.log('----------dados do formulaio------------');
   res.status(200).json(arry);
 }
-
-// export default async function Page2(req, res) {
-//   const data = await req.body;
-//   const dataObj = await data;
-//   if (data) {
-//     arry.push(dataObj);
-//   }
-//   console.log('----------dados do formulario------------');
-//   console.log(`Pessoa adicioada: ${data.nickname}`);
-//   console.log('----------dados do formulaio------------');
-
-//   res.status(200).json(arry);
-// }
