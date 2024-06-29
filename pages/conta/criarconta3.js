@@ -6,6 +6,7 @@ export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
 export default function CriarContaPasso2() {
   const [userEmail, setUserEmail] = useState();
   const [textButton, setTextButton] = useState();
+  const [textButtonFinalizar, setTextButtonFinalizar] = useState('Código Incorreto');
   const [isLoading, setIsLoading] = useState(false);
   const { replace } = useRouter();
 
@@ -13,7 +14,8 @@ export default function CriarContaPasso2() {
     const input = e.target.value;
     if (input == codigoAleatorio.join('')) {
       setIsLoading(true);
-      replace('/home');
+      setTextButtonFinalizar('Código Correto');
+      setTimeout(() => replace('/home'), 2000);
     }
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 2000);
@@ -155,8 +157,10 @@ export default function CriarContaPasso2() {
             Cancelar
           </button>
           <button tabIndex={7} className='daisy-btn daisy-btn-primary'>
-            {isLoading && <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>}
-            Finalizar
+            {isLoading && (
+              <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>
+            )}
+            {textButtonFinalizar}
           </button>
         </div>
       </main>
