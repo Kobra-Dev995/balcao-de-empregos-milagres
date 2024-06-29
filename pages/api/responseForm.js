@@ -1,3 +1,5 @@
+import { codigoAleatorio } from "./hello";
+
 let arry = [
   {
     name: 'admin',
@@ -15,6 +17,7 @@ let arry = [
 
 let obj1 = {};
 let obj2 = {};
+
 
 export default async function Page1(req, res) {
   const data = await req.body;

@@ -1,15 +1,22 @@
-import next from 'next';
 import Head from 'next/head';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
 export default function CriarContaPasso2() {
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState();
+  const [textButton, setTextButton] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { replace } = useRouter();
 
-  function mudar(e) {
-    console.log(e.target);
+  function handleInput(e) {
+    const input = e.target.value;
+    if (input == codigoAleatorio.join('')) {
+      setIsLoading(true);
+      replace('/home');
+    }
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
   }
 
   async function testeAPI() {
@@ -19,10 +26,39 @@ export default function CriarContaPasso2() {
 
     if (obj[1] != undefined) {
       setUserEmail(obj[1].email);
-    } else {
-      setUserEmail('exemplo@gmail.com');
     }
   }
+
+  function SendCodeToEmail() {
+    codigoAleatorio.length = 0;
+    const random = () => Math.floor(Math.random() * 10);
+
+    for (let i = 0; i < 6; i++) {
+      codigoAleatorio.push(random());
+    }
+
+    async function sendCode() {
+      const res = await fetch('/api/nodemailer', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: userEmail,
+          code: codigoAleatorio.join(''),
+        }),
+      });
+    }
+
+    sendCode();
+    //console.log('codigo de verificação: ', codigoAleatorio.join(''));
+    setTextButton('Enviar Novamente');
+  }
+
+  useEffect(() => {
+    setTextButton('Enviar Código');
+    testeAPI();
+  }, []);
 
   return (
     <>
@@ -49,13 +85,6 @@ export default function CriarContaPasso2() {
             Verificar conta
           </li>
         </ul>
-
-        {/* <section className='flex items-center justify-start relative'>
-          <div className='bg-slate-700 w-full h-2 text-transparent rounded absolute'></div>
-          <div className='bg-[#FDEE00] w-1/3 h-2 text-transparent rounded absolute'>
-            Progresso 1/3
-          </div>
-        </section> */}
       </header>
 
       <main className='h-[80vh] flex justify-around flex-col'>
@@ -68,13 +97,13 @@ export default function CriarContaPasso2() {
 
           <div className='flex justify-evenly lg:justify-center lg:gap-3 font-bold text-2xl'>
             <input
-              onKeyUp={mudar}
+              onKeyUp={handleInput}
               tabIndex={1}
               type='tel'
-              maxLength={'1'}
-              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
+              maxLength={6}
+              className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-40 tracking-wide'
             />
-            <input
+            {/* <input
               tabIndex={2}
               type='tel'
               maxLength={'1'}
@@ -106,14 +135,14 @@ export default function CriarContaPasso2() {
               type='tel'
               maxLength={'1'}
               className='number_input daisy-input daisy-input-bordered daisy-input-success text-center p-0 w-10'
-            />
+            /> */}
           </div>
 
-          <span className='flex justify-center'>
-            Não recebeu?{' '}
-            <Link href='/api/send' className='underline pl-1'>
-              Enviar novamente
-            </Link>
+          <span className='flex gap-2 justify-center'>
+            <span>Não recebeu?</span>
+            <button onClick={SendCodeToEmail} className='daisy-btn-link'>
+              {textButton}
+            </button>
           </span>
         </div>
 
@@ -126,6 +155,7 @@ export default function CriarContaPasso2() {
             Cancelar
           </button>
           <button tabIndex={7} className='daisy-btn daisy-btn-primary'>
+            {isLoading && <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>}
             Finalizar
           </button>
         </div>
