@@ -1,11 +1,5 @@
-import { supabase } from '../../utils/supabase';
 
 export default function Supabase() {
-  async function teste() {
-    const { data, error } = await supabase.from('Pessoas').select('*');
-
-    console.log(data);
-  }
 
   return (
     <>
