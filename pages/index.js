@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn, signOut } from 'next-auth/react';
-//import ButtonLogin from '@/componets/ButtonLogin';
 
 export default function LoginScreen() {
   const [emailLogin, setEmailLogin] = useState('');
@@ -154,7 +153,7 @@ export default function LoginScreen() {
               <span className='font-semibold text-base'>Ou</span>
             </div>
 
-            <section className='w-full  flex justify-center items-center gap-3'>
+            <section className='w-full flex justify-center items-center gap-3'>
               <button
                 onClick={() => signIn('google', { callbackUrl: '/home' })}
                 className='bg-[#EAEDFF] w-full max-w-lg flex items-center justify-center gap-2 text-base font-semibold py-2 px-5 rounded-lg'

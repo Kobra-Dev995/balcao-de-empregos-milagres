@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function CriarConta() {
   const [telefone, setTelefone] = useState('');
   const [birthday, setBirthday] = useState('');
-  const { push,replace } = useRouter();
+  const { push, replace } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();

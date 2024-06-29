@@ -1,16 +1,12 @@
 import nodemailer from 'nodemailer';
-import { codigoAleatorio } from './hello';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  //host: 'smtp.gmail.com',
-  //port: 587,
   auth: {
     user: 'yeridsonruan995@gmail.com',
     pass: 'zxamtdspurxjzbgi',
   },
 });
-
 
 let codigo = '';
 let email = '';

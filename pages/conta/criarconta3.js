@@ -39,6 +39,8 @@ export default function CriarContaPasso2() {
       codigoAleatorio.push(random());
     }
 
+    testeAPI();
+
     async function sendCode() {
       const res = await fetch('/api/nodemailer', {
         method: 'POST',
@@ -53,8 +55,9 @@ export default function CriarContaPasso2() {
     }
 
     sendCode();
-    //console.log('codigo de verificação: ', codigoAleatorio.join(''));
+    console.log('codigo de verificação: ', codigoAleatorio.join(''));
     setTextButton('Enviar Novamente');
+    setTimeout(() => {setTextButton('Enviar Código')}, 2000);
   }
 
   useEffect(() => {

@@ -1,5 +1,3 @@
-import { codigoAleatorio } from "./hello";
-
 let arry = [
   {
     name: 'admin',
@@ -16,23 +14,22 @@ let arry = [
 ];
 
 let obj1 = {};
+
 let obj2 = {};
 
-
 export default async function Page1(req, res) {
+  let objTemp;
   const data = await req.body;
 
   if (data.name) {
-    obj1 = await data
+    obj1 = await data;
   }
 
   if (data.nickname) {
-    obj2 = await data
+    obj2 = await data;
   }
 
-  let objTemp;
-
-  if (data.nickname) {
+  if (obj1 && obj2) {
     objTemp = Object.assign(obj1, obj2);
     arry.push(objTemp);
   }
