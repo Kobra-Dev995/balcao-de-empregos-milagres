@@ -1,5 +1,6 @@
 export default function Supabase() {
   const ola = 'ola';
+  const test = 'test';
 
   return (
     <>
