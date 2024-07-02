@@ -13,14 +13,13 @@ let email = '';
 
 export default async (req, res) => {
   const data = req.body;
-  
-  console.log(data);
-  
-  if (data.email) {
 
+  console.log(data);
+
+  if (data.email) {
     codigo = await data.code;
     email = await data.email;
-    
+
     const TemplateEmail = `
     <body style="background-color:#ffffff;font-family:HelveticaNeue,Helvetica,Arial,sans-serif">
         <table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:360px;background-color:#ffffff;border:1px solid #eee;border-radius:5px;box-shadow:0 5px 10px rgba(20,50,70,.2);margin-top:20px;margin:0 auto;padding:68px 0 130px">
@@ -49,30 +48,29 @@ export default async (req, res) => {
       
       </html>
     `;
-    
+
     let message = {
       html: TemplateEmail,
       attachments: [
         {
           filename: 'BALCAO DE EMPREGOS.png',
-          path: '\public\\BALCAO DE EMPREGO.png',
-          cid: 'LogoBalcaodeEmpregos'
-        }
-      ]
+          path: 'public\\BALCAO DE EMPREGO.png',
+          cid: 'LogoBalcaodeEmpregos',
+        },
+      ],
     };
-    
-    const { messageId, accepted, rejected } =
-    await transporter.sendMail({
+
+    const { messageId, accepted, rejected } = await transporter.sendMail({
       ...message,
       subject: 'Código de verificação de e-mail: ' + codigo,
       from: 'Balcao de Empregos <yeridsonruan995@gmail.com>',
       to: email,
     });
-    
+
     console.log('Message sent: %s', messageId);
     res.status(200).json({ messageId, rejected, accepted, codigo: data.code });
-  }else{
+  } else {
     console.log('Nada por aqui :/');
-    res.status(200).json({ 'message': 'Nada por aqui :/' });
+    res.status(200).json({ message: 'Nada por aqui :/' });
   }
 };

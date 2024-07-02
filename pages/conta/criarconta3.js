@@ -6,7 +6,8 @@ export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
 export default function CriarContaPasso2() {
   const [userEmail, setUserEmail] = useState();
   const [textButton, setTextButton] = useState();
-  const [textButtonFinalizar, setTextButtonFinalizar] = useState('Código Incorreto');
+  const [textButtonFinalizar, setTextButtonFinalizar] =
+    useState('Código Incorreto');
   const [isLoading, setIsLoading] = useState(false);
   const { replace } = useRouter();
 
@@ -42,22 +43,28 @@ export default function CriarContaPasso2() {
     testeAPI();
 
     async function sendCode() {
-      const res = await fetch('/api/nodemailer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: userEmail,
-          code: codigoAleatorio.join(''),
-        }),
-      });
+      if (userEmail) {
+        const res = await fetch('/api/nodemailer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: userEmail,
+            code: codigoAleatorio.join(''),
+          }),
+        });
+      } else {
+        testeAPI()
+      }
     }
 
     sendCode();
     console.log('codigo de verificação: ', codigoAleatorio.join(''));
     setTextButton('Enviar Novamente');
-    setTimeout(() => {setTextButton('Enviar Código')}, 2000);
+    setTimeout(() => {
+      setTextButton('Enviar Código');
+    }, 5000);
   }
 
   useEffect(() => {
