@@ -8,6 +8,12 @@ export default function CriarContaPasso2() {
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
+
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [serviceType, setServiceType] = useState('');
+  const [bio, setBio] = useState('');
+
   const { push, replace } = useRouter();
 
   async function HandleSubmit(event) {
@@ -25,7 +31,6 @@ export default function CriarContaPasso2() {
         return;
       }
 
-      const formData = new FormData(event.target);
       const response = await fetch('/api/responseForm', {
         method: 'POST',
         headers: {
@@ -33,11 +38,11 @@ export default function CriarContaPasso2() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          nickname: formData.get('nickname'),
-          email: formData.get('email'),
-          password: formData.get('password'),
-          serviceType: formData.get('serviceType'),
-          bio: formData.get('bio'),
+          nickname: nickname,
+          email: email,
+          password: passwordCheck,
+          serviceType: serviceType,
+          bio: bio,
         }),
       });
 
@@ -147,6 +152,22 @@ export default function CriarContaPasso2() {
     }
   }
 
+  function handleNickname(event) {
+    setNickname(event.target.value);
+  }
+
+  function handleEmail(event) {
+    setEmail(event.target.value);
+  }
+
+  function handleServiceType(event) {
+    setServiceType(event.target.value);
+  }
+
+  function handleBio(event) {
+    setBio(event.target.value);
+  }
+
   return (
     <>
       <header className='bg-primary-green flex flex-col p-5'>
@@ -169,13 +190,7 @@ export default function CriarContaPasso2() {
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
-        <form
-          id='form'
-          onSubmit={HandleSubmit}
-          method='POST'
-          encType='multipart/form-data'
-          className='flex flex-col gap-5'
-        >
+        <section className='flex flex-col gap-5'>
           <section className='flex flex-col gap-5'>
             <span className='text-base font-bold '>
               Preencha os campos a seguir:
@@ -184,14 +199,18 @@ export default function CriarContaPasso2() {
             <input
               required
               type='text'
+              onChange={handleNickname}
               name='nickname'
+              value={nickname}
               placeholder='Como Podemos Chama-lo?'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
               required
               type='email'
+              onChange={handleEmail}
               name='email'
+              value={email}
               placeholder='Digite seu email'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
@@ -275,9 +294,9 @@ export default function CriarContaPasso2() {
             <input
               required
               type='password'
+              onChange={handlePasswordCheck}
               name='password'
               placeholder='Repita a senha'
-              onChange={handlePasswordCheck}
               className={`daisy-input daisy-input-bordered daisy-input-success w-full ${
                 passwordCheck
                   ? 'border-green-700 focus:outline-green-700 focus:border-green-700'
@@ -293,7 +312,8 @@ export default function CriarContaPasso2() {
             <div className='flex gap-8'>
               <select
                 required
-                defaultValue={'Trabalhar'}
+                defaultValue={'default'}
+                onChange={handleServiceType}
                 name='serviceType'
                 className='select select-success w-full max-w-xs'
               >
@@ -310,6 +330,8 @@ export default function CriarContaPasso2() {
               <textarea
                 required
                 className='daisy-textarea daisy-textarea-success w-10/12'
+                onChange={handleBio}
+                value={bio}
                 name='bio'
                 cols={60}
                 rows={8}
@@ -342,12 +364,12 @@ export default function CriarContaPasso2() {
 
             <button
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              type='submit'
+              onClick={HandleSubmit}
             >
               Continuar
             </button>
           </section>
-        </form>
+        </section>
       </main>
     </>
   );
