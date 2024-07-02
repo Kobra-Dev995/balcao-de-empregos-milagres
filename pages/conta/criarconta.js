@@ -2,14 +2,16 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export default function CriarConta() {
-  const [telefone, setTelefone] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [city, setCity] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
   const { push, replace } = useRouter();
 
   async function HandleSubmit(event) {
     event.preventDefault();
 
-    const formData = new FormData(event.target);
     const response = await fetch('/api/responseForm', {
       method: 'POST',
       headers: {
@@ -17,11 +19,11 @@ export default function CriarConta() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name: formData.get('name'),
-        birthday: formData.get('birthday'),
-        phone: formData.get('phone'),
-        city: formData.get('city'),
-        neighborhood: formData.get('neighborhood'),
+        name: name,
+        birthday: birthday,
+        phone: phone,
+        city: city,
+        neighborhood: neighborhood,
       }),
     });
 
@@ -35,17 +37,23 @@ export default function CriarConta() {
     }
   }
 
-  function handleTelefone(event) {
+  function handleNeighborhood(event) {
+    setNeighborhood(event.target.value);
+  }
+
+  function handleCity(event) {
+    setCity(event.target.value);
+  }
+  
+  function handleName(event) {
+    setName(event.target.value);
+  }
+
+  function handlePhone(event) {
     const regex = /^([0-9]{2})([0-9]{4,5})([0-9]{4})$/;
     const tel = event.target.value.replace(/[^0-9]/g, '').slice(0, 11);
     const result = tel.replace(regex, '($1)$2-$3');
-    setTelefone(result);
-  }
-
-  function dateOrganization(date) {
-    const formate = date.split('/').join('-');
-    const [dia, mes, ano] = formate.split('-');
-    return `${dia.padStart(2, '0')}/${mes?.padStart(2, '0')}/${ano}`;
+    setPhone(result);
   }
 
   function handleBirthday(e) {
@@ -81,26 +89,21 @@ export default function CriarConta() {
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
-        <form
-          id='form'
-          onSubmit={HandleSubmit}
-          method='POST'
-          className='flex flex-col gap-5'
-        >
+        <section className='flex flex-col gap-5'>
           <section className='flex flex-col gap-5'>
             <span className='text-base font-bold'>
               Preencha os campos a seguir:
             </span>
 
             <input
-              required
               type='text'
+              onChange={handleName}
               placeholder='Nome Completo'
               name='name'
+              value={name}
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              required
               type='text'
               onChange={handleBirthday}
               placeholder='Data de Nascimento'
@@ -109,12 +112,11 @@ export default function CriarConta() {
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
             <input
-              required
               type='text'
-              onChange={handleTelefone}
+              onChange={handlePhone}
               placeholder='Número de Celular'
               name='phone'
-              value={telefone}
+              value={phone}
               autoComplete='true'
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
@@ -127,8 +129,8 @@ export default function CriarConta() {
 
             <div className='flex flex-wrap gap-8'>
               <select
-                defaultValue={'Milagres'}
-                required
+                defaultValue={'default'}
+                onChange={handleCity}
                 name='city'
                 className='daisy-select daisy-select-success w-full max-w-xs'
               >
@@ -143,10 +145,11 @@ export default function CriarConta() {
             </div>
 
             <input
-              required
               type='text'
+              onChange={handleNeighborhood}
               placeholder='Bairro'
               name='neighborhood'
+              value={neighborhood}
               className='daisy-input daisy-input-bordered daisy-input-success w-full'
             />
           </section>
@@ -159,14 +162,15 @@ export default function CriarConta() {
             >
               Cancelar
             </button>
+
             <button
-              type='submit'
+              onClick={HandleSubmit}
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
             >
               Continuar
             </button>
           </section>
-        </form>
+        </section>
       </main>
     </>
   );
