@@ -1,7 +1,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import CriarContaPasso2 from './criarconta2';
 
-export default function CriarConta() {
+export default function CriarContaPasso1() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -44,7 +45,7 @@ export default function CriarConta() {
   function handleCity(event) {
     setCity(event.target.value);
   }
-  
+
   function handleName(event) {
     setName(event.target.value);
   }
@@ -89,6 +90,14 @@ export default function CriarConta() {
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
+        <section>
+          <dialog id='my_modal_1' className='daisy-modal'>
+            <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
+              <CriarContaPasso2 />
+            </div>
+          </dialog>
+        </section>
+
         <section className='flex flex-col gap-5'>
           <section className='flex flex-col gap-5'>
             <span className='text-base font-bold'>
@@ -163,11 +172,18 @@ export default function CriarConta() {
               Cancelar
             </button>
 
-            <button
+            {/* <button
               onClick={HandleSubmit}
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
             >
-              Continuar
+              Continuar antigo
+            </button> */}
+
+            <button
+              className='cursor-pointer w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              onClick={() => document.getElementById('my_modal_1').showModal()}
+            >
+              Próximo
             </button>
           </section>
         </section>

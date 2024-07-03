@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
-export default function CriarContaPasso2() {
+export default function CriarContaPasso3() {
   const [userEmail, setUserEmail] = useState();
   const [textButton, setTextButton] = useState();
   const [textButtonFinalizar, setTextButtonFinalizar] =
@@ -55,7 +55,7 @@ export default function CriarContaPasso2() {
           }),
         });
       } else {
-        testeAPI()
+        testeAPI();
       }
     }
 
@@ -158,21 +158,22 @@ export default function CriarContaPasso2() {
           </span>
         </div>
 
-        <div className='flex justify-end gap-7 px-5 py-6'>
-          <button
-            tabIndex={7}
-            className='daisy-btn daisy-btn-primary'
-            onClick={() => replace('/')}
-          >
-            Cancelar
-          </button>
-          <button tabIndex={7} className='daisy-btn daisy-btn-primary'>
+        <section className='w-full h-24 flex items-center justify-between p-5'>
+          <div className='w-5/12 daisy-modal-action'>
+            <form method='dialog' className='w-full'>
+              <button className='w-full bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>
+                Voltar
+              </button>
+            </form>
+          </div>
+
+          <button className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>
             {isLoading && (
               <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>
             )}
             {textButtonFinalizar}
           </button>
-        </div>
+        </section>
       </main>
     </>
   );

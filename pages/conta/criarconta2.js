@@ -1,5 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import CriarContaPasso3 from './criarconta3';
 
 export default function CriarContaPasso2() {
   const [passwordLetterM, setPasswordLetterM] = useState(false);
@@ -190,6 +191,12 @@ export default function CriarContaPasso2() {
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
+        <dialog id='my_modal_2' className='daisy-modal'>
+          <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
+            <CriarContaPasso3 />
+          </div>
+        </dialog>
+
         <section className='flex flex-col gap-5'>
           <section className='flex flex-col gap-5'>
             <span className='text-base font-bold '>
@@ -354,19 +361,34 @@ export default function CriarContaPasso2() {
           </section>
 
           <section className='w-full h-24 flex items-center justify-between p-5'>
-            <button
+            {/* <button
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
               type='button'
               onClick={() => replace('/')}
             >
               Cancelar
-            </button>
+            </button> */}
+
+            {/* <button
+              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              onClick={HandleSubmit}
+              >
+              Continuar
+            </button> */}
+
+            <div className='w-5/12 daisy-modal-action'>
+              <form method='dialog' className='w-full'>
+                <button className='w-full bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>
+                  Voltar
+                </button>
+              </form>
+            </div>
 
             <button
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={HandleSubmit}
+              onClick={() => document.getElementById('my_modal_2').showModal()}
             >
-              Continuar
+              Próximo
             </button>
           </section>
         </section>
