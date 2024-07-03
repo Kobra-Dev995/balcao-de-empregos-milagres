@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
-export default function CriarContaPasso3({ email }) {
+export default function CriarContaPasso3({ email, verificationEmail }) {
   const [userEmail, setUserEmail] = useState();
   const [textButton, setTextButton] = useState();
   const [textButtonFinalizar, setTextButtonFinalizar] =
@@ -52,7 +52,7 @@ export default function CriarContaPasso3({ email }) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            email: userEmail,
+            email: email,
             code: codigoAleatorio.join(''),
           }),
         });
@@ -70,6 +70,10 @@ export default function CriarContaPasso3({ email }) {
   }
 
   // definir um variavel para fazer a requisiçao da api - variavel na tela 2
+
+  if (verificationEmail) {
+    testeAPI();
+  }
 
   return (
     <>

@@ -22,7 +22,8 @@ export default function CriarContaPasso2({
   const [serviceType, setServiceType] = useState('');
   const [bio, setBio] = useState('');
 
-  const { push, replace } = useRouter();
+  const [verificationEmail, setVerificationEmail] = useState(false);
+
 
   async function handleSubmit(event) {
     if (
@@ -61,7 +62,9 @@ export default function CriarContaPasso2({
 
       if (response.status == 200) {
         console.log('api recebeu');
-
+        setVerificationEmail(true);
+        setTimeout(() => {
+          setVerificationEmail(false)        }, 1000);
         document.getElementById('my_modal_2').showModal();
       } else {
         alert('Erro ao criar conta :(\nTente novamente mais tarde');
@@ -210,7 +213,7 @@ export default function CriarContaPasso2({
       <main className='w-full px-5 py-4 flex flex-col'>
         <dialog id='my_modal_2' className='daisy-modal'>
           <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
-            <CriarContaPasso3 email={email} />
+            <CriarContaPasso3 email={email} verificationEmail={verificationEmail} />
           </div>
         </dialog>
 

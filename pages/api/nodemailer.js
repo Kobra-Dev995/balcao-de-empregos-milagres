@@ -8,8 +8,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-let codigo = '';
-let email = '';
 
 export default async (req, res) => {
   const data = req.body;
@@ -17,8 +15,8 @@ export default async (req, res) => {
   console.log(data);
 
   if (data.email) {
-    codigo = await data.code;
-    email = await data.email;
+    let codigo = await data.code;
+    let email = await data.email;
 
     const TemplateEmail = `
     <body style="background-color:#ffffff;font-family:HelveticaNeue,Helvetica,Arial,sans-serif">
