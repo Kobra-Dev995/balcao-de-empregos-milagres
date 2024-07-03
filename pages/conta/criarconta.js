@@ -68,6 +68,9 @@ export default function CriarContaPasso1() {
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
     console.log(obj);
+    const ultimo = obj.pop()
+    //const filtrado = obj.filter((x) => x.name.trim().length > 0);
+    console.log(ultimo);
   }
 
   return (
@@ -93,7 +96,13 @@ export default function CriarContaPasso1() {
         <section>
           <dialog id='my_modal_1' className='daisy-modal'>
             <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
-              <CriarContaPasso2 />
+              <CriarContaPasso2
+                name={name}
+                phone={phone}
+                birthday={birthday}
+                city={city}
+                neighborhood={neighborhood}
+              />
             </div>
           </dialog>
         </section>

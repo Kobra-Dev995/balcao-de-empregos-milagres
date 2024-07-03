@@ -13,29 +13,30 @@ let arry = [
   },
 ];
 
-let obj1 = {};
-
-let obj2 = {};
-
 export default async function Page1(req, res) {
-  let objTemp;
   const data = await req.body;
+  let objTemp = { ...data };
 
-  if (data.name) {
-    obj1 = await data;
-  }
+  console.log(data);
 
-  if (data.nickname) {
-    obj2 = await data;
-  }
-
-  if (obj1 && obj2) {
-    objTemp = Object.assign(obj1, obj2);
+  if (objTemp.name && objTemp.nickname) {
     arry.push(objTemp);
   }
 
+  // if (data.name) {
+  //   obj1 = await data;
+  // }
+
+  // if (data.nickname) {
+  //   obj2 = await data;
+  // }
+
+  // if (obj1 && obj2) {
+  //   objTemp = Object.assign(obj1, obj2);
+  // }
+
   console.log('----------dados do formulario------------');
-  console.log(`Pessoa adicioada: ${data.name || data.nickname}`);
+  console.log(`Pessoa adicioada: ${objTemp.name || objTemp.nickname}`);
   console.log('----------dados do formulaio------------');
   res.status(200).json(arry);
 }

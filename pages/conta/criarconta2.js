@@ -2,13 +2,20 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CriarContaPasso3 from './criarconta3';
 
-export default function CriarContaPasso2() {
+export default function CriarContaPasso2({
+  name,
+  phone,
+  birthday,
+  city,
+  neighborhood,
+}) {
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
   const [passwordNumber, setPasswordNumber] = useState(false);
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
+  const [passwordUser, setPasswordUser] = useState('');
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -17,9 +24,7 @@ export default function CriarContaPasso2() {
 
   const { push, replace } = useRouter();
 
-  async function HandleSubmit(event) {
-    event.preventDefault();
-
+  async function handleSubmit(event) {
     if (
       passwordLetterM &&
       passwordLetterm &&
@@ -39,9 +44,14 @@ export default function CriarContaPasso2() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          name: name,
+          phone: phone,
+          birthday: birthday,
+          city: city,
+          neighborhood: neighborhood,
           nickname: nickname,
           email: email,
-          password: passwordCheck,
+          password: passwordUser,
           serviceType: serviceType,
           bio: bio,
         }),
@@ -51,7 +61,8 @@ export default function CriarContaPasso2() {
 
       if (response.status == 200) {
         console.log('api recebeu');
-        push('/conta/criarconta3');
+
+        document.getElementById('my_modal_2').showModal();
       } else {
         alert('Erro ao criar conta :(\nTente novamente mais tarde');
       }
@@ -62,8 +73,11 @@ export default function CriarContaPasso2() {
 
   async function testeAPI() {
     const req = await fetch('/api/responseForm');
-
-    console.log(JSON.parse(await req.text()));
+    const obj = JSON.parse(await req.text());
+    console.log(obj);
+    const ultimo = obj.pop()
+    //const filtrado = obj.filter((x) => x.name.trim().length > 0);
+    console.log(ultimo);
   }
 
   function handlePassword(e) {
@@ -114,9 +128,12 @@ export default function CriarContaPasso2() {
     const passwordCheck1 = e.target.value;
 
     if (password1 === passwordCheck1) {
+      console.log(passwordUser, passwordCheck1);
+      setPasswordUser(password1)
       setPasswordCheck(true);
     } else {
       setPasswordCheck(false);
+      setPasswordUser('')
     }
   }
 
@@ -193,7 +210,7 @@ export default function CriarContaPasso2() {
       <main className='w-full px-5 py-4 flex flex-col'>
         <dialog id='my_modal_2' className='daisy-modal'>
           <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
-            <CriarContaPasso3 />
+            <CriarContaPasso3 email={email} />
           </div>
         </dialog>
 
@@ -386,7 +403,7 @@ export default function CriarContaPasso2() {
 
             <button
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={() => document.getElementById('my_modal_2').showModal()}
+              onClick={handleSubmit}
             >
               Próximo
             </button>

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
-export default function CriarContaPasso3() {
+export default function CriarContaPasso3({ email }) {
   const [userEmail, setUserEmail] = useState();
   const [textButton, setTextButton] = useState();
   const [textButtonFinalizar, setTextButtonFinalizar] =
@@ -26,10 +26,14 @@ export default function CriarContaPasso3() {
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
     console.log(obj);
+    const ultimo = obj.pop();
+    //const filtrado = obj.filter((x) => x.name.trim().length > 0);
+    console.log(ultimo);
 
-    if (obj[1] != undefined) {
-      setUserEmail(obj[1].email);
+    if (ultimo) {
+      setUserEmail(ultimo.email);
     }
+    setTextButton('Enviar Código');
   }
 
   function SendCodeToEmail() {
@@ -39,8 +43,6 @@ export default function CriarContaPasso3() {
     for (let i = 0; i < 6; i++) {
       codigoAleatorio.push(random());
     }
-
-    testeAPI();
 
     async function sendCode() {
       if (userEmail) {
@@ -67,10 +69,7 @@ export default function CriarContaPasso3() {
     }, 5000);
   }
 
-  useEffect(() => {
-    setTextButton('Enviar Código');
-    testeAPI();
-  }, []);
+  // definir um variavel para fazer a requisiçao da api - variavel na tela 2
 
   return (
     <>
