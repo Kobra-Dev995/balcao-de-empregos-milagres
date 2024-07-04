@@ -2,15 +2,18 @@ import { supabase } from '@/utils/db';
 import { useState } from 'react';
 
 export default function Supabase() {
+  const [nameUpdate, setNameUpdate] = useState('');
   const [users, setUsers] = useState([]);
-  const [name, setName] = useState();
-  const [age, setAge] = useState();
-
+  const [name, setName] = useState('');
+  const [age, setAge] = useState('');
+  
+  
   async function handleSelect(e) {
     let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
-
-    console.log(Pessoas);
     setUsers(Pessoas);
+    setNameUpdate('');
+    setName('');
+    setAge('');
   }
 
   async function handleInsert(e) {
@@ -18,7 +21,25 @@ export default function Supabase() {
       .from('Pessoas')
       .insert({ nome: name, age: age });
 
-    handleSelect()
+    handleSelect();
+  }
+
+  async function handleUpdate(e) {
+    const { data, error } = await supabase
+      .from('Pessoas')
+      .update({ nome: nameUpdate })
+      .eq('nome', name);
+
+    handleSelect();
+  }
+
+  async function handleDelete(e) {
+    const { data, error } = await supabase
+      .from('Pessoas')
+      .delete()
+      .eq('nome', name);
+
+    handleSelect();
   }
 
   return (
@@ -27,7 +48,7 @@ export default function Supabase() {
         <div className='navbar-start'>
           <a className='navbar-item'>Ripple UI</a>
           <label htmlFor='drawer-overlay' className='btn btn-primary'>
-            Open
+            Menu
           </label>
         </div>
         <div className='navbar-end'>
@@ -83,38 +104,94 @@ export default function Supabase() {
       </div>
 
       <main>
-        <section className='w-full p-6 flex flex-wrap gap-4 '>
-            <div className='card'>
-              <div className='card-body'>
-                <h2 className='card-header'>Card CRUD - select</h2>
-                <ul className='text-content2'>
-                  {users.map((user) => (
-                    <li key={user.user_id}>
-                      {user.nome} - {user.age}
-                    </li>
-                  ))}
-                </ul>
-                <div className='card-footer'>
-                  <button className='btn-secondary btn' onClick={handleSelect}>
-                    Select
-                  </button>
-                </div>
+        <section className='w-full p-6 flex flex-wrap gap-4 justify-center'>
+          <div className='card'>
+            <div className='card-body'>
+              <h2 className='card-header'>Card CRUD - Read</h2>
+              <ul className='text-content2'>
+                {users.map((user) => (
+                  <li key={user.user_id}>
+                    {user.nome} - {user.age}
+                  </li>
+                ))}
+              </ul>
+              <div className='card-footer'>
+                <button className='btn-secondary btn' onClick={handleSelect}>
+                  Select
+                </button>
               </div>
             </div>
-            <div className='card'>
-              <div className='card-body'>
-                <h2 className='card-header'>Card CRUD - Insert</h2>
-                <div className='flex flex-col gap-3'>
-                  <input type='text' placeholder='Nome' className="input-ghost-primary input" onChange={(e) => setName(e.target.value)} />
-                  <input type='number' placeholder='Idade' className="input-ghost-primary input" onChange={(e) => setAge(e.target.value)} />
-                </div>
-                <div className='card-footer'>
-                  <button className='btn-secondary btn' onClick={handleInsert}>
-                    Insert
-                  </button>
-                </div>
+          </div>
+
+          <div className='card'>
+            <div className='card-body'>
+              <h2 className='card-header'>Card CRUD - Create</h2>
+              <div className='flex flex-col gap-3'>
+                <input
+                  type='text'
+                  placeholder='Nome'
+                  className='input-ghost-primary input'
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type='number'
+                  placeholder='Idade'
+                  className='input-ghost-primary input'
+                  onChange={(e) => setAge(e.target.value)}
+                />
+              </div>
+              <div className='card-footer'>
+                <button className='btn-secondary btn' onClick={handleInsert}>
+                  Insert
+                </button>
               </div>
             </div>
+          </div>
+
+          <div className='card'>
+            <div className='card-body'>
+              <h2 className='card-header'>Card CRUD - Update</h2>
+              <div className='flex flex-col gap-3'>
+                <input
+                  type='text'
+                  placeholder='Nome Antigo'
+                  className='input-ghost-primary input'
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type='text'
+                  placeholder='Nome Atualizado'
+                  className='input-ghost-primary input'
+                  onChange={(e) => setNameUpdate(e.target.value)}
+                />
+              </div>
+              <div className='card-footer'>
+                <button className='btn-secondary btn' onClick={handleUpdate}>
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className='card'>
+            <div className='card-body'>
+              <h2 className='card-header'>Card CRUD - Delete</h2>
+              <div className='flex flex-col gap-3'>
+                <input
+                  type='text'
+                  placeholder='Nome'
+                  className='input-ghost-primary input'
+                  onChange={(e) => setName(e.target.value)}
+                />
+                
+              </div>
+              <div className='card-footer'>
+                <button className='btn-secondary btn' onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
       </main>
     </>
