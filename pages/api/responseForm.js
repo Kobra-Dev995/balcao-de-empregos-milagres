@@ -13,6 +13,18 @@ let arry = [
   },
 ];
 
+import fs from 'fs';
+
+function writeFile() {
+  fs.writeFile('form.json', arry, function (err) {
+    if (err) {
+      console.log('An error occurred while saving userform data');
+    }
+  });
+
+  console.log(arry);
+}
+
 export default async function Page1(req, res) {
   const data = await req.body;
   let objTemp = { ...data };
@@ -21,19 +33,15 @@ export default async function Page1(req, res) {
 
   if (objTemp.name && objTemp.nickname) {
     arry.push(objTemp);
+
+    fs.writeFileSync('form.json', 'ioajaja', function (err) {
+      if (err) {
+        console.log('An error occurred while saving userform data');
+      }
+
+      console.log('criado');
+    });
   }
-
-  // if (data.name) {
-  //   obj1 = await data;
-  // }
-
-  // if (data.nickname) {
-  //   obj2 = await data;
-  // }
-
-  // if (obj1 && obj2) {
-  //   objTemp = Object.assign(obj1, obj2);
-  // }
 
   console.log('----------dados do formulario------------');
   console.log(`Pessoa adicioada: ${objTemp.name || objTemp.nickname}`);

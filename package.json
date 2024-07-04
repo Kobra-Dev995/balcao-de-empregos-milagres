@@ -12,6 +12,7 @@
     "@ducanh2912/next-pwa": "^10.2.7",
     "@react-email/components": "^0.0.19",
     "@supabase/supabase-js": "^2.44.2",
+    "fs": "^0.0.1-security",
     "next": "14.2.3",
     "next-auth": "^4.24.7",
     "nodemailer": "^6.9.14",

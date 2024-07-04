@@ -16,14 +16,18 @@ export default function CriarContaPasso2({
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
   const [passwordUser, setPasswordUser] = useState('');
+  const [textButtonFinalizar, setTextButtonFinalizar] =
+    useState('Finalizar Cadastro');
+  const [isLoading, setIsLoading] = useState(false);
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [bio, setBio] = useState('');
 
-  const [verificationEmail, setVerificationEmail] = useState(false);
+  const { replace } = useRouter();
 
+  const [verificationEmail, setVerificationEmail] = useState(false);
 
   async function handleSubmit(event) {
     if (
@@ -62,10 +66,14 @@ export default function CriarContaPasso2({
 
       if (response.status == 200) {
         console.log('api recebeu');
-        setVerificationEmail(true);
-        setTimeout(() => {
-          setVerificationEmail(false)        }, 1000);
-        document.getElementById('my_modal_2').showModal();
+        // setVerificationEmail(true);
+        // setTimeout(() => {
+        //   setVerificationEmail(false);
+        // }, 1000);
+        // document.getElementById('my_modal_2').showModal();
+        setIsLoading(true);
+        setTextButtonFinalizar('Finalizando');
+        setTimeout(() => replace('/home'), 2000);
       } else {
         alert('Erro ao criar conta :(\nTente novamente mais tarde');
       }
@@ -78,7 +86,7 @@ export default function CriarContaPasso2({
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
     console.log(obj);
-    const ultimo = obj.pop()
+    const ultimo = obj.pop();
     //const filtrado = obj.filter((x) => x.name.trim().length > 0);
     console.log(ultimo);
   }
@@ -131,12 +139,11 @@ export default function CriarContaPasso2({
     const passwordCheck1 = e.target.value;
 
     if (password1 === passwordCheck1) {
-      console.log(passwordUser, passwordCheck1);
-      setPasswordUser(password1)
+      setPasswordUser(password1);
       setPasswordCheck(true);
     } else {
       setPasswordCheck(false);
-      setPasswordUser('')
+      setPasswordUser('');
     }
   }
 
@@ -206,16 +213,19 @@ export default function CriarContaPasso2({
           <li className='daisy-step daisy-step-warning text-zinc-100'>
             Criar conta
           </li>
-          <li className='daisy-step text-zinc-100'>Verificar conta</li>
+          {/* <li className='daisy-step text-zinc-100'>Verificar conta</li> */}
         </ul>
       </header>
 
       <main className='w-full px-5 py-4 flex flex-col'>
-        <dialog id='my_modal_2' className='daisy-modal'>
+        {/* <dialog id='my_modal_2' className='daisy-modal'>
           <div className='daisy-modal-box p-0 w-screen max-w-full h-screen max-h-full rounded-none'>
-            <CriarContaPasso3 email={email} verificationEmail={verificationEmail} />
+            <CriarContaPasso3
+              email={email}
+              verificationEmail={verificationEmail}
+            />
           </div>
-        </dialog>
+        </dialog> */}
 
         <section className='flex flex-col gap-5'>
           <section className='flex flex-col gap-5'>
@@ -405,10 +415,13 @@ export default function CriarContaPasso2({
             </div>
 
             <button
-              className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              className='flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
               onClick={handleSubmit}
             >
-              Próximo
+              {isLoading && (
+                <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>
+              )}
+              {textButtonFinalizar}
             </button>
           </section>
         </section>

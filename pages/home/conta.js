@@ -5,13 +5,19 @@ import Link from 'next/link';
 export default function Conta() {
   const { data: session, status } = useSession();
 
+  async function handleAccount() {
+    const req = await fetch('/api/responseForm');
+    const obj = JSON.parse(await req.text());
+    console.log(obj);
+  }
+
   return (
     <>
       <div className='daisy-drawer'>
         <input id='my-drawer' type='checkbox' className='daisy-drawer-toggle' />
         <div className='daisy-drawer-content'>
           <main>
-          <header className='flex justify-start gap-5 pt-3 pl-3 items-center'>
+            <header className='flex justify-start gap-5 pt-3 pl-3 items-center'>
               <label htmlFor='my-drawer' className='cursor-pointer'>
                 <svg
                   className='cursor-pointer'
@@ -121,8 +127,31 @@ export default function Conta() {
                 </p>
               </div>
             </div>
-            <dialog id='my_modal_4' className='modal'>
-              <div className='modal-box w-11/12 max-w-5xl'>
+
+            {/* modal de editar */}
+
+            <div>
+              <label class='sira-btn success sira-solid'>Open modal</label>
+              <label class='sira-modal-overlay'></label>
+              <div class='sira-modal flex flex-col gap-5'>
+                <button class='absolute right-4 top-3'>✕</button>
+                <h2 class='text-xl'>Modal title</h2>
+                <span>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Tenetur dolorum voluptate ratione dicta. Maxime cupiditate,
+                  est commodi consectetur earum iure, optio, obcaecati in nulla
+                  saepe maiores nobis iste quasi alias!
+                </span>
+                <div class='flex gap-3'>
+                  <button class='sira-btn sira-solid danger flex-1'>Delete</button>
+                  <button class='sira-btn solid bw flex-1'>Cancel</button>
+                </div>
+              </div>
+            </div>
+
+            {/* outro modal */}
+            <dialog id='my_modal_4' className='daisy-modal'>
+              <div className='daisy-modal-box w-11/12 max-w-5xl'>
                 <h3 className='font-bold text-lg pb-2'>Editar Conta</h3>
                 <h4 className='font-semibold'>Nome*</h4>
                 <input
@@ -160,10 +189,14 @@ export default function Conta() {
                   placeholder='Escreva Aqui'
                   className='input w-full max-w-xs'
                 />
-                <div className='modal-action items-baseline'>
+                <div className='daisy-modal-action items-baseline'>
                   <form method='dialog'>
-                    <button className='btn bg-primary-blue mr-4'>Fechar</button>
-                    <button className='btn bg-primary-green'>Salvar</button>
+                    <button className='daisy-btn bg-primary-blue mr-4'>
+                      Fechar
+                    </button>
+                    <button className='daisy-btn bg-primary-green'>
+                      Salvar
+                    </button>
                   </form>
                 </div>
               </div>
@@ -224,9 +257,7 @@ export default function Conta() {
               </Link>
             </li>
             <li>
-              <Link href='https://1mio.com.br/'>
-                Jovem Aprendiz
-              </Link>
+              <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
             </li>
             <li>
               <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>

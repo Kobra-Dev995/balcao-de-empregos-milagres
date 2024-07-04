@@ -68,9 +68,17 @@ export default function CriarContaPasso1() {
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
     console.log(obj);
-    const ultimo = obj.pop()
+    const ultimo = obj.pop();
     //const filtrado = obj.filter((x) => x.name.trim().length > 0);
     console.log(ultimo);
+  }
+
+  function handleNextPage() {
+    if (name && phone && birthday && city && neighborhood) {
+      document.getElementById('my_modal_1').showModal();
+    } else {
+      alert('Preencha todos os campos corretamente!');
+    }
   }
 
   return (
@@ -88,7 +96,7 @@ export default function CriarContaPasso1() {
             Dados pessoais
           </li>
           <li className='daisy-step text-zinc-100'>Criar conta</li>
-          <li className='daisy-step text-zinc-100'>Verificar conta</li>
+          {/* <li className='daisy-step text-zinc-100'>Verificar conta</li> */}
         </ul>
       </header>
 
@@ -190,7 +198,7 @@ export default function CriarContaPasso1() {
 
             <button
               className='cursor-pointer w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={() => document.getElementById('my_modal_1').showModal()}
+              onClick={handleNextPage}
             >
               Próximo
             </button>
