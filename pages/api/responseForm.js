@@ -1,23 +1,23 @@
 import { supabase } from "../../utils/db";
 
-// let arry = [
-//   {
-//     name: 'admin',
-//     birthday: '01/01/2000',
-//     phone: '(11)11111-1111',
-//     city: 'Milagres',
-//     neighborhood: 'Centro',
-//     nickname: 'super_admin',
-//     email: 'admin@gmail.com',
-//     password: 'admin',
-//     serviceType: 'Trabalhar',
-//     biography: 'Admin supremo',
-//   },
-// ];
+let arry = [
+  {
+    name: 'admin',
+    birthday: '01/01/2000',
+    phone: '(11)11111-1111',
+    city: 'Milagres',
+    neighborhood: 'Centro',
+    nickname: 'super_admin',
+    email: 'admin@gmail.com',
+    password: 'admin',
+    serviceType: 'Trabalhar',
+    biography: 'Admin supremo',
+  },
+];
 
 async function handleSelect(e) {
-  let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
-  return Pessoas;
+  let { data: Usuarios_comum, error } = await supabase.from('Usuarios_comum').select('*');
+  return Usuarios_comum;
 }
 
 async function handleInsert(name, birthday, phone, city, neighborhood, nickname, email, password, serviceType, biography) {
@@ -33,6 +33,7 @@ export default async function Page1(req, res) {
   console.log(data);
 
   if (objTemp.name && objTemp.nickname) {
+    arry.push(objTemp);
     handleInsert(objTemp.name, objTemp.birthday, objTemp.phone, objTemp.city, objTemp.neighborhood, objTemp.nickname, objTemp.email, objTemp.password, objTemp.serviceType, objTemp.biography);
   }
 

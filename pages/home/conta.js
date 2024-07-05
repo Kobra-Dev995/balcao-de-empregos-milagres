@@ -1,14 +1,27 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { supabase } from '../../utils/db';
+import { useState } from 'react';
 
 export default function Conta() {
+  const [email, setEmail] = useState('');
+  const [users, setUsers] = useState([]);
+
   const { data: session, status } = useSession();
 
-  async function handleAccount() {
+  async function testeAPI() {
     const req = await fetch('/api/responseForm');
     const obj = JSON.parse(await req.text());
-    console.log(obj);
+    const lastObj = obj.pop();
+    console.log(lastObj);
+
+    setEmail(lastObj.email);
+  }
+
+  async function handleSelect(e) {
+    let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
+    setUsers(Usuarios_comum)
   }
 
   return (
@@ -143,7 +156,9 @@ export default function Conta() {
                   saepe maiores nobis iste quasi alias!
                 </span>
                 <div class='flex gap-3'>
-                  <button class='sira-btn sira-solid danger flex-1'>Delete</button>
+                  <button class='sira-btn sira-solid danger flex-1'>
+                    Delete
+                  </button>
                   <button class='sira-btn solid bw flex-1'>Cancel</button>
                 </div>
               </div>

@@ -5,11 +5,14 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { supabase } from '../../utils/db';
 
 export default function Home() {
   // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();
   const { replace } = useRouter();
+
+  
 
   return (
     <>

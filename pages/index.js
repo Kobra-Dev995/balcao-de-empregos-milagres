@@ -3,23 +3,48 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn, signOut } from 'next-auth/react';
+import { supabase } from '../utils/db';
 
 export default function LoginScreen() {
-  const [emailLogin, setEmailLogin] = useState('');
+  const [emailLogin, setEmailLogin] = useState([]);
+  const [emailDB, setEmailDB] = useState([]);
+  const [errorLogin, setErrorLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [textButtonLogin, setTextButtonLogin] = useState('Entrar');
+
   const { push } = useRouter();
-  
-  function formSubmit(e) {
+
+  async function handleSelect(e) {
+    let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('Email, Password');
+    setEmailDB(Usuarios_comum);
+    return Usuarios_comum;
+  }
+
+  async function formSubmit(e) {
     e.preventDefault();
+    const DB = await handleSelect();
     let inputEmailValue = e.target[0].value;
     let inputPasswordValue = e.target[1].value;
 
     setEmailLogin(inputEmailValue);
     setPasswordLogin(inputPasswordValue);
 
-    if (emailLogin && passwordLogin) {
-      push('/home');
-    }
+    DB.map((user) => {
+      if (user.Email !== emailLogin && user.Password !== passwordLogin) {
+        console.log(user.Email, user.Password);
+        setIsLoading(true)
+      } else {
+        push('/home');
+        setIsLoading(false)
+      }
+    });
+    
+    // setTimeout(() => {
+    //   setIsLoading(false)
+    // }, 3000);
 
     inputEmailValue = '';
     inputPasswordValue = '';
@@ -37,10 +62,8 @@ export default function LoginScreen() {
 
   return (
     <>
-
       <main className='w-full min-h-screen flex flex-col justify-center p-5'>
         <section className='w-full min-h-80 p-4 gap-14 flex flex-col md:flex-row-reverse justify-center items-center'>
-
           <figure className='w-32 md:w-40'>
             <Image
               src='/SEMANA MEI.jpg'
@@ -139,13 +162,19 @@ export default function LoginScreen() {
               </label>
 
               <label className='form-control w-full max-w-lg flex justify-center'>
-                <input
-                  className='w-full cursor-pointer bg-primary-blue text-white font-bold px-4 py-2 rounded-lg'
+                <button
                   type='submit'
-                  value='Login'
-                />
+                  className='text-base flex justify-center gap-4 items-center w-full cursor-pointer bg-primary-blue text-white font-bold px-4 py-2 rounded-lg'
+                >
+                  {isLoading && (
+                      <span className='bg-emerald-300 daisy-loading daisy-loading-dots daisy-loading-md'></span>
+                  )} {
+                    textButtonLogin
+                  }
+                </button>
               </label>
             </form>
+            <span>{errorLogin}</span>
           </section>
 
           <section>
