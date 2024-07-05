@@ -2,44 +2,67 @@ import { supabase } from '@/utils/db';
 import { useState } from 'react';
 
 export default function Supabase() {
-  const [nameUpdate, setNameUpdate] = useState('');
+  const [filtro, setFiltro] = useState('');
+  const [itemUpdate, setItemUpdate] = useState('');
+  const [itemUpdateNew, setItemUpdateNew] = useState('');
+  const [itemDelete, setItemDelete] = useState('');
+  const [columnUpdate, setColumnUpdate] = useState('');
+  const [columnDelete, setColumnDelete] = useState('');
   const [users, setUsers] = useState([]);
+
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  
-  
-  async function handleSelect(e) {
-    let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
-    setUsers(Pessoas);
-    setNameUpdate('');
-    setName('');
-    setAge('');
+  const [phone, setPhone] = useState('');
+  const [birthday, setBirthday] = useState('');
+  const [city, setCity] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [serviceType, setServiceType] = useState('');
+  const [biography, setBiography] = useState('');
+
+  async function handleSelect(filtro) {
+    let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('*');
+
+    error ? console.warn(error.message) : setUsers(Usuarios_comum);
   }
 
   async function handleInsert(e) {
-    const { data, error } = await supabase
-      .from('Pessoas')
-      .insert({ nome: name, age: age });
+    const { data, error } = await supabase.from('Usuarios_comum').insert({
+      Name: name,
+      Birthday: birthday,
+      Phone: phone,
+      City: city,
+      Neighborhood: neighborhood,
+      Nickname: nickname,
+      Email: email,
+      Password: password,
+      ServiceType: serviceType,
+      Biography: biography,
+    });
 
-    handleSelect();
+    error ? console.warn(error.message) : handleSelect();
   }
 
-  async function handleUpdate(e) {
-    const { data, error } = await supabase
-      .from('Pessoas')
-      .update({ nome: nameUpdate })
-      .eq('nome', name);
+  async function handleUpdate() {
 
-    handleSelect();
+    const { data, error } = await supabase
+      .from('Usuarios_comum')
+      .update({ [columnUpdate]: itemUpdateNew })
+      .eq(columnUpdate, itemUpdate);
+
+    error ? console.warn(error.message) : handleSelect();
   }
 
-  async function handleDelete(e) {
+  async function handleDelete() {
     const { data, error } = await supabase
-      .from('Pessoas')
+      .from('Usuarios_comum')
       .delete()
-      .eq('nome', name);
+      .eq(columnDelete, itemDelete);
 
-    handleSelect();
+    error ? console.warn(error.message) : handleSelect();
   }
 
   return (
@@ -104,91 +127,180 @@ export default function Supabase() {
       </div>
 
       <main>
-        <section className='w-full p-6 flex flex-wrap gap-4 justify-center'>
-          <div className='card'>
-            <div className='card-body'>
-              <h2 className='card-header'>Card CRUD - Read</h2>
-              <ul className='text-content2'>
-                {users.map((user) => (
-                  <li key={user.user_id}>
-                    {user.nome} - {user.age}
-                  </li>
-                ))}
-              </ul>
-              <div className='card-footer'>
-                <button className='btn-secondary btn' onClick={handleSelect}>
-                  Select
-                </button>
+        <section className='w-full p-6 flex gap-4 flex-wrap-reverse justify-center'>
+          <div className='w-96 flex flex-wrap gap-4 justify-center'>
+            <div className='card'>
+              <div className='card-body'>
+                <h2 className='card-header'>Card CRUD - Read</h2>
+                <ul className='flex flex-col gap-1'>
+                  {users.map((user) => (
+                    <li
+                      key={user.id}
+                      className='bg-gray-600/10 text-gray-800 rounded-md p-5'
+                    >
+                      Id: {user.id} <br />
+                      Name: {user.Name}
+                      <br />
+                      Birthday: {user.Birthday}
+                      <br />
+                      Phone: {user.Phone}
+                      <br />
+                      City: {user.City}
+                      <br />
+                      Neighborhood: {user.Neighborhood}
+                      <br />
+                      Nickname: {user.Nickname}
+                      <br />
+                      Email: {user.Email}
+                      <br />
+                      Password: {user.Password}
+                      <br />
+                      ServiceType: {user.ServiceType}
+                      <br />
+                      Biography: {user.Biography}
+                      <br />
+                    </li>
+                  ))}
+                </ul>
+                <div className='card-footer'>
+                  <button className='btn-secondary btn' onClick={handleSelect}>
+                    Read
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className='card'>
-            <div className='card-body'>
-              <h2 className='card-header'>Card CRUD - Create</h2>
-              <div className='flex flex-col gap-3'>
-                <input
-                  type='text'
-                  placeholder='Nome'
-                  className='input-ghost-primary input'
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                  type='number'
-                  placeholder='Idade'
-                  className='input-ghost-primary input'
-                  onChange={(e) => setAge(e.target.value)}
-                />
-              </div>
-              <div className='card-footer'>
-                <button className='btn-secondary btn' onClick={handleInsert}>
-                  Insert
-                </button>
+          <div className='flex flex-wrap gap-4 justify-center'>
+            <div className='card'>
+              <div className='card-body'>
+                <h2 className='card-header'>Card CRUD - Create</h2>
+                <div className='flex flex-col gap-3'>
+                  <input
+                    type='text'
+                    placeholder='Nome'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Birthday'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setBirthday(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Phone'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='City'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Neighborhood'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setNeighborhood(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Nickname'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setNickname(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Email'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Password'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='ServiceType'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setServiceType(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Biography'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setBiography(e.target.value)}
+                  />
+                </div>
+                <div className='card-footer'>
+                  <button className='btn-secondary btn' onClick={handleInsert}>
+                    Create
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className='card'>
-            <div className='card-body'>
-              <h2 className='card-header'>Card CRUD - Update</h2>
-              <div className='flex flex-col gap-3'>
-                <input
-                  type='text'
-                  placeholder='Nome Antigo'
-                  className='input-ghost-primary input'
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                  type='text'
-                  placeholder='Nome Atualizado'
-                  className='input-ghost-primary input'
-                  onChange={(e) => setNameUpdate(e.target.value)}
-                />
-              </div>
-              <div className='card-footer'>
-                <button className='btn-secondary btn' onClick={handleUpdate}>
-                  Update
-                </button>
+            <div className='card'>
+              <div className='card-body'>
+                <h2 className='card-header'>Card CRUD - Update</h2>
+                <div className='flex flex-col gap-3'>
+                  <input
+                    type='text'
+                    placeholder='Coluna para atualizar'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setColumnUpdate(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Valor Antigo'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setItemUpdate(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Valor para atualizar'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setItemUpdateNew(e.target.value)}
+                  />
+                </div>
+                <div className='card-footer'>
+                  <button className='btn-secondary btn' onClick={handleUpdate}>
+                    Update
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className='card'>
-            <div className='card-body'>
-              <h2 className='card-header'>Card CRUD - Delete</h2>
-              <div className='flex flex-col gap-3'>
-                <input
-                  type='text'
-                  placeholder='Nome'
-                  className='input-ghost-primary input'
-                  onChange={(e) => setName(e.target.value)}
-                />
-                
-              </div>
-              <div className='card-footer'>
-                <button className='btn-secondary btn' onClick={handleDelete}>
-                  Delete
-                </button>
+            <div className='card'>
+              <div className='card-body'>
+                <h2 className='card-header'>Card CRUD - Delete</h2>
+                <div className='flex flex-col gap-3'>
+                  <input
+                    type='text'
+                    placeholder='Coluna para deletar'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setColumnDelete(e.target.value)}
+                  />
+                  <input
+                    type='text'
+                    placeholder='Valor para deletar'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setItemDelete(e.target.value)}
+                  />
+                </div>
+                <div className='card-footer'>
+                  <button
+                    className='btn-secondary btn'
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>

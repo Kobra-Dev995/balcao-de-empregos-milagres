@@ -58,7 +58,7 @@ export default function CriarContaPasso2({
           email: email,
           password: passwordUser,
           serviceType: serviceType,
-          bio: bio,
+          biography: bio,
         }),
       });
 

@@ -1,28 +1,29 @@
-let arry = [
-  {
-    name: 'admin',
-    birthday: '01/01/2000',
-    phone: '(11)11111-1111',
-    city: 'Milagres',
-    neighborhood: 'Centro',
-    nickname: 'super_admin',
-    email: 'admin@gmail.com',
-    password: 'admin',
-    serviceType: 'Trabalhar',
-    bio: 'Admin supremo',
-  },
-];
+import { supabase } from "../../utils/db";
 
-import fs from 'fs';
+// let arry = [
+//   {
+//     name: 'admin',
+//     birthday: '01/01/2000',
+//     phone: '(11)11111-1111',
+//     city: 'Milagres',
+//     neighborhood: 'Centro',
+//     nickname: 'super_admin',
+//     email: 'admin@gmail.com',
+//     password: 'admin',
+//     serviceType: 'Trabalhar',
+//     biography: 'Admin supremo',
+//   },
+// ];
 
-function writeFile() {
-  fs.writeFile('form.json', arry, function (err) {
-    if (err) {
-      console.log('An error occurred while saving userform data');
-    }
-  });
+async function handleSelect(e) {
+  let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
+  return Pessoas;
+}
 
-  console.log(arry);
+async function handleInsert(name, birthday, phone, city, neighborhood, nickname, email, password, serviceType, biography) {
+  const { data, error } = await supabase
+    .from('Usuarios_comum')
+    .insert({ Name: name, Birthday: birthday, Phone: phone, City: city, Neighborhood: neighborhood, Nickname: nickname, Email: email, Password: password, ServiceType: serviceType, Biography: biography });
 }
 
 export default async function Page1(req, res) {
@@ -32,19 +33,11 @@ export default async function Page1(req, res) {
   console.log(data);
 
   if (objTemp.name && objTemp.nickname) {
-    arry.push(objTemp);
-
-    fs.writeFileSync('form.json', 'ioajaja', function (err) {
-      if (err) {
-        console.log('An error occurred while saving userform data');
-      }
-
-      console.log('criado');
-    });
+    handleInsert(objTemp.name, objTemp.birthday, objTemp.phone, objTemp.city, objTemp.neighborhood, objTemp.nickname, objTemp.email, objTemp.password, objTemp.serviceType, objTemp.biography);
   }
 
   console.log('----------dados do formulario------------');
   console.log(`Pessoa adicioada: ${objTemp.name || objTemp.nickname}`);
   console.log('----------dados do formulaio------------');
-  res.status(200).json(arry);
+  res.status(200).json(handleSelect());
 }
