@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import CriarContaPasso3 from './criarconta3';
-import { cookies } from 'next/headers';
 
 export default function CriarContaPasso2({
   name,
@@ -29,15 +28,7 @@ export default function CriarContaPasso2({
   const { replace } = useRouter();
 
   const [verificationEmail, setVerificationEmail] = useState(false);
-  function coockiesUser(email) {
   
-    cookies().set({
-      name: 'authTokenEmail',
-      value: email,
-      path: '/',
-    });
-  }
-  coockiesUser('ola akakkak');
   
   async function handleSubmit(event) {
     if (
