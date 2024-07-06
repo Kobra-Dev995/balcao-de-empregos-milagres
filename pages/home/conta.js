@@ -3,8 +3,21 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { supabase } from '../../utils/db';
 import { useState } from 'react';
+import { parseCookies } from 'nookies';
 
-export default function Conta() {
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+    },
+  };
+}
+
+export default function Conta(props
+
+) {
   const [email, setEmail] = useState('');
   const [users, setUsers] = useState([]);
 
@@ -20,8 +33,12 @@ export default function Conta() {
   }
 
   async function handleSelect(e) {
-    let { data: Pessoas, error } = await supabase.from('Pessoas').select('*');
-    setUsers(Usuarios_comum)
+    let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('Email')
+      .eq('Email', props.AuthEmail);
+    setUsers(Usuarios_comum);
+    console.log(Usuarios_comum);
   }
 
   return (
@@ -50,7 +67,7 @@ export default function Conta() {
                 </svg>
               </label>
 
-              <span className='text-lg -webkit-font-smoothing: antialiased; font-bold '>
+              <span className='text-lg -webkit-font-smoothing: antialiased; font-bold ' onClick={handleSelect}>
                 Conta
               </span>
             </header>

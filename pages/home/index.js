@@ -7,6 +7,16 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/db';
 
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+    },
+  };
+}
+
 export default function Home() {
   // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();

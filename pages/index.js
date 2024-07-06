@@ -4,16 +4,28 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn, signOut } from 'next-auth/react';
 import { supabase } from '../utils/db';
+import { setCookie, parseCookies } from 'nookies';
 
-export default function LoginScreen() {
-  const [emailLogin, setEmailLogin] = useState([]);
+
+
+export default function LoginScreen(props) {
+console.log('props ',props);
+
+  const [emailLogin, setEmailLogin] = useState('');
   const [emailDB, setEmailDB] = useState([]);
   const [errorLogin, setErrorLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [textButtonLogin, setTextButtonLogin] = useState('Entrar');
 
   const { push } = useRouter();
+
+  function Cookie(email) {
+    setCookie(null, 'AuthEmail', email, {
+      maxAge: 86400,
+      path: '/',
+    })
+  }
 
   async function handleSelect(e) {
     let { data: Usuarios_comum, error } = await supabase
@@ -33,18 +45,25 @@ export default function LoginScreen() {
     setPasswordLogin(inputPasswordValue);
 
     DB.map((user) => {
-      if (user.Email !== emailLogin && user.Password !== passwordLogin) {
-        console.log(user.Email, user.Password);
-        setIsLoading(true)
+      if (user.Email === emailLogin ) {
+        if (user.Password === passwordLogin) {
+          Cookie(emailLogin);
+          push('/home');
+          setIsLoading(false);
+        }
+
+        setErrorLogin('Email ou senha inválidos!');
+        setIsLoading(true);
       } else {
-        push('/home');
-        setIsLoading(false)
+        console.log(user.Email, user.Password);
+        setErrorLogin('Email ou senha inválidos!');
+        setIsLoading(true);
       }
     });
-    
-    // setTimeout(() => {
-    //   setIsLoading(false)
-    // }, 3000);
+
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 3000);
 
     inputEmailValue = '';
     inputPasswordValue = '';
@@ -167,10 +186,9 @@ export default function LoginScreen() {
                   className='text-base flex justify-center gap-4 items-center w-full cursor-pointer bg-primary-blue text-white font-bold px-4 py-2 rounded-lg'
                 >
                   {isLoading && (
-                      <span className='bg-emerald-300 daisy-loading daisy-loading-dots daisy-loading-md'></span>
-                  )} {
-                    textButtonLogin
-                  }
+                    <span className='bg-emerald-300 daisy-loading daisy-loading-dots daisy-loading-md'></span>
+                  )}{' '}
+                  {textButtonLogin}
                 </button>
               </label>
             </form>
@@ -210,4 +228,15 @@ export default function LoginScreen() {
       </main>
     </>
   );
+}
+
+
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+    },
+  };
 }
