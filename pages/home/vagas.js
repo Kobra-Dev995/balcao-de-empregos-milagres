@@ -1,9 +1,41 @@
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { supabase } from '../../utils/db';
+import { useEffect, useState } from 'react';
+import { parseCookies } from 'nookies';
 
-export default function Vagas() {
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+    },
+  };
+}
+
+export default function Vagas(props) {
   const { data: session, status } = useSession();
+  const [users, setUsers] = useState('');
+
+
+  async function handleSelect(e) {
+    let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('*')
+      .eq('Email', props.AuthEmail);
+    setUsers(Usuarios_comum);
+  }
+
+  useEffect(() => {
+    if (props.AuthEmail === 'Não tem cookies') {
+      console.log('voltou para a tela de login');
+      return;
+    }
+
+    handleSelect();
+  }, []);
 
   return (
     <>
@@ -224,7 +256,11 @@ export default function Vagas() {
               </figure>
 
               <span className='font-semibold text-base'>
-                {!session?.user.image ? 'Seja bem vindo!' : session.user.name}
+                {!session?.user.name
+                  ? !users[0]?.Name
+                    ? 'Seja Bem-vindo!'
+                    : users[0].Nickname
+                  : session.user.name}
               </span>
             </div>
 
@@ -240,9 +276,9 @@ export default function Vagas() {
             <li>
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href='/home'>Configurações</Link>
-            </li>
+            </li> */}
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
                 Vapt Vupt

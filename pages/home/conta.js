@@ -257,6 +257,7 @@ export default function Conta(props) {
                 </figure>
               </div>
             </div>
+
             <div className='card-body'>
               <div className='flex justify-end'>
                 <button
@@ -320,46 +321,50 @@ export default function Conta(props) {
                 </a>
               </span>
             </div>
-            <span className='flex justify-center font-bold'>Avaliações</span>
-            <div className='card lg:card-side shadow-xl m-4 bg-gray-100'>
-              <div className='flex justify-center'>
-                <Image
-                  src='/avaliacao.jpg'
-                  alt='Foto Avaliação'
-                  className='rounded-md'
-                  width='159'
-                  height='119'
-                />
+
+            {/* <div className='flex flex-wrap justify-center pb-12'>
+              <span className='w-full flex justify-center font-bold'>Avaliações</span>
+
+              <div className='card lg:card-side shadow-xl m-4 bg-gray-100'>
+                <div className='flex justify-center'>
+                  <Image
+                    src='/avaliacao.jpg'
+                    alt='Foto Avaliação'
+                    className='rounded-md'
+                    width='159'
+                    height='119'
+                  />
+                </div>
+
+                <div className='card-body'>
+                  <h2 className='card-title'>Avaliação:</h2>
+                  <p>
+                    Ótimo trabalho, porém deveria ter um pouco mais de simpatia
+                    com o cliente.
+                  </p>
+                </div>
               </div>
 
-              <div className='card-body'>
-                <h2 className='card-title'>Avaliação:</h2>
-                <p>
-                  Ótimo trabalho, porém deveria ter um pouco mais de simpatia
-                  com o cliente.
-                </p>
-              </div>
-            </div>
+              <div className='card lg:card-side shadow-xl m-4 bg-gray-100'>
+                <div className='flex justify-center'>
+                  <Image
+                    src='/avaliacao2.jpg'
+                    alt='Foto Avaliação'
+                    className='rounded-md'
+                    width='159'
+                    height='119'
+                  />
+                </div>
 
-            <div className='card lg:card-side shadow-xl m-4 bg-gray-100'>
-              <div className='flex justify-center'>
-                <Image
-                  src='/avaliacao2.jpg'
-                  alt='Foto Avaliação'
-                  className='rounded-md'
-                  width='159'
-                  height='119'
-                />
+                <div className='card-body'>
+                  <h2 className='card-title'>Avaliação:</h2>
+                  <p>
+                    Ótimo trabalho, porém deveria ter um pouco mais de simpatia
+                    com o cliente.
+                  </p>
+                </div>
               </div>
-
-              <div className='card-body'>
-                <h2 className='card-title'>Avaliação:</h2>
-                <p>
-                  Ótimo trabalho, porém deveria ter um pouco mais de simpatia
-                  com o cliente.
-                </p>
-              </div>
-            </div>
+            </div> */}
 
             <dialog id='my_modal_4' className='daisy-modal'>
               <div className='daisy-modal-box w-11/12 max-w-5xl flex flex-col'>
@@ -625,9 +630,9 @@ export default function Conta(props) {
             <li>
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href='/home'>Configurações</Link>
-            </li>
+            </li> */}
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
                 Vapt Vupt

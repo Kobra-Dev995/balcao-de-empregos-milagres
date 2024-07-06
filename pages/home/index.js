@@ -6,6 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/db';
+import { useEffect, useState } from 'react';
+import { parseCookies,destroyCookie } from 'nookies';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -17,17 +19,38 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-export default function Home() {
+function deleteCookie(){
+  destroyCookie(null,'AuthEmail')
+}
+
+export default function Home(props) {
   // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();
+  const [users, setUsers] = useState('');
+
   const { replace } = useRouter();
 
-  
+  async function handleSelect(e) {
+    let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('*')
+      .eq('Email', props.AuthEmail);
+    setUsers(Usuarios_comum);
+  }
+
+  useEffect(() => {
+    if (props.AuthEmail === 'Não tem cookies') {
+      console.log('voltou para a tela de login');
+      return;
+    }
+
+    handleSelect();
+  }, []);
 
   return (
     <>
       <Head>
-        <title>Tela Home - Novos Empregos</title>
+        <title>Tela Home - Balcão Empregos</title>
       </Head>
 
       <div className='daisy-drawer'>
@@ -70,7 +93,7 @@ export default function Home() {
                   Há 114 vaga(s) disponível(is)
                 </span>
               </div>
-              <div className='w-full bg-base-100 flex justify-center items-center shadow-xl m-5'>
+              <div className='w-full bg-base-100 flex justify-center items-center shadow-xl my-5'>
                 {/*  <Image
                       className=''
                       src='/check.svg'
@@ -215,7 +238,11 @@ export default function Home() {
               </figure>
 
               <span className='font-semibold text-base'>
-                {!session?.user.name ? 'Seja bem vindo!' : session.user.name}
+                {!session?.user.name
+                  ? !users[0]?.Name
+                    ? 'Seja Bem-vindo!'
+                    : users[0].Nickname
+                  : session.user.name}
               </span>
             </div>
 
@@ -225,25 +252,23 @@ export default function Home() {
             <li>
               <Link href='/home/conta'>Conta</Link>
             </li>
-            
+
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
             <li>
               <Link href='/home/vagas'>Vagas de Emprego</Link>
             </li>
-            <li>
+            {/* <li>
               <Link href='/home'>Configurações</Link>
-            </li>
+            </li> */}
             <li>
               <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
                 Vapt Vupt
               </Link>
             </li>
             <li>
-              <Link href='https://1mio.com.br/'>
-                Jovem Aprendiz
-              </Link>
+              <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
             </li>
             <li>
               <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
@@ -251,7 +276,10 @@ export default function Home() {
               </Link>
             </li>
             <li>
-              <button onClick={() => signOut()}>Sair da Conta</button>
+              <button onClick={() => {
+                signOut()
+                deleteCookie()
+              }}>Sair da Conta</button>
             </li>
           </ul>
         </div>
