@@ -27,6 +27,13 @@ export default function Conta(props) {
   const [nickname, setNickname] = useState('');
   const [biography, setBiography] = useState('');
   const [occupation, setOccupation] = useState('');
+  const [passwordUser, setPasswordUser] = useState('');
+
+  const [passwordLetterM, setPasswordLetterM] = useState(false);
+  const [passwordLetterm, setPasswordLetterm] = useState(false);
+  const [passwordNumber, setPasswordNumber] = useState(false);
+  const [passwordChar, setPasswordChar] = useState(false);
+  const [passwordLength, setPasswordLength] = useState(false);
 
   const { data: session, status } = useSession();
 
@@ -74,12 +81,116 @@ export default function Conta(props) {
     setNeighborhood(event.target.value);
   }
 
-  function handleBiography(event){
+  function handleBiography(event) {
     setBiography(event.target.value);
   }
 
-  function handleOccupation(event){
+  function handleOccupation(event) {
     setOccupation(event.target.value);
+  }
+
+  function handleName(event) {
+    setName(event.target.value);
+  }
+
+  function handleNickname(event) {
+    setNickname(event.target.value);
+  }
+
+  function handlePassword(e) {
+    const password = e.target.value;
+    let passwordRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_.])[\d\w\W]{8,}$/;
+    const passwordLetterM1 = /^(?=.*[A-Z])[\d\w\W]{1,}$/;
+    const passwordLetterm1 = /^(?=.*[a-z])[\d\w\W]{1,}$/;
+    const passwordNumber1 = /^(?=.*[0-9])[\d\w\W]{1,}$/;
+    const passwordChar1 = /^(?=.*[!@#$%^&*_])[\d\w\W]{1,}$/;
+    const passwordLength1 = /^[\d\w\W]{8,}$/;
+
+    if (passwordLetterM1.test(password)) {
+      setPasswordLetterM(true);
+    } else {
+      setPasswordLetterM(false);
+    }
+
+    if (passwordLetterm1.test(password)) {
+      setPasswordLetterm(true);
+    } else {
+      setPasswordLetterm(false);
+    }
+
+    if (passwordNumber1.test(password)) {
+      setPasswordNumber(true);
+    } else {
+      setPasswordNumber(false);
+    }
+
+    if (passwordChar1.test(password)) {
+      setPasswordChar(true);
+    } else {
+      setPasswordChar(false);
+    }
+
+    if (passwordLength1.test(password)) {
+      setPasswordLength(true);
+    } else {
+      setPasswordLength(false);
+    }
+
+    const result = passwordRegex.test(password);
+  }
+
+  async function handleSubmit(e) {
+    if (
+      name &&
+      nickname &&
+      passwordUser &&
+      email &&
+      city &&
+      neighborhood &&
+      birthday &&
+      biography &&
+      phone &&
+      occupation
+    ) {
+      let { data, error } = await supabase
+        .from('Usuarios_comum')
+        .update({
+          Name: name,
+          Nickname: nickname,
+          Password: passwordUser,
+          Email: email,
+          City: city,
+          Neighborhood: neighborhood,
+          Birthday: birthday,
+          Biography: biography,
+          Phone: phone,
+          OccupationArea: occupation,
+        })
+        .eq('Email', props.AuthEmail);
+
+      alert('Você fez as alterações com sucesso! :)');
+      handleSelect();
+
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
+    } else {
+      alert('Preencha todos os campos corretamente!');
+    }
+  }
+
+  function handleClose() {
+    setBirthday('');
+    setPhone('');
+    setCity('default');
+    setNeighborhood('');
+    setEmail('');
+    setName('');
+    setNickname('');
+    setBiography('');
+    setOccupation('');
+    setPasswordUser('');
   }
 
   useEffect(() => {
@@ -159,6 +270,11 @@ export default function Conta(props) {
                 </button>
               </div>
               <span>
+                <a className='text-sm'>
+                  {!users[0]?.Name
+                    ? 'Formação Acadêmica'
+                    : users[0].OccupationArea}
+                </a>
                 <h3 className='font-bold text-lg'>
                   {!session?.user.name
                     ? !users[0]?.Name
@@ -166,24 +282,21 @@ export default function Conta(props) {
                       : users[0].Name
                     : session.user.name}
                 </h3>
-                {/* <a className='text-sm'>
-                  {!users[0]?.Name ? 'Formação Acadêmica' : users[0].Name}
-                </a> */}
               </span>
               <span>
                 <h3 className='font-bold'>Contato</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? '(__)_____-____' : users[0].Phone}
+                  {!users[0]?.Name ? 'exemplo@gmail.com' : users[0].Email}
                 </a>
                 <br />
                 <a className='text-sm'>
-                  {!users[0]?.Name ? 'exemplo@gmail.com' : users[0].Email}
+                  {!users[0]?.Name ? '(__)_____-____' : users[0].Phone}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Área de Atuação:</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? 'Software Engineer' : users[0].OccupationArea}
+                  {!users[0]?.Name ? 'Profissão' : users[0].OccupationArea}
                 </a>
               </span>
               <span>
@@ -254,7 +367,7 @@ export default function Conta(props) {
                   <h3 className='font-bold text-lg pb-2'>Editar Conta</h3>
                 </div>
 
-                <section className='w-full flex flex-col'>
+                <section className='w-full flex flex-col gap-4'>
                   <div className='w-full'>
                     <h4 className='font-semibold w-full text-start'>
                       Nome Completo
@@ -262,6 +375,8 @@ export default function Conta(props) {
                     <input
                       type='text'
                       placeholder='Jhon Doe'
+                      onChange={handleName}
+                      value={name}
                       className='input input-rounded input-ghost-primary w-full max-w-full'
                     />
                   </div>
@@ -271,8 +386,79 @@ export default function Conta(props) {
                     <input
                       type='text'
                       placeholder='Jhon'
+                      onChange={handleNickname}
+                      value={nickname}
                       className='input input-rounded input-ghost-primary w-full max-w-full'
                     />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Senha</h4>
+                    <input
+                      type='text'
+                      placeholder='********'
+                      onChange={handlePassword}
+                      onKeyDown={(e) => setPasswordUser(e.target.value)}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                    <div
+                      className={
+                        passwordLetterM &&
+                        passwordLetterm &&
+                        passwordNumber &&
+                        passwordChar &&
+                        passwordLength
+                          ? 'text-[#20a714]'
+                          : '' + 'text-[#A71414] flex flex-col pl-4'
+                      }
+                    >
+                      <span className='text-base font-semibold'>
+                        A senha deve conter:
+                      </span>
+                      <span className='text-sm flex flex-col'>
+                        <span
+                          className={
+                            passwordLetterM
+                              ? 'text-[#20a714]'
+                              : 'text-[#A71414]'
+                          }
+                        >
+                          Letras Maiúsculas
+                        </span>
+                        <span
+                          className={
+                            passwordLetterm
+                              ? 'text-[#20a714]'
+                              : 'text-[#A71414]'
+                          }
+                        >
+                          Letras Minúsculas
+                        </span>
+                        <span
+                          className={
+                            passwordNumber ? 'text-[#20a714]' : 'text-[#A71414]'
+                          }
+                        >
+                          Números
+                        </span>
+
+                        <span
+                          className={
+                            passwordChar ? 'text-[#20a714]' : 'text-[#A71414]'
+                          }
+                        >
+                          Símbolos
+                        </span>
+
+                        <span
+                          className={
+                            passwordLength ? 'text-[#20a714]' : 'text-[#A71414]'
+                          }
+                        >
+                          8 Caracteres
+                        </span>
+                      </span>
+                    </div>
                   </div>
 
                   <div className='w-full'>
@@ -330,33 +516,39 @@ export default function Conta(props) {
                   </div>
 
                   <div className='w-full'>
-                    <h4 className='font-semibold w-full text-start'>Endereço</h4>
+                    <h4 className='font-semibold w-full text-start'>
+                      Endereço
+                    </h4>
                     <input
                       type='text'
                       onChange={handleNeighborhood}
-                      placeholder='exemplo@gmail.com'
+                      placeholder='Rua Manoel, centro - 231'
                       value={neighborhood}
                       className='input input-rounded input-ghost-primary w-full max-w-full'
                     />
                   </div>
 
                   <div className='w-full'>
-                    <h4 className='font-semibold w-full text-start'>Área de Atuação</h4>
+                    <h4 className='font-semibold w-full text-start'>
+                      Área de Atuação
+                    </h4>
                     <input
                       type='text'
                       onChange={handleOccupation}
-                      placeholder='exemplo@gmail.com'
+                      placeholder='Motorista'
                       value={occupation}
                       className='input input-rounded input-ghost-primary w-full max-w-full'
                     />
                   </div>
 
                   <div className='w-full'>
-                    <h4 className='font-semibold w-full text-start'>Biografia</h4>
+                    <h4 className='font-semibold w-full text-start'>
+                      Biografia
+                    </h4>
                     <input
                       type='text'
                       onChange={handleBiography}
-                      placeholder='exemplo@gmail.com'
+                      placeholder='Conte mais sobre você...'
                       value={biography}
                       className='input input-rounded input-ghost-primary w-full max-w-full'
                     />
@@ -365,10 +557,20 @@ export default function Conta(props) {
 
                 <div className='daisy-modal-action w-full flex justify-center'>
                   <form method='dialog' className='flex gap-5'>
-                    <button class='btn btn-outline-success' type='button'>
+                    <button
+                      class='btn btn-outline-success'
+                      type='button'
+                      onClick={handleSubmit}
+                    >
                       Salvar
                     </button>
-                    <button class='btn btn-outline-error'>Fechar</button>
+                    <button
+                      class='btn btn-outline-error'
+                      type='submit'
+                      onClick={handleClose}
+                    >
+                      Fechar
+                    </button>
                   </form>
                 </div>
               </div>
@@ -403,7 +605,11 @@ export default function Conta(props) {
               </figure>
 
               <span className='font-semibold text-base'>
-                {!session?.user.image ? 'Seja bem vindo!' : session.user.name}
+                {!session?.user.name
+                  ? !users[0]?.Name
+                    ? 'Seja Bem-vindo!'
+                    : users[0].Nickname
+                  : session.user.name}
               </span>
             </div>
 
