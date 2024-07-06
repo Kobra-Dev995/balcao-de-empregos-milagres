@@ -173,7 +173,7 @@ export default function CriarContaPasso1() {
             <input
               type='text'
               onChange={handleNeighborhood}
-              placeholder='Bairro'
+              placeholder='Bairro/Endereço'
               name='neighborhood'
               value={neighborhood}
               className='daisy-input daisy-input-bordered daisy-input-success w-full'

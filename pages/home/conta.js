@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { supabase } from '../../utils/db';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { parseCookies } from 'nookies';
 
 export async function getServerSideProps(ctx) {
@@ -15,11 +15,18 @@ export async function getServerSideProps(ctx) {
   };
 }
 
-export default function Conta(props
+export default function Conta(props) {
+  const [users, setUsers] = useState('');
 
-) {
+  const [birthday, setBirthday] = useState('');
+  const [phone, setPhone] = useState('');
+  const [city, setCity] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
   const [email, setEmail] = useState('');
-  const [users, setUsers] = useState([]);
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [biography, setBiography] = useState('');
+  const [occupation, setOccupation] = useState('');
 
   const { data: session, status } = useSession();
 
@@ -35,11 +42,54 @@ export default function Conta(props
   async function handleSelect(e) {
     let { data: Usuarios_comum, error } = await supabase
       .from('Usuarios_comum')
-      .select('Email')
+      .select('*')
       .eq('Email', props.AuthEmail);
     setUsers(Usuarios_comum);
-    console.log(Usuarios_comum);
+    console.log(users[0]);
   }
+
+  function handleBirthday(e) {
+    const regex = /^([0-9]{1,2})([0-9]{1,2})([0-9]{4})$/;
+    const date = e.target.value.replace(/[^0-9]/g, '').slice(0, 8);
+    const result = date.replace(regex, '$1/$2/$3');
+    setBirthday(result);
+  }
+
+  function handlePhone(event) {
+    const regex = /^([0-9]{2})([0-9]{4,5})([0-9]{4})$/;
+    const tel = event.target.value.replace(/[^0-9]/g, '').slice(0, 11);
+    const result = tel.replace(regex, '($1)$2-$3');
+    setPhone(result);
+  }
+
+  function handleEmail(event) {
+    setEmail(event.target.value);
+  }
+
+  function handleCity(event) {
+    setCity(event.target.value);
+  }
+
+  function handleNeighborhood(event) {
+    setNeighborhood(event.target.value);
+  }
+
+  function handleBiography(event){
+    setBiography(event.target.value);
+  }
+
+  function handleOccupation(event){
+    setOccupation(event.target.value);
+  }
+
+  useEffect(() => {
+    if (props.AuthEmail === 'Não tem cookies') {
+      console.log('voltou para a tela de login');
+      return;
+    }
+
+    handleSelect();
+  }, []);
 
   return (
     <>
@@ -67,53 +117,93 @@ export default function Conta(props
                 </svg>
               </label>
 
-              <span className='text-lg -webkit-font-smoothing: antialiased; font-bold ' onClick={handleSelect}>
+              <span
+                className='text-lg -webkit-font-smoothing: antialiased; font-bold '
+                onClick={handleSelect}
+              >
                 Conta
               </span>
             </header>
 
             <div className='bg-fotoconta bg-cover w-full h-28 mt-4 pl-4 pt-7 '>
               <div className='w-24 rounded-full ml-4 mt-8'>
-                <Image
-                  alt='foto de perfil'
-                  height={1200}
-                  width={1200}
-                  src='/fotoperfil1.png'
-                />
+                <figure className='w-24'>
+                  {!session?.user.image ? (
+                    <Image
+                      src='/fotoperfil1.png'
+                      width={1200}
+                      height={1200}
+                      alt=''
+                    />
+                  ) : (
+                    <Image
+                      src={`${session.user.image}`}
+                      width='47'
+                      height='47'
+                      alt=''
+                    />
+                  )}
+                </figure>
               </div>
             </div>
             <div className='card-body'>
               <div className='flex justify-end'>
-                <Image
-                  src='/iconelapis.svg'
-                  width='19'
-                  height='19'
-                  alt='Pessoa SVG'
+                <button
+                  className='daisy-btn-ghost rounded-lg p-3 flex items-center gap-3'
                   onClick={() =>
                     document.getElementById('my_modal_4').showModal()
                   }
-                />
+                >
+                  <span className='text-base font-medium'>Editar</span>
+                  <Image src='/iconelapis.svg' width='19' height='19' alt='' />
+                </button>
               </div>
               <span>
-                <h3 className='font-bold text-lg'>Nicolas André de Lima</h3>
-                <a className='text-sm'>Bacharel em Ciencias da Computação</a>
+                <h3 className='font-bold text-lg'>
+                  {!session?.user.name
+                    ? !users[0]?.Name
+                      ? 'Nome Completo'
+                      : users[0].Name
+                    : session.user.name}
+                </h3>
+                {/* <a className='text-sm'>
+                  {!users[0]?.Name ? 'Formação Acadêmica' : users[0].Name}
+                </a> */}
+              </span>
+              <span>
+                <h3 className='font-bold'>Contato</h3>
+                <a className='text-sm'>
+                  {!users[0]?.Name ? '(__)_____-____' : users[0].Phone}
+                </a>
+                <br />
+                <a className='text-sm'>
+                  {!users[0]?.Name ? 'exemplo@gmail.com' : users[0].Email}
+                </a>
               </span>
               <span>
                 <h3 className='font-bold'>Área de Atuação:</h3>
-                <a className='text-sm'>Gerente de Software</a>
+                <a className='text-sm'>
+                  {!users[0]?.Name ? 'Software Engineer' : users[0].OccupationArea}
+                </a>
               </span>
               <span>
                 <h3 className='font-bold'>Localidade:</h3>
                 <a className='text-sm'>
-                  Rua José Afonso Bosco - Bairro Centro, 165
+                  {!users[0]?.Name ? '' : users[0].City}
+                  {' - '}
+                  {!users[0]?.Name ? '' : users[0].Neighborhood}
+                </a>
+              </span>
+              <span>
+                <h3 className='font-bold'>Data de Nascimento:</h3>
+                <a className='text-sm'>
+                  {!users[0]?.Name ? '' : users[0].Birthday}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Descrição:</h3>
                 <a className='text-sm'>
-                  Me apaixonei desde cedo nessa área, e desenvolvi ótimas
-                  habilidades. Espero agregar em diversas <br />
-                  formas à empresa em que estarei trabalhando.
+                  {!users[0]?.Name ? 'Nenhuma descrição' : users[0].Biography}
                 </a>
               </span>
             </div>
@@ -158,77 +248,127 @@ export default function Conta(props
               </div>
             </div>
 
-            {/* modal de editar */}
-
-            <div>
-              <label class='sira-btn success sira-solid'>Open modal</label>
-              <label class='sira-modal-overlay'></label>
-              <div class='sira-modal flex flex-col gap-5'>
-                <button class='absolute right-4 top-3'>✕</button>
-                <h2 class='text-xl'>Modal title</h2>
-                <span>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Tenetur dolorum voluptate ratione dicta. Maxime cupiditate,
-                  est commodi consectetur earum iure, optio, obcaecati in nulla
-                  saepe maiores nobis iste quasi alias!
-                </span>
-                <div class='flex gap-3'>
-                  <button class='sira-btn sira-solid danger flex-1'>
-                    Delete
-                  </button>
-                  <button class='sira-btn solid bw flex-1'>Cancel</button>
-                </div>
-              </div>
-            </div>
-
-            {/* outro modal */}
             <dialog id='my_modal_4' className='daisy-modal'>
-              <div className='daisy-modal-box w-11/12 max-w-5xl'>
-                <h3 className='font-bold text-lg pb-2'>Editar Conta</h3>
-                <h4 className='font-semibold'>Nome*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <h4 className='font-semibold'>Sobrenome*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <h4 className='font-semibold pt-8'>Formação Acadêmica*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <h4 className='font-semibold'>Área de Atuação*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <h4 className='font-semibold'>Localidade*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <h4 className='font-semibold'>Descrição*</h4>
-                <input
-                  type='text'
-                  placeholder='Escreva Aqui'
-                  className='input w-full max-w-xs'
-                />
-                <div className='daisy-modal-action items-baseline'>
-                  <form method='dialog'>
-                    <button className='daisy-btn bg-primary-blue mr-4'>
-                      Fechar
-                    </button>
-                    <button className='daisy-btn bg-primary-green'>
+              <div className='daisy-modal-box w-11/12 max-w-5xl flex flex-col'>
+                <div className='w-full'>
+                  <h3 className='font-bold text-lg pb-2'>Editar Conta</h3>
+                </div>
+
+                <section className='w-full flex flex-col'>
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Nome Completo
+                    </h4>
+                    <input
+                      type='text'
+                      placeholder='Jhon Doe'
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Apelido</h4>
+                    <input
+                      type='text'
+                      placeholder='Jhon'
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Data de Nascimento
+                    </h4>
+                    <input
+                      type='text'
+                      onChange={handleBirthday}
+                      placeholder='01/01/2000'
+                      value={birthday}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Telefone
+                    </h4>
+                    <input
+                      type='text'
+                      onChange={handlePhone}
+                      placeholder='(88)92426-6543'
+                      value={phone}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Email</h4>
+                    <input
+                      type='text'
+                      onChange={handleEmail}
+                      placeholder='exemplo@gmail.com'
+                      value={email}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Cidade</h4>
+                    <select
+                      class='select select-ghost-primary'
+                      defaultValue={'default'}
+                      onChange={handleCity}
+                    >
+                      <option value='default' disabled>
+                        Selecione outra cidade
+                      </option>
+                      <option value={'Milagres'}>Milagres</option>
+                      <option value={'Barro'}>Barro</option>
+                      <option value={'Mauriti'}>Mauriti</option>
+                      <option value={'Abaiara'}>Abaiara</option>
+                    </select>
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Endereço</h4>
+                    <input
+                      type='text'
+                      onChange={handleNeighborhood}
+                      placeholder='exemplo@gmail.com'
+                      value={neighborhood}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Área de Atuação</h4>
+                    <input
+                      type='text'
+                      onChange={handleOccupation}
+                      placeholder='exemplo@gmail.com'
+                      value={occupation}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Biografia</h4>
+                    <input
+                      type='text'
+                      onChange={handleBiography}
+                      placeholder='exemplo@gmail.com'
+                      value={biography}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+                </section>
+
+                <div className='daisy-modal-action w-full flex justify-center'>
+                  <form method='dialog' className='flex gap-5'>
+                    <button class='btn btn-outline-success' type='button'>
                       Salvar
                     </button>
+                    <button class='btn btn-outline-error'>Fechar</button>
                   </form>
                 </div>
               </div>
@@ -243,7 +383,6 @@ export default function Conta(props
           ></label>
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
-            {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
                 {!session?.user.image ? (
