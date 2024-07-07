@@ -6,17 +6,33 @@ import { signIn, signOut } from 'next-auth/react';
 import { supabase } from '../utils/db';
 import { setCookie, parseCookies } from 'nookies';
 
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
 
+  let { data: Usuarios_comum, error } = await supabase
+      .from('Usuarios_comum')
+      .select('Email, Password');
+
+  return {
+    props: {
+      msg: '[SERVER]',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+      users: Usuarios_comum,
+    },
+  };
+}
 
 export default function LoginScreen(props) {
-console.log('props ',props);
+  console.log('props ', props);
 
   const [emailLogin, setEmailLogin] = useState('');
-  const [emailDB, setEmailDB] = useState([]);
+  const [emailDB, setEmailDB] = useState(props.users || []);
   const [errorLogin, setErrorLogin] = useState('');
   const [passwordLogin, setPasswordLogin] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [textButtonLogin, setTextButtonLogin] = useState('Entrar');
+
+  console.log(emailDB);
 
   const { push } = useRouter();
 
@@ -24,49 +40,37 @@ console.log('props ',props);
     setCookie(null, 'AuthEmail', email, {
       maxAge: 86400,
       path: '/',
-    })
+    });
   }
 
-  async function handleSelect(e) {
-    let { data: Usuarios_comum, error } = await supabase
-      .from('Usuarios_comum')
-      .select('Email, Password');
-    setEmailDB(Usuarios_comum);
-    return Usuarios_comum;
-  }
+
 
   async function formSubmit(e) {
     e.preventDefault();
-    const DB = await handleSelect();
+
     let inputEmailValue = e.target[0].value;
     let inputPasswordValue = e.target[1].value;
 
-    setEmailLogin(inputEmailValue);
-    setPasswordLogin(inputPasswordValue);
-
-    DB.map((user) => {
-      if (user.Email === emailLogin ) {
-        if (user.Password === passwordLogin) {
-          Cookie(emailLogin);
+    emailDB.map((user) => {
+      if (user.Email === inputEmailValue) {
+        if (user.Password === inputPasswordValue) {
+          Cookie(inputEmailValue);
           push('/home');
           setIsLoading(false);
         }
 
-        setErrorLogin('Email ou senha inválidos!');
-        setIsLoading(true);
+        //console.log('Senha Errada');
+        //setIsLoading(true);
       } else {
-        console.log(user.Email, user.Password);
-        setErrorLogin('Email ou senha inválidos!');
+        //console.log('Nao');
+        //console.log(user.Email, user.Password);
         setIsLoading(true);
       }
     });
 
     setTimeout(() => {
-      setIsLoading(false)
-    }, 3000);
-
-    inputEmailValue = '';
-    inputPasswordValue = '';
+      setIsLoading(false);
+    }, 4000);
   }
 
   function togglePass() {
@@ -231,12 +235,3 @@ console.log('props ',props);
 }
 
 
-export async function getServerSideProps(ctx) {
-  const cookies = parseCookies(ctx);
-  return {
-    props: {
-      msg: '[SERVER] ola mundo',
-      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
-    },
-  };
-}

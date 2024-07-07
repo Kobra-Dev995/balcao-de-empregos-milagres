@@ -1,22 +1,35 @@
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { supabase } from '../../utils/db';
 import { useEffect, useState } from 'react';
-import { parseCookies } from 'nookies';
+import { parseCookies, destroyCookie } from 'nookies';
+import { useRouter } from 'next/navigation';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
+
+  let { data: Usuarios_comum, error } = await supabase
+    .from('Usuarios_comum')
+    .select('*')
+    .eq('Email', cookies.AuthEmail);
+
   return {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+      users: Usuarios_comum,
     },
   };
 }
 
+function deleteCookie() {
+  destroyCookie(null, 'AuthEmail');
+}
+
 export default function Conta(props) {
-  const [users, setUsers] = useState('');
+  const { refresh, replace } = useRouter();
+  const [users, setUsers] = useState(props.users[0] || '');
 
   const [birthday, setBirthday] = useState('');
   const [phone, setPhone] = useState('');
@@ -44,15 +57,6 @@ export default function Conta(props) {
     console.log(lastObj);
 
     setEmail(lastObj.email);
-  }
-
-  async function handleSelect(e) {
-    let { data: Usuarios_comum, error } = await supabase
-      .from('Usuarios_comum')
-      .select('*')
-      .eq('Email', props.AuthEmail);
-    setUsers(Usuarios_comum);
-    console.log(users[0]);
   }
 
   function handleBirthday(e) {
@@ -193,15 +197,6 @@ export default function Conta(props) {
     setPasswordUser('');
   }
 
-  useEffect(() => {
-    if (props.AuthEmail === 'Não tem cookies') {
-      console.log('voltou para a tela de login');
-      return;
-    }
-
-    handleSelect();
-  }, []);
-
   return (
     <>
       <div className='daisy-drawer'>
@@ -277,11 +272,7 @@ export default function Conta(props) {
                     : users[0].OccupationArea}
                 </a>
                 <h3 className='font-bold text-lg'>
-                  {!session?.user.name
-                    ? !users[0]?.Name
-                      ? 'Nome Completo'
-                      : users[0].Name
-                    : session.user.name}
+                  {!users[0]?.Name ? 'Nome Completo' : users[0].Name}
                 </h3>
               </span>
               <span>
@@ -647,7 +638,28 @@ export default function Conta(props) {
               </Link>
             </li>
             <li>
-              <button onClick={() => signOut()}>Sair da Conta</button>
+              <button
+                onClick={() => {
+                  if (session?.user.name) {
+                    signOut();
+                  }
+
+                  if (users.Name) {
+                    deleteCookie();
+                    refresh();
+                  }
+
+                  if (!session?.user.name && !users.Name) {
+                    replace('/');
+                  }
+                }}
+              >
+                {!session?.user.name
+                  ? !users?.Name
+                    ? 'Entrar'
+                    : 'Sair'
+                  : 'Sair'}
+              </button>
             </li>
           </ul>
         </div>

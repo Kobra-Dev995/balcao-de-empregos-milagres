@@ -7,35 +7,31 @@ import { parseCookies } from 'nookies';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
+
+  let { data: Usuarios_comum, error } = await supabase
+    .from('Usuarios_comum')
+    .select('*')
+    .eq('Email', cookies.AuthEmail);
+
   return {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+      users: Usuarios_comum,
     },
   };
 }
 
+
+function deleteCookie() {
+  destroyCookie(null, 'AuthEmail');
+}
+
 export default function Vagas(props) {
   const { data: session, status } = useSession();
-  const [users, setUsers] = useState('');
+  const [users, setUsers] = useState(props.users[0] || '');
 
-
-  async function handleSelect(e) {
-    let { data: Usuarios_comum, error } = await supabase
-      .from('Usuarios_comum')
-      .select('*')
-      .eq('Email', props.AuthEmail);
-    setUsers(Usuarios_comum);
-  }
-
-  useEffect(() => {
-    if (props.AuthEmail === 'Não tem cookies') {
-      console.log('voltou para a tela de login');
-      return;
-    }
-
-    handleSelect();
-  }, []);
+  const { refresh, replace } = useRouter();
 
   return (
     <>
@@ -285,9 +281,7 @@ export default function Vagas(props) {
               </Link>
             </li>
             <li>
-              <Link href='https://1mio.com.br/'>
-                Jovem Aprendiz
-              </Link>
+              <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
             </li>
             <li>
               <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
@@ -295,7 +289,28 @@ export default function Vagas(props) {
               </Link>
             </li>
             <li>
-              <button onClick={() => signOut()}>Sair da Conta</button>
+              <button
+                onClick={() => {
+                  if (session?.user.name) {
+                    signOut();
+                  }
+
+                  if (users.Name) {
+                    deleteCookie();
+                    refresh();
+                  }
+
+                  if (!session?.user.name && !users.Name) {
+                    replace('/');
+                  }
+                }}
+              >
+                {!session?.user.name
+                  ? !users?.Name
+                    ? 'Entrar'
+                    : 'Sair'
+                  : 'Sair'}
+              </button>
             </li>
           </ul>
         </div>
