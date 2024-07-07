@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { supabase } from '../../utils/db';
 import { useEffect, useState } from 'react';
 import { parseCookies } from 'nookies';
+import { useRouter } from 'next/navigation';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
