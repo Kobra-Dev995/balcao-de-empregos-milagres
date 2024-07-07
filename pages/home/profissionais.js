@@ -271,9 +271,9 @@ export default function Profissionais(props) {
 
               <span className='font-semibold text-base'>
                 {!session?.user.name
-                  ? !users[0]?.Name
+                  ? !users?.Name
                     ? 'Seja Bem-vindo!'
-                    : users[0].Nickname
+                    : users.Nickname
                   : session.user.name}
               </span>
             </div>

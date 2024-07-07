@@ -174,7 +174,9 @@ export default function Conta(props) {
         .eq('Email', props.AuthEmail);
 
       alert('Você fez as alterações com sucesso! :)');
-      handleSelect();
+      setTimeout(() => {
+        refresh()
+      }, 2000);
 
       setTimeout(() => {
         handleClose();
@@ -225,7 +227,6 @@ export default function Conta(props) {
 
               <span
                 className='text-lg -webkit-font-smoothing: antialiased; font-bold '
-                onClick={handleSelect}
               >
                 Conta
               </span>
@@ -267,48 +268,48 @@ export default function Conta(props) {
               </div>
               <span>
                 <a className='text-sm'>
-                  {!users[0]?.Name
+                  {!users?.Name
                     ? 'Formação Acadêmica'
-                    : users[0].OccupationArea}
+                    : users.OccupationArea}
                 </a>
                 <h3 className='font-bold text-lg'>
-                  {!users[0]?.Name ? 'Nome Completo' : users[0].Name}
+                  {!users?.Name ? 'Nome Completo' : users.Name}
                 </h3>
               </span>
               <span>
                 <h3 className='font-bold'>Contato</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? 'exemplo@gmail.com' : users[0].Email}
+                  {!users?.Name ? 'exemplo@gmail.com' : users.Email}
                 </a>
                 <br />
                 <a className='text-sm'>
-                  {!users[0]?.Name ? '(__)_____-____' : users[0].Phone}
+                  {!users?.Name ? '(__)_____-____' : users.Phone}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Área de Atuação:</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? 'Profissão' : users[0].OccupationArea}
+                  {!users?.Name ? 'Profissão' : users.OccupationArea}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Localidade:</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? '' : users[0].City}
+                  {!users?.Name ? '' : users.City}
                   {' - '}
-                  {!users[0]?.Name ? '' : users[0].Neighborhood}
+                  {!users?.Name ? '' : users.Neighborhood}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Data de Nascimento:</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? '' : users[0].Birthday}
+                  {!users?.Name ? '' : users.Birthday}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Descrição:</h3>
                 <a className='text-sm'>
-                  {!users[0]?.Name ? 'Nenhuma descrição' : users[0].Biography}
+                  {!users?.Name ? 'Nenhuma descrição' : users.Biography}
                 </a>
               </span>
             </div>
@@ -602,9 +603,9 @@ export default function Conta(props) {
 
               <span className='font-semibold text-base'>
                 {!session?.user.name
-                  ? !users[0]?.Name
+                  ? !users?.Name
                     ? 'Seja Bem-vindo!'
-                    : users[0].Nickname
+                    : users.Nickname
                   : session.user.name}
               </span>
             </div>
