@@ -23,7 +23,6 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function LoginScreen(props) {
-  console.log('props ', props);
 
   const [emailLogin, setEmailLogin] = useState('');
   const [emailDB, setEmailDB] = useState(props.users || []);

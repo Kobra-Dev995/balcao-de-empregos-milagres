@@ -20,6 +20,7 @@ export default function Supabase() {
   const [password, setPassword] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [biography, setBiography] = useState('');
+  const [occupation, setOccupation] = useState('');
 
   async function handleSelect(filtro) {
     let { data: Usuarios_comum, error } = await supabase
@@ -40,6 +41,7 @@ export default function Supabase() {
       Email: email,
       Password: password,
       ServiceType: serviceType,
+      OccupationArea: occupation,
       Biography: biography,
     });
 
@@ -157,6 +159,8 @@ export default function Supabase() {
                       <br />
                       ServiceType: {user.ServiceType}
                       <br />
+                      OccupationArea: {user.OccupationArea}
+                      <br/>
                       Biography: {user.Biography}
                       <br />
                     </li>
@@ -230,6 +234,13 @@ export default function Supabase() {
                     className='input-ghost-primary input'
                     onChange={(e) => setServiceType(e.target.value)}
                   />
+                  <input
+                    type='text'
+                    placeholder='OccupationArea'
+                    className='input-ghost-primary input'
+                    onChange={(e) => setOccupation(e.target.value)}
+                  />
+
                   <input
                     type='text'
                     placeholder='Biography'

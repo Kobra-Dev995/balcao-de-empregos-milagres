@@ -24,12 +24,12 @@ export default function CriarContaPasso2({
   const [email, setEmail] = useState('');
   const [serviceType, setServiceType] = useState('');
   const [bio, setBio] = useState('');
+  const [occupation, setOccupation] = useState('');
 
   const { replace } = useRouter();
 
   const [verificationEmail, setVerificationEmail] = useState(false);
-  
-  
+
   async function handleSubmit(event) {
     if (
       passwordLetterM &&
@@ -59,6 +59,7 @@ export default function CriarContaPasso2({
           email: email,
           password: passwordUser,
           serviceType: serviceType,
+          occupation: occupation,
           biography: bio,
         }),
       });
@@ -74,7 +75,7 @@ export default function CriarContaPasso2({
         // document.getElementById('my_modal_2').showModal();
         setIsLoading(true);
         setTextButtonFinalizar('Finalizando');
-        setTimeout(() => replace('/home'), 2000);
+        setTimeout(() => replace('/'), 2000);
       } else {
         alert('Erro ao criar conta :(\nTente novamente mais tarde');
       }
@@ -195,6 +196,10 @@ export default function CriarContaPasso2({
 
   function handleBio(event) {
     setBio(event.target.value);
+  }
+
+  function handleOccupation(event) {
+    setOccupation(event.target.value);
   }
 
   return (
@@ -388,6 +393,18 @@ export default function CriarContaPasso2({
               <div className='w-full flex flex-col items-center'>
                 Selecione seu currículo no formato PDF
               </div> */}
+              <span className='text-base font-semibold w-full'>
+                Área de Atuação:
+              </span>
+              <input
+                required
+                type='text'
+                onChange={handleOccupation}
+                name='occupation'
+                value={occupation}
+                placeholder='Motorista'
+                className='daisy-input daisy-input-bordered daisy-input-success w-full'
+              />
             </section>
           </section>
 
@@ -416,7 +433,8 @@ export default function CriarContaPasso2({
             </div>
 
             <button
-              className='flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
+              type='button'
+              className='cursor-pointer flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
               onClick={handleSubmit}
             >
               {isLoading && (
