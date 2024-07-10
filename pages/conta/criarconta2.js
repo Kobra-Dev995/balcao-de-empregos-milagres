@@ -149,19 +149,7 @@ export default function CriarContaPasso2({
     }
   }
 
-  function handleCurriculum(e) {
-    let imgPreview = document.getElementById('imgpreview');
-    if (e.target.files && e.target.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        console.log(event.target.result);
-        imgPreview.setAttribute('src', event.target.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    } else {
-      imgPreview.setAttribute('src', '/logo-balcao-de-empregos.svg');
-    }
-  }
+  
 
   function ShowPasswordUser() {
     const input = document.getElementById('Senha_User');
@@ -390,6 +378,7 @@ export default function CriarContaPasso2({
                   onChange={handleCurriculum}
                 />
               </div>
+
               <div className='w-full flex flex-col items-center'>
                 Selecione seu currículo no formato PDF
               </div> */}

@@ -175,7 +175,7 @@ export default function Conta(props) {
 
       alert('Você fez as alterações com sucesso! :)');
       setTimeout(() => {
-        refresh()
+        refresh();
       }, 2000);
 
       setTimeout(() => {
@@ -225,9 +225,7 @@ export default function Conta(props) {
                 </svg>
               </label>
 
-              <span
-                className='text-lg -webkit-font-smoothing: antialiased; font-bold '
-              >
+              <span className='text-lg -webkit-font-smoothing: antialiased; font-bold '>
                 Conta
               </span>
             </header>
@@ -268,9 +266,7 @@ export default function Conta(props) {
               </div>
               <span>
                 <a className='text-sm'>
-                  {!users?.Name
-                    ? 'Formação Acadêmica'
-                    : users.OccupationArea}
+                  {!users?.Name ? 'Formação Acadêmica' : users.OccupationArea}
                 </a>
                 <h3 className='font-bold text-lg'>
                   {!users?.Name ? 'Nome Completo' : users.Name}
@@ -302,9 +298,7 @@ export default function Conta(props) {
               </span>
               <span>
                 <h3 className='font-bold'>Data de Nascimento:</h3>
-                <a className='text-sm'>
-                  {!users?.Name ? '' : users.Birthday}
-                </a>
+                <a className='text-sm'>{!users?.Name ? '' : users.Birthday}</a>
               </span>
               <span>
                 <h3 className='font-bold'>Descrição:</h3>
@@ -365,6 +359,34 @@ export default function Conta(props) {
                 </div>
 
                 <section className='w-full flex flex-col gap-4'>
+                  <div className='w-full'>
+                    {/* <div className='bg-[#EAEDFF] w-full h-40 flex flex-col items-center justify-around rounded-md'>
+                <input
+                  className='cursor-pointer text-sm w-full h-full p-4'
+                  type='file'
+                  accept='image/*'
+                  formEncType='multipart/form-data'
+                  name='curriculum'
+                  onChange={function handleCurriculum(e) {
+                    let imgPreview = document.getElementById('imgpreview');
+                    if (e.target.files && e.target.files[0]) {
+                      var reader = new FileReader();
+                      reader.onload = function (event) {
+                        console.log(event.target);
+                        imgPreview.setAttribute('src', event.target.result);
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+                    } else {
+                      imgPreview.setAttribute(
+                        'src',
+                        '/logo-balcao-de-empregos.svg'
+                      );
+                    }
+                  }}
+                />
+              </div> */}
+                  </div>
+
                   <div className='w-full'>
                     <h4 className='font-semibold w-full text-start'>
                       Nome Completo

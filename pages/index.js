@@ -31,8 +31,6 @@ export default function LoginScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [textButtonLogin, setTextButtonLogin] = useState('Entrar');
 
-  console.log(emailDB);
-
   const { push } = useRouter();
 
   function Cookie(email) {
@@ -41,8 +39,6 @@ export default function LoginScreen(props) {
       path: '/',
     });
   }
-
-
 
   async function formSubmit(e) {
     e.preventDefault();
@@ -204,14 +200,14 @@ export default function LoginScreen(props) {
             </div>
 
             <section className='w-full flex justify-center items-center gap-3'>
-              <button
+              {/* <button
                 onClick={() => signIn('google', { callbackUrl: '/home' })}
                 className='bg-[#EAEDFF] w-full max-w-lg flex items-center justify-center gap-2 text-base font-semibold py-2 px-5 rounded-lg'
                 type='button'
               >
                 <Image src='./google-icon.svg' width='15' height='15' alt='' />
                 google
-              </button>
+              </button> */}
             </section>
           </section>
           <div className='w-full flex gap-2 justify-center my-4'>

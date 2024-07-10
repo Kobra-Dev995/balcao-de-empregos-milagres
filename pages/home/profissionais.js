@@ -5,6 +5,9 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/db';
 import { parseCookies, destroyCookie } from 'nookies';
 import { useRouter } from 'next/navigation';
+import CardProfissional from '../../components/CardProfissional';
+import { padStart, slice, split, toNumber, toLower } from 'lodash';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -14,11 +17,16 @@ export async function getServerSideProps(ctx) {
     .select('*')
     .eq('Email', cookies.AuthEmail);
 
+  let { data: Todos_usuarios, error_todos } = await supabase
+    .from('Usuarios_comum')
+    .select('*');
+
   return {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
-      users: Usuarios_comum,
+      user: Usuarios_comum,
+      todos: Todos_usuarios,
     },
   };
 }
@@ -29,7 +37,28 @@ function deleteCookie() {
 
 export default function Profissionais(props) {
   const { data: session, status } = useSession();
-  const [users, setUsers] = useState(props.users[0] || '');
+  const [user, setUser] = useState(props.user[0] || '');
+  const [todos, setTodos] = useState(props.todos || '');
+  const [searchCar, setSearchCar] = useState('');
+
+  const filterSearchUser = todos.filter((user) => {
+    const userLowerCaseName = toLower(user.Name);
+    const userLowerCaseCity = toLower(user.City);
+    const searchLower = searchCar.toLowerCase();
+
+    //console.log(userLowerCase);
+    return userLowerCaseName.includes(searchLower) || userLowerCaseCity.includes(searchLower);
+  });
+
+  const date = new Date();
+  const day = date.getDate();
+  const month = padStart(date.getMonth() + 1, 2, '0');
+  const year = toNumber(date.getFullYear());
+  const today = `${day}/${month}/${year}`;
+
+  const userDate = split(user.Birthday, '/');
+
+  const ageUser = year - toNumber(userDate[2]);
 
   const { refresh, replace } = useRouter();
 
@@ -65,7 +94,7 @@ export default function Profissionais(props) {
             </header>
 
             <div className='flex justify-end mt-7 items-center'>
-              <div className='daisy-dropdown'>
+              <div className='daisy-dropdown daisy-dropdown-hover'>
                 <div tabIndex={0} role='button' className='daisy-btn m-1'>
                   Filtrar
                 </div>
@@ -74,146 +103,84 @@ export default function Profissionais(props) {
                   className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
                 >
                   <li>
-                    <a>Milagres</a>
+                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Abaiara</span>
                   </li>
                   <li>
-                    <a>Barro</a>
+                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Barro</span>
+                  </li>
+                  <li>
+                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Mauriti</span>
+                  </li>
+                  <li>
+                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Milagres</span>
                   </li>
                 </ul>
               </div>
 
-              <label className='outline-none input input-bordered flex items-center gap-2 mx-4'>
+              <label className='input-rounded rounded-xl input flex items-center gap-2 mx-4'>
                 <input
                   type='text'
-                  className='grow'
-                  placeholder='Buscar Profissionais'
+                  className='input-rounded input border-x-0 rounded-none '
+                  placeholder='Pesquisar Profissional'
+                  onKeyDown={(e) => {
+                    e.key === 'Enter'
+                      ? setSearchCar(e.target.value)
+                      : false;
+                  }}
                 />
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 16 16'
-                  fill='currentColor'
-                  className='w-4 h-4 opacity-70'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z'
-                    clipRule='evenodd'
-                  />
-                </svg>
+                <FaMagnifyingGlass className='text-xl' />
               </label>
             </div>
 
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <div className='w-full flex justify-center rounded-full mt-4'>
-                <img src='/fotoperfil.jpg' />
-              </div>
+            <section className='flex justify-center flex-wrap'>
+              {filterSearchUser.map((user) => {
+                if (user.ServiceType === 'Trabalhar') {
+                  return (
+                    <CardProfissional
+                      key={user.id}
+                      Name={user.Name}
+                      Age={ageUser}
+                      Occupation={user.OccupationArea}
+                      City={user.City}
+                      Neighborhood={user.Neighborhood}
+                      Phone={user.Phone}
+                      Email={user.Email}
+                      Biography={user.Biography}
+                    />
+                  );
+                }
+              })}
+            </section>
 
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>Engenheiro de Software</h2>
-                <span>
-                  Nome: <br /> Nicolas André de Lima
-                </span>
-                <span>
-                  Idade: <br /> 34 Anos
-                </span>
-                <span>
-                  Formação: <br /> Engenharia de Software
-                </span>
-                <span>
-                  Endereço: <br /> Rua Manoel gomes da silva - Bairro Blue Pen
-                </span>
-                <div className='card-actions justify-end'>
-                  <Link href='' className='btn btn-primary bg-primary-green'>
-                    Ver Mais
-                  </Link>
-                </div>
+            {/* <section className='w-full flex justify-center my-4'>
+              <div className='daisy-join'>
+                <input
+                  className='daisy-join-item daisy-btn daisy-btn-square'
+                  type='radio'
+                  name='options'
+                  aria-label='1'
+                  defaultChecked
+                />
+                <input
+                  className='daisy-join-item daisy-btn daisy-btn-square'
+                  type='radio'
+                  name='options'
+                  aria-label='2'
+                />
+                <input
+                  className='daisy-join-item daisy-btn daisy-btn-square'
+                  type='radio'
+                  name='options'
+                  aria-label='3'
+                />
+                <input
+                  className='daisy-join-item daisy-btn daisy-btn-square'
+                  type='radio'
+                  name='options'
+                  aria-label='4'
+                />
               </div>
-            </div>
-
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <div className='w-24 rounded-full ml-[75%] mt-4'>
-                <img src='/fotoperfil2.jpg' />
-              </div>
-
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>
-                  Assistente de métricas humanas
-                </h2>
-                <span>
-                  Nome: <br /> Davi Cunha Montante
-                </span>
-                <span>
-                  Idade: <br /> 29 Anos
-                </span>
-                <span>
-                  Formação: <br /> Gestão de recursos humanos
-                </span>
-                <span>
-                  Endereço: <br /> Rua Manoel gomes da silva - Bairro Blue Pen
-                </span>
-                <div className='card-actions justify-end'>
-                  <button className='btn btn-primary bg-primary-green'>
-                    Ver Mais
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <div className='w-24 rounded-full ml-[75%] mt-4'>
-                <img src='/fotoperfil3.jpg' />
-              </div>
-
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>
-                  Supervisor de diretrizes centrais
-                </h2>
-                <span>
-                  Nome: <br /> Reinaldo Cerqueira de souza
-                </span>
-                <span>
-                  Idade: <br /> 43 Anos
-                </span>
-                <span>
-                  Formação: <br /> Administração de Empresas
-                </span>
-                <span>
-                  Endereço: <br /> Rua Manoel gomes da silva - Bairro Blue Pen
-                </span>
-                <div className='card-actions justify-end'>
-                  <button className='btn btn-primary bg-primary-green'>
-                    Ver Mais
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className='join flex justify-center my-12'>
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='1'
-                checked
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='2'
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='3'
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='4'
-              />
-            </div>
+            </section> */}
 
             <footer className='footer  bg-primary-blue text-gray-50'>
               <nav>
@@ -272,9 +239,9 @@ export default function Profissionais(props) {
 
               <span className='font-semibold text-base'>
                 {!session?.user.name
-                  ? !users?.Name
+                  ? !user?.Name
                     ? 'Seja Bem-vindo!'
-                    : users.Nickname
+                    : user.Nickname
                   : session.user.name}
               </span>
             </div>
@@ -314,18 +281,18 @@ export default function Profissionais(props) {
                     signOut();
                   }
 
-                  if (users.Name) {
+                  if (user.Name) {
                     deleteCookie();
                     refresh();
                   }
 
-                  if (!session?.user.name && !users.Name) {
+                  if (!session?.user.name && !user.Name) {
                     replace('/');
                   }
                 }}
               >
                 {!session?.user.name
-                  ? !users?.Name
+                  ? !user?.Name
                     ? 'Entrar'
                     : 'Sair'
                   : 'Sair'}
