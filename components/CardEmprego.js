@@ -1,42 +1,28 @@
 import Image from 'next/image';
 
-export default function CardProfissional({
-  Name,
-  Age,
-  Occupation,
-  City,
-  Neighborhood,
-  Phone,
-  Email,
-  Biography,
-}) {
+export default function CardEmprego({ JobRole, Business, DaysWeek, Salary }) {
   return (
     <>
-      <div className='daisy-card daisy-card-compact w-96 bg-zinc-200/20 shadow-xl m-5 flex flex-col  items-center'>
-        <figure className='w-28 flex justify-center'>
+      <div className='daisy-card daisy-card-compact w-96 bg-zinc-200/20 shadow-xl m-5 flex flex-col items-center'>
+        <figure className='w-full h-auto flex justify-center'>
           <Image
-            src={'/fotoperfil.jpg'}
+            src={'/fachada.jpg'}
             width={1000}
             height={1000}
             className='w-full'
-            alt='Foto do profissional'
+            alt='Empresa'
           />
         </figure>
 
         <div className='daisy-card-body w-full'>
-          <h2 className='daisy-card-title font-bold'>{Occupation}</h2>
+          <h2 className='daisy-card-title font-bold'>{JobRole}</h2>
+          <span className='font-medium'>Empresa: {Business}</span>
           <span className='font-medium'>
-            Nome: <br /> {Name}
+            Dias da Semana: <br /> {DaysWeek}
           </span>
           <span className='font-medium'>
-            Área de Atuação: <br /> {Occupation}
+            Salário: <br /> R$ {Salary}
           </span>
-          <span className='font-medium'>
-            Endereço: <br /> {City} - {Neighborhood}
-          </span>
-
-          <br />
-
           <div className='daisy-card-actions justify-end'>
             <button
               className='btn btn-primary bg-primary-green'
@@ -60,26 +46,26 @@ export default function CardProfissional({
             <section className='w-full flex flex-col gap-4'>
               <div className='w-full'>
                 <h4 className='font-semibold w-full text-start'>Nome:</h4>
-                <h3>{Name}</h3>
+                <h3>{}</h3>
               </div>
               <div className='w-full'>
                 <h4 className='font-semibold w-full text-start'>Idade:</h4>
-                <h3>{Age}</h3>
+                <h3>{}</h3>
               </div>
               <div className='w-full'>
                 <h4 className='font-semibold w-full text-start'>Contato:</h4>
-                <h3>{Phone}</h3>
-                <h3>{Email}</h3>
+                <h3>{}</h3>
+                <h3>{}</h3>
               </div>
               <div className='w-full'>
                 <h4 className='font-semibold w-full text-start'>
                   Área de Atuação:
                 </h4>
-                <h3>{Occupation}</h3>
+                <h3>{}</h3>
               </div>
               <div className='w-full'>
                 <h4 className='font-semibold w-full text-start'>Sobre:</h4>
-                <h3>{Biography}</h3>
+                <h3>{}</h3>
               </div>
             </section>
 

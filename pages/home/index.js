@@ -40,7 +40,9 @@ export default function Home(props) {
   return (
     <>
       <Head>
-        <title>Tela Home - Balcão Empregos</title>
+        <titledaisy-footer-title>
+          Tela Home - Balcão Empregos
+        </titledaisy-footer-title>
       </Head>
 
       <div className='daisy-drawer'>
@@ -92,7 +94,7 @@ export default function Home(props) {
                       alt='CheckSVG'
                     /> */}
                 <div className='daisy-card-body w-full flex flex-col justify-center lg:w-1/2'>
-                  <h2 className='card-title font-semibold'>
+                  <h2 className='card-titledaisy-footer-title font-semibold'>
                     Vagas de Emprego!
                   </h2>
                   <ul className='list-disc font-semibold'>
@@ -108,7 +110,7 @@ export default function Home(props) {
                   <img src='/fachada.jpg' alt='empresa1' />
                 </figure>
                 <div className='card-body'>
-                  <h2 className='card-title font-bold'>
+                  <h2 className='card-titledaisy-footer-title font-bold'>
                     Assistente Administrativo
                   </h2>
                   <span>Empresa: Ahuha Tecnologia</span>
@@ -131,7 +133,9 @@ export default function Home(props) {
                   <img src='/fachada2.jpg' alt='empresa2' />
                 </figure>
                 <div className='card-body'>
-                  <h2 className='card-title font-bold'>Design Gráfico</h2>
+                  <h2 className='card-titledaisy-footer-title font-bold'>
+                    Design Gráfico
+                  </h2>
                   <span>Empresa: Mercado Assis </span>
                   <span>
                     Horario: <br /> Segunda e Quarta
@@ -152,7 +156,9 @@ export default function Home(props) {
                   <img src='/fachada3.jpg' alt='empresa3' />
                 </figure>
                 <div className='card-body'>
-                  <h2 className='card-title font-bold'>Limpeza</h2>
+                  <h2 className='card-titledaisy-footer-title font-bold'>
+                    Limpeza
+                  </h2>
                   <span>Empresa: Dakota Calçados </span>
                   <span>
                     Horario: <br /> Segunda a Sábado
@@ -168,9 +174,9 @@ export default function Home(props) {
                 </div>
               </div>
 
-              <footer className='footer  bg-primary-blue text-gray-50'>
+              <footer className='daisy-footer  bg-primary-blue text-gray-50 p-4'>
                 <nav>
-                  <h6 className='footer-title pt-2'>Informações</h6>
+                  <h6 className='daisy-footer-title pt-2'>Informações</h6>
                   <a className='text-gray-50 text-pretty'>
                     Sobre nosso site, temos total autoria de utilizar de <br />
                     recursos nativo de bancos de dados de terceiros <br /> não
@@ -178,22 +184,20 @@ export default function Home(props) {
                   </a>
                 </nav>
                 <nav>
-                  <h6 className='footer-title'>Contato</h6>
+                  <h6 className='daisy-footer-title'>Contato</h6>
                   <a className='text-gray-50'>
-                    suporte.balcãodeempregos@gmail.com
+                    suporte.balcoodeempregos@gmail.com
                   </a>
                 </nav>
                 <nav>
-                  <h6 className='footer-title'>Visite Nossas Páginas</h6>
-                  <a className='link link-hover text-gray-50 underline'>
+                  <h6 className='daisy-footer-title'>Visite Nossas Páginas</h6>
+                  <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
                     Vapt Vupt
-                  </a>
-                  <a className='link link-hover text-gray-50 underline'>
-                    Cursos
-                  </a>
-                  <a className='link link-hover text-gray-50 underline'>
-                    Jovem Aprendiz
-                  </a>
+                  </Link>
+                  <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                    Empreendedor
+                  </Link>
+                  <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
                 </nav>
               </footer>
             </div>
@@ -207,7 +211,6 @@ export default function Home(props) {
           ></label>
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
-            {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
                 {!session?.user.image ? (
@@ -230,7 +233,7 @@ export default function Home(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !users?.Name
-                    ? 'Seja Bem-vindo!'
+                    ? 'Inscreva-se para mais informações'
                     : users.Nickname
                   : session.user.name}
               </span>
@@ -239,16 +242,19 @@ export default function Home(props) {
             <li>
               <Link href='/home'>Inicio</Link>
             </li>
-            <li>
-              <Link href='/home/conta'>Conta</Link>
-            </li>
-
+            {users?.Name && (
+              <li>
+                <Link href='/home/conta'>Conta</Link>
+              </li>
+            )}
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
-            <li>
-              <Link href='/home/vagas'>Vagas de Emprego</Link>
-            </li>
+            {users?.Name && (
+              <li>
+                <Link href='/home/vagas'>Vagas de Emprego</Link>
+              </li>
+            )}
             {/* <li>
               <Link href='/home'>Configurações</Link>
             </li> */}

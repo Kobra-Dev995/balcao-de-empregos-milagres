@@ -5,6 +5,11 @@ import { supabase } from '../../utils/db';
 import { useEffect, useState } from 'react';
 import { parseCookies } from 'nookies';
 import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
+import CardEmprego from '../../components/CardEmprego';
+import CardProfissionalSkeleton from '../../components/CardProfissionalSkeleton';
+import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { toLower } from 'lodash';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -14,15 +19,19 @@ export async function getServerSideProps(ctx) {
     .select('*')
     .eq('Email', cookies.AuthEmail);
 
+  let { data: Todos_usuarios, error_todos } = await supabase
+    .from('Usuarios_comum')
+    .select('*');
+
   return {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
-      users: Usuarios_comum,
+      user: Usuarios_comum,
+      todos: Todos_usuarios,
     },
   };
 }
-
 
 function deleteCookie() {
   destroyCookie(null, 'AuthEmail');
@@ -30,7 +39,21 @@ function deleteCookie() {
 
 export default function Vagas(props) {
   const { data: session, status } = useSession();
-  const [users, setUsers] = useState(props.users[0] || '');
+  const [user, setUser] = useState(props.user[0] || '');
+  const [todos, setTodos] = useState(props.todos || '');
+  const [searchCar, setSearchCar] = useState('');
+
+  const filterSearchUser = todos.filter((user) => {
+    const userLowerCaseName = toLower(user.Name);
+    const userLowerCaseCity = toLower(user.City);
+    const searchLower = searchCar.toLowerCase();
+
+    //console.log(userLowerCase);
+    return (
+      userLowerCaseName.includes(searchLower) ||
+      userLowerCaseCity.includes(searchLower)
+    );
+  });
 
   const { refresh, replace } = useRouter();
 
@@ -66,162 +89,88 @@ export default function Vagas(props) {
             </header>
 
             <div className='flex justify-end mt-7 items-center'>
-              <div>
-                <div className='daisy-dropdown'>
-                  <div tabIndex={0} role='button' className='daisy-btn m-1'>
-                    Filtrar
-                  </div>
-                  <ul
-                    tabIndex={0}
-                    className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
-                  >
-                    <li>
-                      <a>Milagres</a>
-                    </li>
-                    <li>
-                      <a>Barro</a>
-                    </li>
-                  </ul>
+              <div className='daisy-dropdown daisy-dropdown-hover'>
+                <div tabIndex={0} role='button' className='daisy-btn m-1'>
+                  Filtrar
                 </div>
+                <ul
+                  tabIndex={0}
+                  className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
+                >
+                  <li>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Abaiara
+                    </span>
+                  </li>
+                  <li>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Barro
+                    </span>
+                  </li>
+                  <li>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Mauriti
+                    </span>
+                  </li>
+                  <li>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Milagres
+                    </span>
+                  </li>
+                </ul>
               </div>
-              <label className='input input-bordered flex items-center gap-2 mx-4'>
+
+              <label className='input-rounded rounded-xl input flex items-center gap-2 mx-4'>
                 <input
                   type='text'
-                  className='grow'
-                  placeholder='Buscar Empregos'
+                  className='input-rounded input border-x-0 rounded-none '
+                  placeholder='Pesquisar Profissional'
+                  onKeyDown={(e) => {
+                    e.key === 'Enter' ? setSearchCar(e.target.value) : false;
+                  }}
                 />
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 16 16'
-                  fill='currentColor'
-                  className='w-4 h-4 opacity-70'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z'
-                    clipRule='evenodd'
-                  />
-                </svg>
+                <FaMagnifyingGlass className='text-xl' />
               </label>
             </div>
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <figure>
-                <img src='/fachada.jpg' alt='empresa1' />
-              </figure>
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>
-                  Assistente Administrativo
-                </h2>
-                <span>Empresa: Ahuha Tecnologia</span>
-                <span>
-                  Horario: <br /> Segunda a Sexta
-                </span>
-                <span>
-                  Salário: <br /> R$ 1903
-                </span>
-                <div className='card-actions justify-end'>
-                  <button className='btn btn-primary bg-primary-green'>
-                    Interessado
-                  </button>
-                </div>
-              </div>
-            </div>
 
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <figure>
-                <img src='/fachada2.jpg' alt='empresa2' />
-              </figure>
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>Design Gráfico</h2>
-                <span>Empresa: Mercado Assis </span>
-                <span>
-                  Horario: <br /> Segunda e Quarta
-                </span>
-                <span>
-                  Salário: <br /> R$ 1460
-                </span>
-                <div className='card-actions justify-end'>
-                  <button className='btn btn-primary bg-primary-green'>
-                    Interessado
-                  </button>
-                </div>
-              </div>
-            </div>
+            <section className='flex justify-center flex-wrap'>
+              <Suspense fallback={<CardProfissionalSkeleton />}>
+                {filterSearchUser.map((user) => {
+                  if (user.ServiceType === 'Trabalhar') {
+                    return (
+                      <CardEmprego JobRole={'Assistente Administrativo'} Business={'Burundangas'} DaysWeek={'Segunda a Sexta'} Salary={'200,00'}/>
+                    );
+                  }
+                })}
+              </Suspense>
+            </section>
 
-            <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
-              <figure>
-                <img src='/fachada4.png' alt='empresa4' />
-              </figure>
-              <div className='card-body'>
-                <h2 className='card-title font-bold'>Mercados GIN</h2>
-                <span>Empresa: Soga ATM </span>
-                <span>
-                  Horario: <br /> Segunda a Sexta
-                </span>
-                <span>
-                  Salário: <br /> R$ 1903
-                </span>
-                <div className='card-actions justify-end'>
-                  <button className='btn btn-primary bg-primary-green'>
-                    Interessado
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className='join flex justify-center my-12'>
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='1'
-                checked
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='2'
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='3'
-              />
-              <input
-                className='join-item btn btn-square'
-                type='radio'
-                name='options'
-                aria-label='4'
-              />
-            </div>
-
-            <footer className='footer  bg-primary-blue text-gray-50'>
-              <nav>
-                <h6 className='footer-title pt-2'>Informações</h6>
-                <a className='text-gray-50 text-pretty'>
-                  Sobre nosso site, temos total autoria de utilizar de <br />
-                  recursos nativo de bancos de dados de terceiros <br /> não se
-                  preocupe ao expor suas informações.
-                </a>
-              </nav>
-              <nav>
-                <h6 className='footer-title'>Contato</h6>
-                <a className='text-gray-50'>
-                  suporte.balcãodeempregos@gmail.com
-                </a>
-              </nav>
-              <nav>
-                <h6 className='footer-title'>Visite Nossas Páginas</h6>
-                <a className='link link-hover text-gray-50 underline'>
-                  Vapt Vupt
-                </a>
-                <a className='link link-hover text-gray-50 underline'>Cursos</a>
-                <a className='link link-hover text-gray-50 underline'>
-                  Jovem Aprendiz
-                </a>
-              </nav>
-            </footer>
+            <footer className='daisy-footer bg-primary-blue text-gray-50 p-4'>
+                <nav>
+                  <h6 className='daisy-footer-title pt-2'>Informações</h6>
+                  <a className='text-gray-50 text-pretty'>
+                    Sobre nosso site, temos total autoria de utilizar de <br />
+                    recursos nativo de bancos de dados de terceiros <br /> não
+                    se preocupe ao expor suas informações.
+                  </a>
+                </nav>
+                <nav>
+                  <h6 className='daisy-footer-title'>Contato</h6>
+                  <a className='text-gray-50'>
+                    suporte.balcoodeempregos@gmail.com
+                  </a>
+                </nav>
+                <nav>
+                  <h6 className='daisy-footer-title'>Visite Nossas Páginas</h6>
+                  <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
+                    Vapt Vupt
+                  </Link>
+                  <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                    Empreendedor
+                  </Link>
+                  <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
+                </nav>
+              </footer>
           </main>
         </div>
         <div className='daisy-drawer-side'>
@@ -232,7 +181,6 @@ export default function Vagas(props) {
           ></label>
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
-            {/* Sidebar content here */}
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
                 {!session?.user.image ? (
@@ -254,9 +202,9 @@ export default function Vagas(props) {
 
               <span className='font-semibold text-base'>
                 {!session?.user.name
-                  ? !users?.Name
-                    ? 'Seja Bem-vindo!'
-                    : users.Nickname
+                  ? !user?.Name
+                    ? 'Inscreva-se para mais informações'
+                    : user.Nickname
                   : session.user.name}
               </span>
             </div>
@@ -264,15 +212,19 @@ export default function Vagas(props) {
             <li>
               <Link href='/home'>Inicio</Link>
             </li>
-            <li>
-              <Link href='/home/conta'>Conta</Link>
-            </li>
+            {user?.Name && (
+              <li>
+                <Link href='/home/conta'>Conta</Link>
+              </li>
+            )}
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
-            <li>
-              <Link href='/home/vagas'>Vagas de Emprego</Link>
-            </li>
+            {user?.Name && (
+              <li>
+                <Link href='/home/vagas'>Vagas de Emprego</Link>
+              </li>
+            )}
             {/* <li>
               <Link href='/home'>Configurações</Link>
             </li> */}
@@ -296,18 +248,18 @@ export default function Vagas(props) {
                     signOut();
                   }
 
-                  if (users.Name) {
+                  if (user.Name) {
                     deleteCookie();
                     refresh();
                   }
 
-                  if (!session?.user.name && !users.Name) {
+                  if (!session?.user.name && !user.Name) {
                     replace('/');
                   }
                 }}
               >
                 {!session?.user.name
-                  ? !users?.Name
+                  ? !user?.Name
                     ? 'Entrar'
                     : 'Sair'
                   : 'Sair'}

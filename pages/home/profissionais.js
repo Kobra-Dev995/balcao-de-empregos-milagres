@@ -3,11 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/db';
-import { parseCookies, destroyCookie } from 'nookies';
 import { useRouter } from 'next/navigation';
 import CardProfissional from '../../components/CardProfissional';
-import { padStart, slice, split, toNumber, toLower } from 'lodash';
+import CardProfissionalSkeleton from '../../components/CardProfissionalSkeleton';
+import { padStart, split, toNumber, toLower } from 'lodash';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { Suspense } from 'react';
+import { parseCookies, destroyCookie } from 'nookies';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -47,7 +49,10 @@ export default function Profissionais(props) {
     const searchLower = searchCar.toLowerCase();
 
     //console.log(userLowerCase);
-    return userLowerCaseName.includes(searchLower) || userLowerCaseCity.includes(searchLower);
+    return (
+      userLowerCaseName.includes(searchLower) ||
+      userLowerCaseCity.includes(searchLower)
+    );
   });
 
   const date = new Date();
@@ -103,16 +108,24 @@ export default function Profissionais(props) {
                   className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
                 >
                   <li>
-                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Abaiara</span>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Abaiara
+                    </span>
                   </li>
                   <li>
-                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Barro</span>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Barro
+                    </span>
                   </li>
                   <li>
-                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Mauriti</span>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Mauriti
+                    </span>
                   </li>
                   <li>
-                    <span onClick={e => setSearchCar(e.target.innerHTML)}>Milagres</span>
+                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                      Milagres
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -123,9 +136,7 @@ export default function Profissionais(props) {
                   className='input-rounded input border-x-0 rounded-none '
                   placeholder='Pesquisar Profissional'
                   onKeyDown={(e) => {
-                    e.key === 'Enter'
-                      ? setSearchCar(e.target.value)
-                      : false;
+                    e.key === 'Enter' ? setSearchCar(e.target.value) : false;
                   }}
                 />
                 <FaMagnifyingGlass className='text-xl' />
@@ -133,23 +144,25 @@ export default function Profissionais(props) {
             </div>
 
             <section className='flex justify-center flex-wrap'>
-              {filterSearchUser.map((user) => {
-                if (user.ServiceType === 'Trabalhar') {
-                  return (
-                    <CardProfissional
-                      key={user.id}
-                      Name={user.Name}
-                      Age={ageUser}
-                      Occupation={user.OccupationArea}
-                      City={user.City}
-                      Neighborhood={user.Neighborhood}
-                      Phone={user.Phone}
-                      Email={user.Email}
-                      Biography={user.Biography}
-                    />
-                  );
-                }
-              })}
+              <Suspense fallback={<CardProfissionalSkeleton />}>
+                {filterSearchUser.map((user) => {
+                  if (user.ServiceType === 'Trabalhar') {
+                    return (
+                      <CardProfissional
+                        key={user.id}
+                        Name={user.Name}
+                        Age={ageUser}
+                        Occupation={user.OccupationArea}
+                        City={user.City}
+                        Neighborhood={user.Neighborhood}
+                        Phone={user.Phone}
+                        Email={user.Email}
+                        Biography={user.Biography}
+                      />
+                    );
+                  }
+                })}
+              </Suspense>
             </section>
 
             {/* <section className='w-full flex justify-center my-4'>
@@ -182,9 +195,9 @@ export default function Profissionais(props) {
               </div>
             </section> */}
 
-            <footer className='footer  bg-primary-blue text-gray-50'>
+            <footer className='daisy-footer  bg-primary-blue text-gray-50 p-4'>
               <nav>
-                <h6 className='footer-title pt-2'>Informações</h6>
+                <h6 className='daisy-footer-title pt-2'>Informações</h6>
                 <a className='text-gray-50 text-pretty'>
                   Sobre nosso site, temos total autoria de utilizar de <br />
                   recursos nativo de bancos de dados de terceiros <br /> não se
@@ -192,20 +205,20 @@ export default function Profissionais(props) {
                 </a>
               </nav>
               <nav>
-                <h6 className='footer-title'>Contato</h6>
+                <h6 className='daisy-footer-title'>Contato</h6>
                 <a className='text-gray-50'>
-                  suporte.balcãodeempregos@gmail.com
+                  suporte.balcoodeempregos@gmail.com
                 </a>
               </nav>
               <nav>
-                <h6 className='footer-title'>Visite Nossas Páginas</h6>
-                <a className='link link-hover text-gray-50 underline'>
+                <h6 className='daisy-footer-title'>Visite Nossas Páginas</h6>
+                <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
                   Vapt Vupt
-                </a>
-                <a className='link link-hover text-gray-50 underline'>Cursos</a>
-                <a className='link link-hover text-gray-50 underline'>
-                  Jovem Aprendiz
-                </a>
+                </Link>
+                <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                  Empreendedor
+                </Link>
+                <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
               </nav>
             </footer>
           </main>
@@ -240,7 +253,7 @@ export default function Profissionais(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !user?.Name
-                    ? 'Seja Bem-vindo!'
+                    ? 'Inscreva-se para mais informações'
                     : user.Nickname
                   : session.user.name}
               </span>
@@ -249,15 +262,19 @@ export default function Profissionais(props) {
             <li>
               <Link href='/home'>Inicio</Link>
             </li>
-            <li>
-              <Link href='/home/conta'>Conta</Link>
-            </li>
+            {user?.Name && (
+              <li>
+                <Link href='/home/conta'>Conta</Link>
+              </li>
+            )}
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
-            <li>
-              <Link href='/home/vagas'>Vagas de Emprego</Link>
-            </li>
+            {user?.Name && (
+              <li>
+                <Link href='/home/vagas'>Vagas de Emprego</Link>
+              </li>
+            )}
             {/* <li>
               <Link href='/home'>Configurações</Link>
             </li> */}

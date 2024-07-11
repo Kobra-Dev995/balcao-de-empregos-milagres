@@ -603,7 +603,7 @@ export default function Conta(props) {
             className='daisy-drawer-overlay'
           ></label>
 
-          <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
+<ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
                 {!session?.user.image ? (
@@ -626,7 +626,7 @@ export default function Conta(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !users?.Name
-                    ? 'Seja Bem-vindo!'
+                    ? 'Inscreva-se para mais informações'
                     : users.Nickname
                   : session.user.name}
               </span>
@@ -635,15 +635,19 @@ export default function Conta(props) {
             <li>
               <Link href='/home'>Inicio</Link>
             </li>
-            <li>
-              <Link href='/home/conta'>Conta</Link>
-            </li>
+            {users?.Name && (
+              <li>
+                <Link href='/home/conta'>Conta</Link>
+              </li>
+            )}
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
-            <li>
-              <Link href='/home/vagas'>Vagas de Emprego</Link>
-            </li>
+            {users?.Name && (
+              <li>
+                <Link href='/home/vagas'>Vagas de Emprego</Link>
+              </li>
+            )}
             {/* <li>
               <Link href='/home'>Configurações</Link>
             </li> */}
