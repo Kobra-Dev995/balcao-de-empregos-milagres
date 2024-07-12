@@ -150,6 +150,7 @@ export default function Profissionais(props) {
                     return (
                       <CardProfissional
                         key={user.id}
+                        Picture={user.Picture}
                         Name={user.Name}
                         Age={ageUser}
                         Occupation={user.OccupationArea}

@@ -138,7 +138,13 @@ export default function Vagas(props) {
                 {filterSearchUser.map((user) => {
                   if (user.ServiceType === 'Trabalhar') {
                     return (
-                      <CardEmprego JobRole={'Assistente Administrativo'} Business={'Burundangas'} DaysWeek={'Segunda a Sexta'} Salary={'200,00'}/>
+                      <CardEmprego
+                        key={user.id}
+                        JobRole={'Assistente Administrativo'}
+                        Business={'Burundangas'}
+                        DaysWeek={'Segunda a Sexta'}
+                        Salary={'200,00'}
+                      />
                     );
                   }
                 })}
@@ -146,31 +152,31 @@ export default function Vagas(props) {
             </section>
 
             <footer className='daisy-footer bg-primary-blue text-gray-50 p-4'>
-                <nav>
-                  <h6 className='daisy-footer-title pt-2'>Informações</h6>
-                  <a className='text-gray-50 text-pretty'>
-                    Sobre nosso site, temos total autoria de utilizar de <br />
-                    recursos nativo de bancos de dados de terceiros <br /> não
-                    se preocupe ao expor suas informações.
-                  </a>
-                </nav>
-                <nav>
-                  <h6 className='daisy-footer-title'>Contato</h6>
-                  <a className='text-gray-50'>
-                    suporte.balcoodeempregos@gmail.com
-                  </a>
-                </nav>
-                <nav>
-                  <h6 className='daisy-footer-title'>Visite Nossas Páginas</h6>
-                  <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
-                    Vapt Vupt
-                  </Link>
-                  <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
-                    Empreendedor
-                  </Link>
-                  <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
-                </nav>
-              </footer>
+              <nav>
+                <h6 className='daisy-footer-title pt-2'>Informações</h6>
+                <a className='text-gray-50 text-pretty'>
+                  Sobre nosso site, temos total autoria de utilizar de <br />
+                  recursos nativo de bancos de dados de terceiros <br /> não se
+                  preocupe ao expor suas informações.
+                </a>
+              </nav>
+              <nav>
+                <h6 className='daisy-footer-title'>Contato</h6>
+                <a className='text-gray-50'>
+                  suporte.balcoodeempregos@gmail.com
+                </a>
+              </nav>
+              <nav>
+                <h6 className='daisy-footer-title'>Visite Nossas Páginas</h6>
+                <Link href='https://agendamento.meuvaptvupt.com.br/agendamento/'>
+                  Vapt Vupt
+                </Link>
+                <Link href='https://www.gov.br/empresas-e-negocios/pt-br/empreendedor'>
+                  Empreendedor
+                </Link>
+                <Link href='https://1mio.com.br/'>Jovem Aprendiz</Link>
+              </nav>
+            </footer>
           </main>
         </div>
         <div className='daisy-drawer-side'>

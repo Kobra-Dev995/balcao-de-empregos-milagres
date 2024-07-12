@@ -37,6 +37,7 @@ export default function Conta(props) {
   const [neighborhood, setNeighborhood] = useState('');
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [pictureUser, setPictureUser] = useState('/fotoperfil1.png');
   const [nickname, setNickname] = useState('');
   const [biography, setBiography] = useState('');
   const [occupation, setOccupation] = useState('');
@@ -231,24 +232,58 @@ export default function Conta(props) {
             </header>
 
             <div className='bg-fotoconta bg-cover w-full h-28 mt-4 pl-4 pt-7 '>
-              <div className='w-24 rounded-full ml-4 mt-8'>
-                <figure className='w-24'>
-                  {!session?.user.image ? (
+              <div className='w-24 rounded-full ml-4 mt-8 flex flex-col gap-2'>
+                <figure className='w-24 h-24 rounded-full overflow-hidden flex items-center justify-center'>
+                  {!users?.Name ? (
                     <Image
-                      src='/fotoperfil1.png'
+                      src={pictureUser}
                       width={1200}
                       height={1200}
                       alt=''
-                    />
-                  ) : (
-                    <Image
-                      src={`${session.user.image}`}
-                      width='47'
-                      height='47'
+                      />
+                    ) : (
+                      <Image
+                      src={`${users.Picture}`}
+                      width={1200}
+                      height={1200}
                       alt=''
+                      objectFit='cover'
                     />
                   )}
                 </figure>
+                <label htmlFor='inputFile'>
+                  <div className='btn btn-primary btn-rounded btn-sm'>
+                    Editar Foto
+                  </div>
+                </label>
+                <input
+                  type='file'
+                  accept='image/*'
+                  id='inputFile'
+                  formEncType='multipart/form-data'
+                  name='image_file'
+                  className='hidden fixed left-0'
+                  onChange={function handleCurriculum(e) {
+                    if (e.target.files && e.target.files[0]) {
+                      var reader = new FileReader();
+                      reader.onload = async function (event) {
+                        //console.log(event.target.result);
+
+                        let { data, error } = await supabase
+                          .from('Usuarios_comum')
+                          .update({ Picture: event.target.result })
+                          .eq('Email', props.AuthEmail);
+
+                        setPictureUser(event.target.result);
+                        refresh();
+                      };
+                      reader.readAsDataURL(e.target.files[0]);
+                    } else {
+                      alert('Erro ao carregar imagem! :(');
+                      setPictureUser('/fotoperfil2.jpg');
+                    }
+                  }}
+                />
               </div>
             </div>
 
@@ -603,7 +638,7 @@ export default function Conta(props) {
             className='daisy-drawer-overlay'
           ></label>
 
-<ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
+          <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
             <div className='flex justify-start items-center gap-2 w-full'>
               <figure className='bg-blue-400'>
                 {!session?.user.image ? (

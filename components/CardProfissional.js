@@ -9,15 +9,17 @@ export default function CardProfissional({
   Phone,
   Email,
   Biography,
+  Picture,
 }) {
   return (
     <>
       <div className='daisy-card daisy-card-compact w-96 bg-zinc-200/20 shadow-xl m-5 flex flex-col  items-center'>
-        <figure className='w-28 flex justify-center'>
-          <Image
-            src={'/fotoperfil.jpg'}
-            width={1000}
-            height={1000}
+      <figure className='w-28 h-28 rounded-full overflow-hidden flex items-center justify-center'>
+      <Image
+            src={Picture || '/fotoperfil.jpg'}
+            width={1200}
+            height={1200}
+            objectFit='cover'
             className='w-full'
             alt='Foto do profissional'
           />
