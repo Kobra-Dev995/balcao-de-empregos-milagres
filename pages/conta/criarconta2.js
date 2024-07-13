@@ -29,8 +29,18 @@ export default function CriarContaPasso2({
   const { replace } = useRouter();
 
   const [verificationEmail, setVerificationEmail] = useState(false);
-
+  
   async function handleSubmit(event) {
+    event.preventDefault();
+    
+    setTextButtonFinalizar('Finalizando');
+    setIsLoading(true);
+    
+    setTimeout(() => {
+      setTextButtonFinalizar('Finalizando');
+      setIsLoading(true);
+    }, 3000);
+
     if (
       passwordLetterM &&
       passwordLetterm &&
@@ -73,8 +83,7 @@ export default function CriarContaPasso2({
         //   setVerificationEmail(false);
         // }, 1000);
         // document.getElementById('my_modal_2').showModal();
-        setIsLoading(true);
-        setTextButtonFinalizar('Finalizando');
+        setTextButtonFinalizar('Finalizado');
         setTimeout(() => replace('/'), 2000);
       } else {
         alert('Erro ao criar conta :(\nTente novamente mais tarde');

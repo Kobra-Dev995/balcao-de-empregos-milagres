@@ -10,6 +10,7 @@ import { padStart, split, toNumber, toLower } from 'lodash';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { Suspense } from 'react';
 import { parseCookies, destroyCookie } from 'nookies';
+import DialogCardProfissional from '../../components/DialogCardProfissional';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -66,6 +67,11 @@ export default function Profissionais(props) {
   const ageUser = year - toNumber(userDate[2]);
 
   const { refresh, replace } = useRouter();
+
+  function handleClick(e) {
+    console.log(e);
+    document.querySelector(`#modal_profissional${'129'}`).showModal();
+  }
 
   return (
     <>
@@ -148,18 +154,78 @@ export default function Profissionais(props) {
                 {filterSearchUser.map((user) => {
                   if (user.ServiceType === 'Trabalhar') {
                     return (
-                      <CardProfissional
-                        key={user.id}
-                        Picture={user.Picture}
-                        Name={user.Name}
-                        Age={ageUser}
-                        Occupation={user.OccupationArea}
-                        City={user.City}
-                        Neighborhood={user.Neighborhood}
-                        Phone={user.Phone}
-                        Email={user.Email}
-                        Biography={user.Biography}
-                      />
+                      <>
+                        <CardProfissional
+                          key={user.id}
+                          Picture={user.Picture}
+                          Name={user.Name}
+                          Age={year - toNumber(split(user.Birthday, '/')[2])}
+                          Occupation={user.OccupationArea}
+                          City={user.City}
+                          Neighborhood={user.Neighborhood}
+                          Phone={user.Phone}
+                          Email={user.Email}
+                          Biography={user.Biography}
+                          eventClick={() => {
+                            document.querySelector(`#modal_profissional${user.id}`).showModal();
+                          }}
+                        />
+
+                        <dialog key={user.id} id={`modal_profissional${user.id}`} className='daisy-modal'>
+                          <div className='daisy-modal-box w-11/12 max-w-5xl flex flex-col'>
+                            <div className='w-full'>
+                              <h3 className='font-bold text-lg pb-2'>
+                                Dados Pessoais do Profissional
+                              </h3>
+                            </div>
+
+                            <section className='w-full flex flex-col gap-4'>
+                              <div className='w-full'>
+                                <h4 className='font-semibold w-full text-start'>
+                                  Nome:
+                                </h4>
+                                <h3>{user.Name}</h3>
+                              </div>
+                              <div className='w-full'>
+                                <h4 className='font-semibold w-full text-start'>
+                                  Idade:
+                                </h4>
+                                <h3>{ageUser}</h3>
+                              </div>
+                              <div className='w-full'>
+                                <h4 className='font-semibold w-full text-start'>
+                                  Contato:
+                                </h4>
+                                <h3>{user.Phone}</h3>
+                                <h3>{user.Email}</h3>
+                              </div>
+                              <div className='w-full'>
+                                <h4 className='font-semibold w-full text-start'>
+                                  Área de Atuação:
+                                </h4>
+                                <h3>{user.OccupationArea}</h3>
+                              </div>
+                              <div className='w-full'>
+                                <h4 className='font-semibold w-full text-start'>
+                                  Sobre:
+                                </h4>
+                                <h3>{user.Biography}</h3>
+                              </div>
+                            </section>
+
+                            <div className='daisy-modal-action w-full flex justify-center'>
+                              <form method='dialog' className='flex gap-5'>
+                                <button
+                                  class='btn btn-outline-error'
+                                  type='submit'
+                                >
+                                  Fechar
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
+                      </>
                     );
                   }
                 })}
