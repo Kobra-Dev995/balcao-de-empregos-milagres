@@ -19,8 +19,8 @@ export async function getServerSideProps(ctx) {
     .select('*')
     .eq('Email', cookies.AuthEmail);
 
-  let { data: Todos_usuarios, error_todos } = await supabase
-    .from('Usuarios_comum')
+  let { data: Todos_Empregos, error_todos } = await supabase
+    .from('Empregos')
     .select('*');
 
   return {
@@ -28,7 +28,7 @@ export async function getServerSideProps(ctx) {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
       user: Usuarios_comum,
-      todos: Todos_usuarios,
+      todos: Todos_Empregos,
     },
   };
 }
@@ -43,6 +43,16 @@ export default function Vagas(props) {
   const [todos, setTodos] = useState(props.todos || '');
   const [searchCar, setSearchCar] = useState('');
 
+  const [pictureJob, setPictureJob] = useState('/');
+  const [jobRole, setJobRole] = useState('');
+  const [business, setBusiness] = useState('');
+  const [daysWeek, setDaysWeek] = useState('');
+  const [salary, setSalary] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('');
+  const [neighborhood, setNeighborhood] = useState('');
+  const [city, setCity] = useState('default');
+
   const filterSearchUser = todos.filter((user) => {
     const userLowerCaseName = toLower(user.Name);
     const userLowerCaseCity = toLower(user.City);
@@ -56,6 +66,91 @@ export default function Vagas(props) {
   });
 
   const { refresh, replace } = useRouter();
+
+  function handleJobRole(event) {
+    setJobRole(event.target.value);
+  }
+
+  function handleBusiness(event) {
+    setBusiness(event.target.value);
+  }
+
+  function handleDaysWeek(event) {
+    setDaysWeek(event.target.value);
+  }
+
+  function handleSalary(event) {
+    setSalary(event.target.value);
+  }
+
+  function handlePhone(event) {
+    setPhone(event.target.value);
+  }
+
+  function handleEmail(event) {
+    setEmail(event.target.value);
+  }
+
+  function handleNeighborhood(event) {
+    setNeighborhood(event.target.value);
+  }
+
+  function handleCity(event) {
+    setCity(event.target.value);
+  }
+
+  function handleClose() {
+    setJobRole('')
+    setEmail('')
+    setNeighborhood('')
+    setPhone('')
+    setBusiness('')
+    setDaysWeek('')
+    setSalary('')
+    setCity('default')
+  }
+
+  async function handleSubmit(e) {
+    if (
+      jobRole &&
+      email &&
+      neighborhood &&
+      phone &&
+      business &&
+      daysWeek &&
+      salary
+    ) {
+      let { data, error } = await supabase.from('Empregos').insert({
+        user_id: user.id,
+        Photo: pictureJob,
+        JobRole: jobRole,
+        Business: business,
+        Week: daysWeek,
+        Salary: salary,
+        Phone: phone,
+        Email: email,
+        Address: neighborhood,
+        City: city,
+      });
+
+      alert('Você criou um emprego com sucesso com sucesso! :)');
+      setTimeout(() => {
+        handleClose();
+      }, 1000);
+
+      setTimeout(() => {
+        refresh();
+      }, 2000);
+
+    } else {
+      alert('Preencha todos os campos corretamente!');
+    }
+  }
+
+  async function handleDeleteJob(event){
+    let { data, error } = await supabase.from('Empregos').delete().eq('id', job.id);
+
+  }
 
   return (
     <>
@@ -88,65 +183,259 @@ export default function Vagas(props) {
               </span>
             </header>
 
-            <div className='flex justify-end mt-7 items-center'>
-              <div className='daisy-dropdown daisy-dropdown-hover'>
-                <div tabIndex={0} role='button' className='daisy-btn m-1'>
-                  Filtrar
-                </div>
-                <ul
-                  tabIndex={0}
-                  className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
+            <div className='flex justify-between mt-7 items-center px-5'>
+              <div className='flex justify-center items-center'>
+                {user.ServiceType === 'Contratar' && (<button
+                  className='daisy-btn bg-red-400 text-white hover:bg-red-600 rounded-2xl'
+                  onClick={() =>
+                    document.getElementById('my_modal').showModal()
+                  }
                 >
-                  <li>
-                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
-                      Abaiara
-                    </span>
-                  </li>
-                  <li>
-                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
-                      Barro
-                    </span>
-                  </li>
-                  <li>
-                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
-                      Mauriti
-                    </span>
-                  </li>
-                  <li>
-                    <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
-                      Milagres
-                    </span>
-                  </li>
-                </ul>
+                  Criar Vaga
+                </button>)}
               </div>
+              <div className='flex justify-center items-center'>
+                <div className='daisy-dropdown daisy-dropdown-hover'>
+                  <div tabIndex={0} role='button' className='daisy-btn m-1'>
+                    Filtrar
+                  </div>
+                  <ul
+                    tabIndex={0}
+                    className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
+                  >
+                    <li>
+                      <span onClick={(e) => setSearchCar('')}>Todos</span>
+                    </li>
+                    <li>
+                      <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                        Abaiara
+                      </span>
+                    </li>
+                    <li>
+                      <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                        Barro
+                      </span>
+                    </li>
+                    <li>
+                      <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                        Mauriti
+                      </span>
+                    </li>
+                    <li>
+                      <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
+                        Milagres
+                      </span>
+                    </li>
+                  </ul>
+                </div>
 
-              <label className='input-rounded rounded-xl input flex items-center gap-2 mx-4'>
-                <input
-                  type='text'
-                  className='input-rounded input border-x-0 rounded-none '
-                  placeholder='Pesquisar Profissional'
-                  onKeyDown={(e) => {
-                    e.key === 'Enter' ? setSearchCar(e.target.value) : false;
-                  }}
-                />
-                <FaMagnifyingGlass className='text-xl' />
-              </label>
+                <label className='input-rounded rounded-xl input flex items-center gap-2 mx-4'>
+                  <input
+                    type='text'
+                    className='input-rounded input border-x-0 rounded-none '
+                    placeholder='Pesquisar Profissional'
+                    onKeyDown={(e) => {
+                      e.key === 'Enter' ? setSearchCar(e.target.value) : false;
+                    }}
+                  />
+                  <FaMagnifyingGlass className='text-xl' />
+                </label>
+              </div>
             </div>
+
+            <dialog id='my_modal' className='daisy-modal'>
+              <div className='daisy-modal-box w-11/12 max-w-5xl flex flex-col'>
+                <div className='w-full'>
+                  <h3 className='font-bold text-lg pb-2'>Editar Conta</h3>
+                </div>
+
+                <section className='w-full flex flex-col gap-4'>
+                  <div className='w-full'>
+                    <label htmlFor='inputFile' className='cursor-pointer'>
+                      <figure className='w-24 h-24 rounded-full overflow-hidden flex items-center justify-center'>
+                        <Image
+                          src={`${pictureJob}`}
+                          width={1200}
+                          height={1200}
+                          alt=''
+                          objectFit='cover'
+                        />
+                      </figure>
+                      <span>Adicionar Foto</span>
+                    </label>
+                    <input
+                      type='file'
+                      accept='image/*'
+                      id='inputFile'
+                      formEncType='multipart/form-data'
+                      name='image_file'
+                      className='hidden fixed left-0'
+                      onChange={function handleCurriculum(e) {
+                        if (e.target.files && e.target.files[0]) {
+                          var reader = new FileReader();
+                          reader.onload = async function (event) {
+                            //console.log(event.target.result);
+
+                            setPictureJob(event.target.result);
+                          };
+                          reader.readAsDataURL(e.target.files[0]);
+                        } else {
+                          alert('Erro ao carregar imagem! :(');
+                          setPictureJob('/');
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Cargo de Trabalho
+                    </h4>
+                    <input
+                      type='text'
+                      placeholder='Assistente Financeiro'
+                      onChange={handleJobRole}
+                      value={jobRole}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Empresa</h4>
+                    <input
+                      type='text'
+                      placeholder='Negócios Todavida'
+                      onChange={handleBusiness}
+                      value={business}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Dias na Semana
+                    </h4>
+                    <input
+                      type='text'
+                      onChange={handleDaysWeek}
+                      placeholder='Segunda a Sábado'
+                      value={daysWeek}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Salário</h4>
+                    <input
+                      type='text'
+                      onChange={handleSalary}
+                      placeholder='1.368,00'
+                      value={salary}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Telefone para Contato
+                    </h4>
+                    <input
+                      type='text'
+                      onChange={handlePhone}
+                      placeholder='(88)92426-6543'
+                      value={phone}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Email</h4>
+                    <input
+                      type='text'
+                      onChange={handleEmail}
+                      placeholder='exemplo@gmail.com'
+                      value={email}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>Cidade</h4>
+                    <select
+                      class='select select-ghost-primary'
+                      defaultValue={'default'}
+                      onChange={handleCity}
+                    >
+                      <option value='default' disabled>
+                        Selecione outra cidade
+                      </option>
+                      <option value={'Milagres'}>Milagres</option>
+                      <option value={'Barro'}>Barro</option>
+                      <option value={'Mauriti'}>Mauriti</option>
+                      <option value={'Abaiara'}>Abaiara</option>
+                    </select>
+                  </div>
+
+                  <div className='w-full'>
+                    <h4 className='font-semibold w-full text-start'>
+                      Endereço
+                    </h4>
+                    <input
+                      type='text'
+                      onChange={handleNeighborhood}
+                      placeholder='Rua Manoel, centro - 231'
+                      value={neighborhood}
+                      className='input input-rounded input-ghost-primary w-full max-w-full'
+                    />
+                  </div>
+                </section>
+
+                <div className='daisy-modal-action w-full flex justify-center'>
+                  <form method='dialog' className='flex gap-5'>
+                    <button
+                      class='btn btn-outline-success'
+                      type='button'
+                      onClick={handleSubmit}
+                    >
+                      Salvar
+                    </button>
+                    <button
+                      class='btn btn-outline-error'
+                      type='submit'
+                      onClick={handleClose}
+                    >
+                      Fechar
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
 
             <section className='flex justify-center flex-wrap'>
               <Suspense fallback={<CardProfissionalSkeleton />}>
-                {filterSearchUser.map((user) => {
-                  if (user.ServiceType === 'Trabalhar') {
+                {filterSearchUser.map((job) => {
+                  
                     return (
                       <CardEmprego
-                        key={user.id}
-                        JobRole={'Assistente Administrativo'}
-                        Business={'Burundangas'}
-                        DaysWeek={'Segunda a Sexta'}
-                        Salary={'200,00'}
+                        key={job.id}
+                        JobRole={job.JobRole}
+                        Business={job.Business}
+                        DaysWeek={job.Week}
+                        Salary={job.Salary}
+                        Address={job.Address}
+                        Email={job.Email}
+                        Phone={job.Phone}
+                        Picture={job.Photo}
+                        chave={job.id}
+                        userId={user.id}
+                        userOwner={job.user_id}
+                        deleteJob={async () =>{
+                          let { data, error } = await supabase.from('Empregos').delete().eq('id', job.id);
+                          refresh()
+                        }}
                       />
                     );
-                  }
+                  
                 })}
               </Suspense>
             </section>

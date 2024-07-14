@@ -1,11 +1,34 @@
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { parseCookies, destroyCookie } from 'nookies';
+import { supabase } from '../../utils/db';
+
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+
+  let { data: Usuarios_comum, error } = await supabase
+    .from('Email_Verification')
+    .select('*')
+
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+      user: Usuarios_comum,
+    },
+  };
+}
+
+function deleteCookie() {
+  destroyCookie(null, 'AuthEmail');
+}
 
 export let codigoAleatorio = ['0', '0', '0', '0', '0', '0'];
-export default function CriarContaPasso3({ email, verificationEmail }) {
+export default function CriarContaPasso3({user, email, verificationEmail }) {
   const [userEmail, setUserEmail] = useState();
-  const [textButton, setTextButton] = useState();
+  const [textButton, setTextButton] = useState('Código Enviado!');
   const [textButtonFinalizar, setTextButtonFinalizar] =
     useState('Código Incorreto');
   const [isLoading, setIsLoading] = useState(false);
@@ -37,43 +60,44 @@ export default function CriarContaPasso3({ email, verificationEmail }) {
   }
 
   function SendCodeToEmail() {
-    codigoAleatorio.length = 0;
-    const random = () => Math.floor(Math.random() * 10);
 
-    for (let i = 0; i < 6; i++) {
-      codigoAleatorio.push(random());
-    }
+    // codigoAleatorio.length = 0;
+    // const random = () => Math.floor(Math.random() * 10);
 
-    async function sendCode() {
-      if (userEmail) {
-        const res = await fetch('/api/nodemailer', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            code: codigoAleatorio.join(''),
-          }),
-        });
-      } else {
-        testeAPI();
-      }
-    }
+    // for (let i = 0; i < 6; i++) {
+    //   codigoAleatorio.push(random());
+    // }
 
-    sendCode();
-    console.log('codigo de verificação: ', codigoAleatorio.join(''));
-    setTextButton('Enviar Novamente');
-    setTimeout(() => {
-      setTextButton('Enviar Código');
-    }, 5000);
+    // async function sendCode() {
+    //   if (userEmail) {
+    //     const res = await fetch('/api/nodemailer', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         email: email,
+    //         code: codigoAleatorio.join(''),
+    //       }),
+    //     });
+    //   } else {
+    //     testeAPI();
+    //   }
+    // }
+
+    // sendCode();
+    // console.log('codigo de verificação: ', codigoAleatorio.join(''));
+    // setTextButton('Enviar Novamente');
+    // setTimeout(() => {
+    //   setTextButton('Enviar Código');
+    // }, 5000);
   }
 
   // definir um variavel para fazer a requisiçao da api - variavel na tela 2
 
-  if (verificationEmail) {
-    testeAPI();
-  }
+  // if (verificationEmail) {
+  //   testeAPI();
+  // }
 
   return (
     <>

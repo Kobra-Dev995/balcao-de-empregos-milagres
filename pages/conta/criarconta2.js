@@ -1,14 +1,40 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import CriarContaPasso3 from './criarconta3';
+import { parseCookies, destroyCookie } from 'nookies';
+import { supabase } from '../../utils/db';
 
-export default function CriarContaPasso2({
+export async function getServerSideProps(ctx) {
+  const cookies = parseCookies(ctx);
+
+  let { data: Email, error } = await supabase
+    .from('Email_Verification')
+    .select('*')
+    
+
+  return {
+    props: {
+      msg: '[SERVER] ola mundo',
+      AuthEmail: cookies.AuthEmail || 'Não tem cookies',
+      users: Email,
+    },
+  };
+}
+
+function deleteCookie() {
+  destroyCookie(null, 'AuthEmail');
+}
+
+let codigoAleatorio = []
+
+export default function CriarContaPasso2({users,
   name,
   phone,
   birthday,
   city,
   neighborhood,
+
 }) {
+
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
   const [passwordNumber, setPasswordNumber] = useState(false);
@@ -91,6 +117,35 @@ export default function CriarContaPasso2({
     } else {
       alert('Preencha todos os campos corretamente!');
     }
+  }
+
+  function SendCodeToEmail() {
+    codigoAleatorio.length = 0;
+    const random = () => Math.floor(Math.random() * 10);
+
+    for (let i = 0; i < 6; i++) {
+      codigoAleatorio.push(random());
+    }
+
+    async function sendCode() {
+      let { data: emailUser, error } = await supabase.from('Email_Verification').insert({Email: email, Code: codigoAleatorio}).eq('Email', email)
+
+      if (email) {
+        const res = await fetch('/api/nodemailer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: emailUser.Email,
+            code: codigoAleatorio.join(''),
+          }),
+        });
+      }
+    }
+
+    sendCode();
+    console.log('codigo de verificação: ', codigoAleatorio.join(''));
   }
 
   async function testeAPI() {
@@ -422,7 +477,7 @@ export default function CriarContaPasso2({
               Continuar
             </button> */}
 
-            <div className='w-5/12 daisy-modal-action'>
+            <div className='w-5/12 daisy-modal-action flex items-center'>
               <form method='dialog' className='w-full'>
                 <button className='w-full bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'>
                   Voltar
@@ -433,7 +488,12 @@ export default function CriarContaPasso2({
             <button
               type='button'
               className='cursor-pointer flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={handleSubmit}
+              onClick={() => {
+                handleSubmit
+                // SendCodeToEmail
+                // //let {data, error_verification} = await supabase.from('Email_Verification').insert({Email: email, Code: codigoAleatorio})
+                // push('/conta/criarconta3')
+              }}
             >
               {isLoading && (
                 <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>

@@ -18,7 +18,7 @@ export async function getServerSideProps(ctx) {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
-      users: Usuarios_comum,
+      user: Usuarios_comum,
     },
   };
 }
@@ -29,19 +29,19 @@ function deleteCookie() {
 
 export default function Conta(props) {
   const { refresh, replace } = useRouter();
-  const [users, setUsers] = useState(props.users[0] || '');
+  const [user, setUser] = useState(props.user[0] || '');
 
-  const [birthday, setBirthday] = useState('');
-  const [phone, setPhone] = useState('');
-  const [city, setCity] = useState('');
-  const [neighborhood, setNeighborhood] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
+  const [birthday, setBirthday] = useState(props.user[0].Birthday || '');
+  const [phone, setPhone] = useState(props.user[0].Phone || '');
+  const [city, setCity] = useState(props.user[0].City || '');
+  const [neighborhood, setNeighborhood] = useState(props.user[0].Neighborhood || '');
+  const [email, setEmail] = useState(props.user[0].Email || '');
+  const [name, setName] = useState(props.user[0].Name || '');
   const [pictureUser, setPictureUser] = useState('/fotoperfil1.png');
-  const [nickname, setNickname] = useState('');
-  const [biography, setBiography] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [passwordUser, setPasswordUser] = useState('');
+  const [nickname, setNickname] = useState(props.user[0].Nickname || '');
+  const [biography, setBiography] = useState(props.user[0].Biography || '');
+  const [occupation, setOccupation] = useState(props.user[0].OccupationArea || '');
+  const [passwordUser, setPasswordUser] = useState(props.user[0].Password || '');
 
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
@@ -234,7 +234,7 @@ export default function Conta(props) {
             <div className='bg-fotoconta bg-cover w-full h-28 mt-4 pl-4 pt-7 '>
               <div className='w-24 rounded-full ml-4 mt-8 flex flex-col gap-2'>
                 <figure className='w-24 h-24 rounded-full overflow-hidden flex items-center justify-center'>
-                  {!users?.Name ? (
+                  {!user?.Name ? (
                     <Image
                       src={pictureUser}
                       width={1200}
@@ -243,7 +243,7 @@ export default function Conta(props) {
                       />
                     ) : (
                       <Image
-                      src={`${users.Picture}`}
+                      src={`${user.Picture}`}
                       width={1200}
                       height={1200}
                       alt=''
@@ -301,44 +301,44 @@ export default function Conta(props) {
               </div>
               <span>
                 <a className='text-sm'>
-                  {!users?.Name ? 'Formação Acadêmica' : users.OccupationArea}
+                  {!user?.Name ? 'Formação Acadêmica' : user.OccupationArea}
                 </a>
                 <h3 className='font-bold text-lg'>
-                  {!users?.Name ? 'Nome Completo' : users.Name}
+                  {!user?.Name ? 'Nome Completo' : user.Name}
                 </h3>
               </span>
               <span>
                 <h3 className='font-bold'>Contato</h3>
                 <a className='text-sm'>
-                  {!users?.Name ? 'exemplo@gmail.com' : users.Email}
+                  {!user?.Name ? 'exemplo@gmail.com' : user.Email}
                 </a>
                 <br />
                 <a className='text-sm'>
-                  {!users?.Name ? '(__)_____-____' : users.Phone}
+                  {!user?.Name ? '(__)_____-____' : user.Phone}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Área de Atuação:</h3>
                 <a className='text-sm'>
-                  {!users?.Name ? 'Profissão' : users.OccupationArea}
+                  {!user?.Name ? 'Profissão' : user.OccupationArea}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Localidade:</h3>
                 <a className='text-sm'>
-                  {!users?.Name ? '' : users.City}
+                  {!user?.Name ? '' : user.City}
                   {' - '}
-                  {!users?.Name ? '' : users.Neighborhood}
+                  {!user?.Name ? '' : user.Neighborhood}
                 </a>
               </span>
               <span>
                 <h3 className='font-bold'>Data de Nascimento:</h3>
-                <a className='text-sm'>{!users?.Name ? '' : users.Birthday}</a>
+                <a className='text-sm'>{!user?.Name ? '' : user.Birthday}</a>
               </span>
               <span>
                 <h3 className='font-bold'>Descrição:</h3>
                 <a className='text-sm'>
-                  {!users?.Name ? 'Nenhuma descrição' : users.Biography}
+                  {!user?.Name ? 'Nenhuma descrição' : user.Biography}
                 </a>
               </span>
             </div>
@@ -660,9 +660,9 @@ export default function Conta(props) {
 
               <span className='font-semibold text-base'>
                 {!session?.user.name
-                  ? !users?.Name
+                  ? !user?.Name
                     ? 'Inscreva-se para mais informações'
-                    : users.Nickname
+                    : user.Nickname
                   : session.user.name}
               </span>
             </div>
@@ -670,7 +670,7 @@ export default function Conta(props) {
             <li>
               <Link href='/home'>Inicio</Link>
             </li>
-            {users?.Name && (
+            {user?.Name && (
               <li>
                 <Link href='/home/conta'>Conta</Link>
               </li>
@@ -678,7 +678,7 @@ export default function Conta(props) {
             <li>
               <Link href='/home/profissionais'>Profissionais</Link>
             </li>
-            {users?.Name && (
+            {user?.Name && (
               <li>
                 <Link href='/home/vagas'>Vagas de Emprego</Link>
               </li>
@@ -706,18 +706,18 @@ export default function Conta(props) {
                     signOut();
                   }
 
-                  if (users.Name) {
+                  if (user.Name) {
                     deleteCookie();
                     refresh();
                   }
 
-                  if (!session?.user.name && !users.Name) {
+                  if (!session?.user.name && !user.Name) {
                     replace('/');
                   }
                 }}
               >
                 {!session?.user.name
-                  ? !users?.Name
+                  ? !user?.Name
                     ? 'Entrar'
                     : 'Sair'
                   : 'Sair'}

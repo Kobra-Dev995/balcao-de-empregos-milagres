@@ -114,6 +114,11 @@ export default function Profissionais(props) {
                   className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
                 >
                   <li>
+                    <span onClick={(e) => setSearchCar('')}>
+                      Todos
+                    </span>
+                  </li>
+                  <li>
                     <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
                       Abaiara
                     </span>
@@ -166,65 +171,9 @@ export default function Profissionais(props) {
                           Phone={user.Phone}
                           Email={user.Email}
                           Biography={user.Biography}
-                          eventClick={() => {
-                            document.querySelector(`#modal_profissional${user.id}`).showModal();
-                          }}
+                          chave={user.id}
                         />
-
-                        <dialog key={user.id} id={`modal_profissional${user.id}`} className='daisy-modal'>
-                          <div className='daisy-modal-box w-11/12 max-w-5xl flex flex-col'>
-                            <div className='w-full'>
-                              <h3 className='font-bold text-lg pb-2'>
-                                Dados Pessoais do Profissional
-                              </h3>
-                            </div>
-
-                            <section className='w-full flex flex-col gap-4'>
-                              <div className='w-full'>
-                                <h4 className='font-semibold w-full text-start'>
-                                  Nome:
-                                </h4>
-                                <h3>{user.Name}</h3>
-                              </div>
-                              <div className='w-full'>
-                                <h4 className='font-semibold w-full text-start'>
-                                  Idade:
-                                </h4>
-                                <h3>{ageUser}</h3>
-                              </div>
-                              <div className='w-full'>
-                                <h4 className='font-semibold w-full text-start'>
-                                  Contato:
-                                </h4>
-                                <h3>{user.Phone}</h3>
-                                <h3>{user.Email}</h3>
-                              </div>
-                              <div className='w-full'>
-                                <h4 className='font-semibold w-full text-start'>
-                                  Área de Atuação:
-                                </h4>
-                                <h3>{user.OccupationArea}</h3>
-                              </div>
-                              <div className='w-full'>
-                                <h4 className='font-semibold w-full text-start'>
-                                  Sobre:
-                                </h4>
-                                <h3>{user.Biography}</h3>
-                              </div>
-                            </section>
-
-                            <div className='daisy-modal-action w-full flex justify-center'>
-                              <form method='dialog' className='flex gap-5'>
-                                <button
-                                  class='btn btn-outline-error'
-                                  type='submit'
-                                >
-                                  Fechar
-                                </button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
+                        
                       </>
                     );
                   }
