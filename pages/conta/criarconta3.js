@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { parseCookies, destroyCookie } from 'nookies';
@@ -32,7 +31,7 @@ export default function CriarContaPasso3({user, email, verificationEmail }) {
   const [textButtonFinalizar, setTextButtonFinalizar] =
     useState('Código Incorreto');
   const [isLoading, setIsLoading] = useState(false);
-  //const { replace } = useRouter();
+  const { replace,push } = useRouter();
 
   function handleInput(e) {
     const input = e.target.value;
