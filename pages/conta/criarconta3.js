@@ -32,7 +32,7 @@ export default function CriarContaPasso3({user, email, verificationEmail }) {
   const [textButtonFinalizar, setTextButtonFinalizar] =
     useState('Código Incorreto');
   const [isLoading, setIsLoading] = useState(false);
-  const { replace } = useRouter();
+  //const { replace } = useRouter();
 
   function handleInput(e) {
     const input = e.target.value;
