@@ -8,8 +8,7 @@ export async function getServerSideProps(ctx) {
 
   let { data: Email, error } = await supabase
     .from('Email_Verification')
-    .select('*')
-    
+    .select('*');
 
   return {
     props: {
@@ -24,17 +23,16 @@ function deleteCookie() {
   destroyCookie(null, 'AuthEmail');
 }
 
-let codigoAleatorio = []
+let codigoAleatorio = [];
 
-export default function CriarContaPasso2({users,
+export default function CriarContaPasso2({
+  users,
   name,
   phone,
   birthday,
   city,
   neighborhood,
-
 }) {
-
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
   const [passwordNumber, setPasswordNumber] = useState(false);
@@ -42,8 +40,7 @@ export default function CriarContaPasso2({users,
   const [passwordLength, setPasswordLength] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
   const [passwordUser, setPasswordUser] = useState('');
-  const [textButtonFinalizar, setTextButtonFinalizar] =
-    useState('Finalizar');
+  const [textButtonFinalizar, setTextButtonFinalizar] = useState('Finalizar');
   const [isLoading, setIsLoading] = useState(false);
 
   const [nickname, setNickname] = useState('');
@@ -55,13 +52,13 @@ export default function CriarContaPasso2({users,
   const { replace } = useRouter();
 
   const [verificationEmail, setVerificationEmail] = useState(false);
-  
+
   async function handleSubmit(event) {
     event.preventDefault();
-    
+
     setTextButtonFinalizar('Finalizando');
     setIsLoading(true);
-    
+
     setTimeout(() => {
       setTextButtonFinalizar('Finalizando');
       setIsLoading(true);
@@ -79,41 +76,70 @@ export default function CriarContaPasso2({users,
         return;
       }
 
-      const response = await fetch('/api/responseForm', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: name,
-          phone: phone,
-          birthday: birthday,
-          city: city,
-          neighborhood: neighborhood,
-          nickname: nickname,
-          email: email,
-          password: passwordUser,
-          serviceType: serviceType,
-          occupation: occupation,
-          biography: bio,
-        }),
-      });
-
-      console.log('enviou');
-
-      if (response.status == 200) {
-        console.log('api recebeu');
-        // setVerificationEmail(true);
-        // setTimeout(() => {
-        //   setVerificationEmail(false);
-        // }, 1000);
-        // document.getElementById('my_modal_2').showModal();
-        setTextButtonFinalizar('Finalizado');
-        setTimeout(() => replace('/'), 2000);
-      } else {
-        alert('Erro ao criar conta :(\nTente novamente mais tarde');
+      async function handleInsert(
+        name,
+        birthday,
+        phone,
+        city,
+        neighborhood,
+        nickname,
+        email,
+        password,
+        serviceType,
+        biography,
+        occupation
+      ) {
+        const { data, error } = await supabase.from('Usuarios_comum').insert({
+          Name: name,
+          Birthday: birthday,
+          Phone: phone,
+          City: city,
+          Neighborhood: neighborhood,
+          Nickname: nickname,
+          Email: email,
+          Password: password,
+          ServiceType: serviceType,
+          Biography: biography,
+          Picture: '/',
+          OccupationArea: occupation,
+        });
       }
+
+      // const response = await fetch('/api/responseForm', {
+      //   method: 'POST',
+      //   headers: {
+      //     Accept: 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      handleInsert(
+        name,
+        phone,
+        birthday,
+        city,
+        neighborhood,
+        nickname,
+        email,
+        passwordUser,
+        serviceType,
+        occupation,
+        bio
+      ),
+        // });
+
+        console.log('enviou');
+
+      // if (response.status == 200) {
+      //   console.log('api recebeu');
+      // setVerificationEmail(true);
+      // setTimeout(() => {
+      //   setVerificationEmail(false);
+      // }, 1000);
+      // document.getElementById('my_modal_2').showModal();
+      setTextButtonFinalizar('Finalizado');
+      setTimeout(() => replace('/'), 2000);
+      // } else {
+      //   alert('Erro ao criar conta :(\nTente novamente mais tarde');
+      // }
     } else {
       alert('Preencha todos os campos corretamente!');
     }
@@ -128,7 +154,10 @@ export default function CriarContaPasso2({users,
     }
 
     async function sendCode() {
-      let { data: emailUser, error } = await supabase.from('Email_Verification').insert({Email: email, Code: codigoAleatorio}).eq('Email', email)
+      let { data: emailUser, error } = await supabase
+        .from('Email_Verification')
+        .insert({ Email: email, Code: codigoAleatorio })
+        .eq('Email', email);
 
       if (email) {
         const res = await fetch('/api/nodemailer', {
@@ -212,8 +241,6 @@ export default function CriarContaPasso2({users,
       setPasswordUser('');
     }
   }
-
-  
 
   function ShowPasswordUser() {
     const input = document.getElementById('Senha_User');
@@ -488,9 +515,7 @@ export default function CriarContaPasso2({users,
             <button
               type='button'
               className='cursor-pointer flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={
-                handleSubmit
-              }
+              onClick={handleSubmit}
             >
               {isLoading && (
                 <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>
