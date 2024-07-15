@@ -43,7 +43,7 @@ export default function CriarContaPasso2({users,
   const [passwordCheck, setPasswordCheck] = useState(false);
   const [passwordUser, setPasswordUser] = useState('');
   const [textButtonFinalizar, setTextButtonFinalizar] =
-    useState('Finalizar Cadastro');
+    useState('Finalizar');
   const [isLoading, setIsLoading] = useState(false);
 
   const [nickname, setNickname] = useState('');
@@ -373,7 +373,7 @@ export default function CriarContaPasso2({users,
                 <span
                   className={passwordChar ? 'text-[#20a714]' : 'text-[#A71414]'}
                 >
-                  Símbolos
+                  Símbolos (Ex: !@#$%&*)
                 </span>
 
                 <span
@@ -488,12 +488,9 @@ export default function CriarContaPasso2({users,
             <button
               type='button'
               className='cursor-pointer flex items-center justify-center gap-3 w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
-              onClick={() => {
+              onClick={
                 handleSubmit
-                // SendCodeToEmail
-                // //let {data, error_verification} = await supabase.from('Email_Verification').insert({Email: email, Code: codigoAleatorio})
-                // push('/conta/criarconta3')
-              }}
+              }
             >
               {isLoading && (
                 <span className='daisy-loading daisy-loading-dots daisy-loading-md'></span>
