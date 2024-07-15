@@ -10,7 +10,7 @@ async function handleSelect(e) {
 async function handleInsert(name, birthday, phone, city, neighborhood, nickname, email, password, serviceType, biography, occupation) {
   const { data, error } = await supabase
     .from('Usuarios_comum')
-    .insert({ Name: name, Birthday: birthday, Phone: phone, City: city, Neighborhood: neighborhood, Nickname: nickname, Email: email, Password: password, ServiceType: serviceType, Biography: biography, Picture: '',OccupationArea: occupation });
+    .insert({ Name: name, Birthday: birthday, Phone: phone, City: city, Neighborhood: neighborhood, Nickname: nickname, Email: email, Password: password, ServiceType: serviceType, Biography: biography, Picture: '/',OccupationArea: occupation });
 }
 
 export default async function Page1(req, res) {

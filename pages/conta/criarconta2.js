@@ -461,7 +461,7 @@ export default function CriarContaPasso2({users,
             </section>
           </section>
 
-          <section className='w-full h-24 flex items-center justify-between p-5 pb-5'>
+          <section className='w-full h-24 flex items-end justify-between p-5 pb-5'>
             {/* <button
               className='w-5/12 bg-secundary-blue text-white text-base font-semibold rounded-xl px-4 py-2'
               type='button'
