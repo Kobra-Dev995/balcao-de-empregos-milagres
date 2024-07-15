@@ -28,20 +28,28 @@ function deleteCookie() {
 }
 
 export default function Conta(props) {
-  const { refresh, replace } = useRouter();
+  const { refresh, replace, push } = useRouter();
   const [user, setUser] = useState(props.user[0] || '');
 
   const [birthday, setBirthday] = useState(props.user[0].Birthday || '');
   const [phone, setPhone] = useState(props.user[0].Phone || '');
   const [city, setCity] = useState(props.user[0].City || '');
-  const [neighborhood, setNeighborhood] = useState(props.user[0].Neighborhood || '');
+  const [neighborhood, setNeighborhood] = useState(
+    props.user[0].Neighborhood || ''
+  );
   const [email, setEmail] = useState(props.user[0].Email || '');
   const [name, setName] = useState(props.user[0].Name || '');
   const [pictureUser, setPictureUser] = useState('/fotoperfil1.png');
   const [nickname, setNickname] = useState(props.user[0].Nickname || '');
   const [biography, setBiography] = useState(props.user[0].Biography || '');
-  const [occupation, setOccupation] = useState(props.user[0].OccupationArea || '');
-  const [passwordUser, setPasswordUser] = useState(props.user[0].Password || '');
+  const [occupation, setOccupation] = useState(
+    props.user[0].OccupationArea || ''
+  );
+  const [passwordUser, setPasswordUser] = useState(
+    props.user[0].Password || ''
+  );
+
+  
 
   const [passwordLetterM, setPasswordLetterM] = useState(false);
   const [passwordLetterm, setPasswordLetterm] = useState(false);
@@ -240,9 +248,9 @@ export default function Conta(props) {
                       width={1200}
                       height={1200}
                       alt=''
-                      />
-                    ) : (
-                      <Image
+                    />
+                  ) : (
+                    <Image
                       src={`${user.Picture}`}
                       width={1200}
                       height={1200}
@@ -556,7 +564,7 @@ export default function Conta(props) {
                     <h4 className='font-semibold w-full text-start'>Cidade</h4>
                     <select
                       class='select select-ghost-primary'
-                      defaultValue={'default'}
+                      defaultValue={`${city}`}
                       onChange={handleCity}
                     >
                       <option value='default' disabled>
@@ -668,19 +676,23 @@ export default function Conta(props) {
             </div>
 
             <li>
-              <Link href='/home'>Inicio</Link>
+              <button onClick={() => push('/home')}>Inicio</button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/conta'>Conta</Link>
+                <button onClick={() => push('/home/conta')}>Conta</button>
               </li>
             )}
             <li>
-              <Link href='/home/profissionais'>Profissionais</Link>
+              <button onClick={() => push('/home/profissionais')}>
+                Profissionais
+              </button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/vagas'>Vagas de Emprego</Link>
+                <button onClick={() => push('/home/vagas')}>
+                  Vagas de Emprego
+                </button>
               </li>
             )}
             {/* <li>

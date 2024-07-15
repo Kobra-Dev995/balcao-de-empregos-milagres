@@ -6,8 +6,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../utils/db';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { parseCookies, destroyCookie } from 'nookies';
+import CardEmprego from '../../components/CardEmprego';
+import CardProfissionalSkeleton from '../../components/CardProfissionalSkeleton';
 
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
@@ -17,11 +19,16 @@ export async function getServerSideProps(ctx) {
     .select('*')
     .eq('Email', cookies.AuthEmail);
 
+  let { data: Todos_Empregos, error_todos } = await supabase
+    .from('Empregos')
+    .select('*');
+
   return {
     props: {
       msg: '[SERVER] ola mundo',
       AuthEmail: cookies.AuthEmail || 'Não tem cookies',
       users: Usuarios_comum,
+      todos: Todos_Empregos,
     },
   };
 }
@@ -34,15 +41,14 @@ export default function Home(props) {
   // https://lh3.googleusercontent.com/a/ACg8ocIHk6MvlM8N1XNTwlWank2jYQ6y7tJuk9SWhf78GelQ1Fac7d0=s96-c
   const { data: session, status } = useSession();
   const [users, setUsers] = useState(props.users[0] || '');
+  const [todos, setTodos] = useState(props.todos || '');
 
-  const { replace, refresh } = useRouter();
+  const { replace, refresh, push } = useRouter();
 
   return (
     <>
       <Head>
-        <titledaisy-footer-title>
-          Tela Home - Balcão Empregos
-        </titledaisy-footer-title>
+        <title>Tela Home - Balcão Empregos</title>
       </Head>
 
       <div className='daisy-drawer'>
@@ -105,7 +111,32 @@ export default function Home(props) {
                 </div>
               </div>
 
-              <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
+              <section className='flex justify-center flex-wrap'>
+                <Suspense fallback={<CardProfissionalSkeleton />}>
+                  <CardEmprego
+                    JobRole={todos[0].JobRole}
+                    Business={todos[0].Business}
+                    DaysWeek={todos[0].Week}
+                    Salary={todos[0].Salary}
+                    Address={todos[0].Address}
+                    Email={todos[0].Email}
+                    Phone={todos[0].Phone}
+                    Picture={todos[0].Photo}
+                    chave={todos[0].id}
+                    userId={users.id}
+                    userOwner={todos[0].user_id}
+                    deleteJob={async () => {
+                      let { data, error } = await supabase
+                        .from('Empregos')
+                        .delete()
+                        .eq('id', job.id);
+                      refresh();
+                    }}
+                  />
+                </Suspense>
+              </section>
+
+              {/* <div className='card card-compact w-96 bg-base-100 shadow-xl m-5'>
                 <figure>
                   <img src='/fachada.jpg' alt='empresa1' />
                 </figure>
@@ -172,7 +203,7 @@ export default function Home(props) {
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               <footer className='daisy-footer  bg-primary-blue text-gray-50 p-4'>
                 <nav>
@@ -240,19 +271,23 @@ export default function Home(props) {
             </div>
 
             <li>
-              <Link href='/home'>Inicio</Link>
+              <button onClick={() => push('/home')}>Inicio</button>
             </li>
             {users?.Name && (
               <li>
-                <Link href='/home/conta'>Conta</Link>
+                <button onClick={() => push('/home/conta')}>Conta</button>
               </li>
             )}
             <li>
-              <Link href='/home/profissionais'>Profissionais</Link>
+              <button onClick={() => push('/home/profissionais')}>
+                Profissionais
+              </button>
             </li>
             {users?.Name && (
               <li>
-                <Link href='/home/vagas'>Vagas de Emprego</Link>
+                <button onClick={() => push('/home/vagas')}>
+                  Vagas de Emprego
+                </button>
               </li>
             )}
             {/* <li>

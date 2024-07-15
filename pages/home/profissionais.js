@@ -66,7 +66,7 @@ export default function Profissionais(props) {
 
   const ageUser = year - toNumber(userDate[2]);
 
-  const { refresh, replace } = useRouter();
+  const { refresh, replace, push } = useRouter();
 
   function handleClick(e) {
     console.log(e);
@@ -114,9 +114,7 @@ export default function Profissionais(props) {
                   className='daisy-dropdown-content z-[1] daisy-menu p-2 shadow bg-base-100 rounded-box w-52'
                 >
                   <li>
-                    <span onClick={(e) => setSearchCar('')}>
-                      Todos
-                    </span>
+                    <span onClick={(e) => setSearchCar('')}>Todos</span>
                   </li>
                   <li>
                     <span onClick={(e) => setSearchCar(e.target.innerHTML)}>
@@ -173,7 +171,6 @@ export default function Profissionais(props) {
                           Biography={user.Biography}
                           chave={user.id}
                         />
-                        
                       </>
                     );
                   }
@@ -276,19 +273,23 @@ export default function Profissionais(props) {
             </div>
 
             <li>
-              <Link href='/home'>Inicio</Link>
+              <button onClick={() => push('/home')}>Inicio</button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/conta'>Conta</Link>
+                <button onClick={() => push('/home/conta')}>Conta</button>
               </li>
             )}
             <li>
-              <Link href='/home/profissionais'>Profissionais</Link>
+              <button onClick={() => push('/home/profissionais')}>
+                Profissionais
+              </button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/vagas'>Vagas de Emprego</Link>
+                <button onClick={() => push('/home/vagas')}>
+                  Vagas de Emprego
+                </button>
               </li>
             )}
             {/* <li>

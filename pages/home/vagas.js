@@ -65,7 +65,7 @@ export default function Vagas(props) {
     );
   });
 
-  const { refresh, replace } = useRouter();
+  const { refresh, replace, push } = useRouter();
 
   function handleJobRole(event) {
     setJobRole(event.target.value);
@@ -505,19 +505,23 @@ export default function Vagas(props) {
             </div>
 
             <li>
-              <Link href='/home'>Inicio</Link>
+              <button onClick={() => push('/home')}>Inicio</button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/conta'>Conta</Link>
+                <button onClick={() => push('/home/conta')}>Conta</button>
               </li>
             )}
             <li>
-              <Link href='/home/profissionais'>Profissionais</Link>
+              <button onClick={() => push('/home/profissionais')}>
+                Profissionais
+              </button>
             </li>
             {user?.Name && (
               <li>
-                <Link href='/home/vagas'>Vagas de Emprego</Link>
+                <button onClick={() => push('/home/vagas')}>
+                  Vagas de Emprego
+                </button>
               </li>
             )}
             {/* <li>

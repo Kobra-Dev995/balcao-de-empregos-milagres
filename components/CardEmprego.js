@@ -17,7 +17,7 @@ export default function CardEmprego({
 }) {
   return (
     <>
-      <div className='daisy-card daisy-card-compact w-96 bg-zinc-200/20 shadow-xl m-5 flex flex-col items-center'>
+      <div className='daisy-card daisy-card-compact w-96 min-h-96 bg-zinc-200/20 shadow-xl m-5 flex flex-col items-center'>
         <figure className='w-full h-auto flex justify-center'>
           <Image
             src={`${Picture}`}
