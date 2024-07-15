@@ -61,43 +61,42 @@ export default function CriarContaPasso3({user, email, verificationEmail }) {
 
   function SendCodeToEmail() {
 
-    // codigoAleatorio.length = 0;
-    // const random = () => Math.floor(Math.random() * 10);
+    codigoAleatorio.length = 0;
+    const random = () => Math.floor(Math.random() * 10);
 
-    // for (let i = 0; i < 6; i++) {
-    //   codigoAleatorio.push(random());
-    // }
+    for (let i = 0; i < 6; i++) {
+      codigoAleatorio.push(random());
+    }
 
-    // async function sendCode() {
-    //   if (userEmail) {
-    //     const res = await fetch('/api/nodemailer', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         email: email,
-    //         code: codigoAleatorio.join(''),
-    //       }),
-    //     });
-    //   } else {
-    //     testeAPI();
-    //   }
-    // }
+    async function sendCode() {
+      if (userEmail) {
+        const res = await fetch('/api/nodemailer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            code: codigoAleatorio.join(''),
+          }),
+        });
+      } else {
+        testeAPI();
+      }
+    }
 
-    // sendCode();
-    // console.log('codigo de verificação: ', codigoAleatorio.join(''));
-    // setTextButton('Enviar Novamente');
-    // setTimeout(() => {
-    //   setTextButton('Enviar Código');
-    // }, 5000);
+    sendCode();
+    console.log('codigo de verificação: ', codigoAleatorio.join(''));
+    setTextButton('Enviar Novamente');
+    setTimeout(() => {
+      setTextButton('Enviar Código');
+    }, 5000);
   }
 
-  // definir um variavel para fazer a requisiçao da api - variavel na tela 2
 
-  // if (verificationEmail) {
-  //   testeAPI();
-  // }
+  if (verificationEmail) {
+    testeAPI();
+  }
 
   return (
     <>
