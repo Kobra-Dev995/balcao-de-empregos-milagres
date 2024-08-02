@@ -31,6 +31,7 @@ module.exports = {
       prefix: 'sira-',
     }),
   ],
+  
   daisyui: {
     prefix: 'daisy-',
     themes: ['light', 'dark', 'cupcake'],

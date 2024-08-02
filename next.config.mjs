@@ -1,7 +1,7 @@
 // /** @type {import('next').NextConfig} */
 
 // const NextConfig = {
-//   //reactStrictMode: false,
+//   reactStrictMode: false,
 // };
 
 // const pwa = withPWA({
