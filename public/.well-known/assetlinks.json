@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.balcao_de_empregos_milagres.twa",
+        "sha256_cert_fingerprints": ["C2:11:B6:7E:D6:3D:7B:51:31:3F:79:31:ED:D7:D1:4B:59:3E:61:A2:53:55:FF:35:9F:A6:1D:B1:BB:78:E2:75"]
+      }
+    }]
