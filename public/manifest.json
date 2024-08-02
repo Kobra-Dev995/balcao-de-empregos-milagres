@@ -24,5 +24,8 @@
   "short_name": "Balcão de Empregos",
   "id": "Balcão de Empregos",
   "description": "Balcão de Empregos um aplicativo que visa uma maior visibilidade de pessoas que buscam um trabalho.",
-  "categories": ["business", "government", "utilities"]
+  "categories": ["business", "government", "utilities"],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
 }
