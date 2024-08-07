@@ -264,7 +264,7 @@ export default function Home(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !users?.Name
-                    ? 'Inscreva-se para mais informações'
+                    ? 'Inscreva-se para mais informações!'
                     : users.Nickname
                   : session.user.name}
               </span>
