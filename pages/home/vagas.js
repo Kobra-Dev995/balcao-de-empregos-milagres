@@ -100,14 +100,14 @@ export default function Vagas(props) {
   }
 
   function handleClose() {
-    setJobRole('')
-    setEmail('')
-    setNeighborhood('')
-    setPhone('')
-    setBusiness('')
-    setDaysWeek('')
-    setSalary('')
-    setCity('default')
+    setJobRole('');
+    setEmail('');
+    setNeighborhood('');
+    setPhone('');
+    setBusiness('');
+    setDaysWeek('');
+    setSalary('');
+    setCity('default');
   }
 
   async function handleSubmit(e) {
@@ -141,15 +141,16 @@ export default function Vagas(props) {
       setTimeout(() => {
         refresh();
       }, 2000);
-
     } else {
       alert('Preencha todos os campos corretamente!');
     }
   }
 
-  async function handleDeleteJob(event){
-    let { data, error } = await supabase.from('Empregos').delete().eq('id', job.id);
-
+  async function handleDeleteJob(event) {
+    let { data, error } = await supabase
+      .from('Empregos')
+      .delete()
+      .eq('id', job.id);
   }
 
   return (
@@ -185,14 +186,16 @@ export default function Vagas(props) {
 
             <div className='flex justify-between mt-7 items-center px-5'>
               <div className='flex justify-center items-center'>
-                {user.ServiceType === 'Contratar' && (<button
-                  className='daisy-btn bg-red-400 text-white hover:bg-red-600 rounded-2xl'
-                  onClick={() =>
-                    document.getElementById('my_modal').showModal()
-                  }
-                >
-                  Criar Vaga
-                </button>)}
+                {user.ServiceType === 'Contratar' && (
+                  <button
+                    className='daisy-btn bg-red-400 text-white hover:bg-red-600 rounded-2xl'
+                    onClick={() =>
+                      document.getElementById('my_modal').showModal()
+                    }
+                  >
+                    Criar Vaga
+                  </button>
+                )}
               </div>
               <div className='flex justify-center items-center'>
                 <div className='daisy-dropdown daisy-dropdown-hover'>
@@ -414,28 +417,29 @@ export default function Vagas(props) {
             <section className='flex justify-center flex-wrap'>
               <Suspense fallback={<CardProfissionalSkeleton />}>
                 {filterSearchUser.map((job) => {
-                  
-                    return (
-                      <CardEmprego
-                        key={job.id}
-                        JobRole={job.JobRole}
-                        Business={job.Business}
-                        DaysWeek={job.Week}
-                        Salary={job.Salary}
-                        Address={job.Address}
-                        Email={job.Email}
-                        Phone={job.Phone}
-                        Picture={job.Photo}
-                        chave={job.id}
-                        userId={user.id}
-                        userOwner={job.user_id}
-                        deleteJob={async () =>{
-                          let { data, error } = await supabase.from('Empregos').delete().eq('id', job.id);
-                          refresh()
-                        }}
-                      />
-                    );
-                  
+                  return (
+                    <CardEmprego
+                      key={job.id}
+                      JobRole={job.JobRole}
+                      Business={job.Business}
+                      DaysWeek={job.Week}
+                      Salary={job.Salary}
+                      Address={job.Address}
+                      Email={job.Email}
+                      Phone={job.Phone}
+                      Picture={job.Photo}
+                      chave={job.id}
+                      userId={user.id}
+                      userOwner={job.user_id}
+                      deleteJob={async () => {
+                        let { data, error } = await supabase
+                          .from('Empregos')
+                          .delete()
+                          .eq('id', job.id);
+                        refresh();
+                      }}
+                    />
+                  );
                 })}
               </Suspense>
             </section>
@@ -476,21 +480,17 @@ export default function Vagas(props) {
           ></label>
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
-            <div className='flex justify-start items-center gap-2 w-full'>
-              <figure className='bg-blue-400'>
-                {!session?.user.image ? (
-                  <Image
-                    src={`/fotoperfil.jpg`}
-                    width='47'
-                    height='47'
-                    alt=''
-                  />
+            <div className='flex flex-col justify-start items-center gap-2 w-full'>
+              <figure className='w-24 h-24 rounded-full overflow-hidden flex items-center justify-center'>
+                {!user?.Name ? (
+                  <Image src={'/fotoperfil1.png'} width={1200} height={1200} alt='' />
                 ) : (
                   <Image
-                    src={`${session.user.image}`}
-                    width='47'
-                    height='47'
+                    src={`${user.Picture}`}
+                    width={1200}
+                    height={1200}
                     alt=''
+                    objectFit='cover'
                   />
                 )}
               </figure>
@@ -498,7 +498,7 @@ export default function Vagas(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !user?.Name
-                    ? 'Inscreva-se para mais informações'
+                    ? 'Inscreva-se para mais informações!'
                     : user.Nickname
                   : session.user.name}
               </span>

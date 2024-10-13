@@ -113,16 +113,16 @@ export default function CriarContaPasso2({
       //   },
       handleInsert(
         name,
-        phone,
         birthday,
+        phone,
         city,
         neighborhood,
         nickname,
         email,
         passwordUser,
         serviceType,
-        occupation,
-        bio
+        bio,
+        occupation
       ),
         // });
 

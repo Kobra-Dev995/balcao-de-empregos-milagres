@@ -244,21 +244,17 @@ export default function Profissionais(props) {
           ></label>
 
           <ul className='daisy-menu font-medium text-base p-4 w-80 min-h-full bg-base-200 text-base-content'>
-            <div className='flex justify-start items-center gap-2 w-full'>
-              <figure className='bg-blue-400'>
-                {!session?.user.image ? (
-                  <Image
-                    src={`/fotoperfil.jpg`}
-                    width='47'
-                    height='47'
-                    alt=''
-                  />
+          <div className='flex flex-col justify-start items-center gap-2 w-full'>
+              <figure className='w-24 h-24 rounded-full overflow-hidden flex items-center justify-center'>
+                {!user?.Name ? (
+                  <Image src={'/fotoperfil1.png'} width={1200} height={1200} alt='' />
                 ) : (
                   <Image
-                    src={`${session.user.image}`}
-                    width='47'
-                    height='47'
+                    src={`${user.Picture}`}
+                    width={1200}
+                    height={1200}
                     alt=''
+                    objectFit='cover'
                   />
                 )}
               </figure>
@@ -266,7 +262,7 @@ export default function Profissionais(props) {
               <span className='font-semibold text-base'>
                 {!session?.user.name
                   ? !user?.Name
-                    ? 'Inscreva-se para mais informações'
+                    ? 'Inscreva-se para mais informações!'
                     : user.Nickname
                   : session.user.name}
               </span>
