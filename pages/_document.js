@@ -6,6 +6,7 @@ export default function Document() {
       <Head>
         <link rel='manifest' href='/manifest.json' />
         <link rel='icon' href='/icone-balcao.png' />
+        <meta name="google-site-verification" content="lAFJGF0yUXC3X6sbYqKTE2fHWavIMSgZSe8oebXuLNU" />
       </Head>
 
       <body>

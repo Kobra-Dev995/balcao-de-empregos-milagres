@@ -168,13 +168,13 @@ export default function LoginScreen(props) {
                         className='checkbox'
                         onChange={togglePass}
                       />
-                      <span>Mostrar Senha</span>
+                      <span className='text-sm'>Mostrar Senha</span>
                     </label>
-                    {/* <label className='form-label'>
+                    <label className='form-label'>
                       <a className='link link-underline-hover link-primary text-sm'>
                         Forgot your password?
                       </a>
-                    </label> */}
+                    </label>
                   </div>
                 </div>
               </label>

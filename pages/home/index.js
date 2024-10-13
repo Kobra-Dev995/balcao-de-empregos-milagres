@@ -88,7 +88,9 @@ export default function Home(props) {
             <div>
               <div className='w-full h-12 text-lg bg-primary-red text-center font-bold py-2'>
                 <span className='text-gray-50'>
-                  Há 114 vaga(s) disponível(is)
+                  Há {
+                    todos.length
+                  } vaga(s) disponível(is)
                 </span>
               </div>
               <div className='w-full bg-base-100 flex justify-center items-center shadow-xl my-5'>
