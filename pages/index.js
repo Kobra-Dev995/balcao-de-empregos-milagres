@@ -171,9 +171,9 @@ export default function LoginScreen(props) {
                       <span className='text-sm'>Mostrar Senha</span>
                     </label>
                     <label className='form-label'>
-                      <a href='/conta/esqueceu' className='link link-underline-hover link-primary text-sm'>
+                      <Link href='/conta/esqueceu' className='link link-underline-hover link-primary text-sm'>
                         Esqueceu a senha?
-                      </a>
+                      </Link>
                     </label>
                   </div>
                 </div>
