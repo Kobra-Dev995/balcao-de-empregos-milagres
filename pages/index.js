@@ -10,8 +10,8 @@ export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
 
   let { data: Usuarios_comum, error } = await supabase
-      .from('Usuarios_comum')
-      .select('Email, Password');
+    .from('Usuarios_comum')
+    .select('Email, Password');
 
   return {
     props: {
@@ -23,7 +23,6 @@ export async function getServerSideProps(ctx) {
 }
 
 export default function LoginScreen(props) {
-
   const [emailLogin, setEmailLogin] = useState('');
   const [emailDB, setEmailDB] = useState(props.users || []);
   const [errorLogin, setErrorLogin] = useState('');
@@ -171,7 +170,10 @@ export default function LoginScreen(props) {
                       <span className='text-sm'>Mostrar Senha</span>
                     </label>
                     <label className='form-label'>
-                      <Link href='/conta/esqueceu' className='link link-underline-hover link-primary text-sm'>
+                      <Link
+                        href='/conta/esqueceu'
+                        className='link link-underline-hover link-primary text-sm'
+                      >
                         Esqueceu a senha?
                       </Link>
                     </label>
@@ -210,13 +212,22 @@ export default function LoginScreen(props) {
               </button> */}
             </section>
           </section>
-          <div className='w-full flex gap-2 justify-center my-4'>
-            <span className='text-base font-medium'>Não tem uma conta?</span>
+          <div className='w-full flex flex-col gap-2 items-center my-4'>
+            <div>
+              <span className='text-base font-medium'>Não tem uma conta?</span>{" "}
+              <Link
+                href={'/conta/criarconta'}
+                className='daisy-link daisy-link-info font-semibold'
+              >
+                Cadastre-se
+              </Link>
+            </div>
+
             <Link
-              href={'/conta/criarconta'}
+              href={'/home/profissionais'}
               className='daisy-link daisy-link-info font-semibold'
             >
-              Cadastre-se
+              Entrar de forma anônima
             </Link>
           </div>
         </section>
@@ -228,5 +239,3 @@ export default function LoginScreen(props) {
     </>
   );
 }
-
-

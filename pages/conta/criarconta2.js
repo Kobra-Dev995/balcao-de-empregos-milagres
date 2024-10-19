@@ -140,7 +140,7 @@ export default function CriarContaPasso2({
       // document.getElementById('my_modal_2').showModal();
 
       setTextButtonFinalizar('Pronto!!');
-      //setTimeout(() => replace('/'), 2000);
+      setTimeout(() => replace('/'), 2000);
 
       // } else {
       //   alert('Erro ao criar conta :(\nTente novamente mais tarde');
