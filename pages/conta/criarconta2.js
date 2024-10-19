@@ -60,8 +60,8 @@ export default function CriarContaPasso2({
     setIsLoading(true);
 
     setTimeout(() => {
-      setTextButtonFinalizar('Finalizando');
-      setIsLoading(true);
+      setTextButtonFinalizar('Finalizar');
+      setIsLoading(false);
     }, 3000);
 
     if (
@@ -69,7 +69,10 @@ export default function CriarContaPasso2({
       passwordLetterm &&
       passwordNumber &&
       passwordChar &&
-      passwordLength
+      passwordLength &&
+      serviceType &&
+      bio &&
+      occupation
     ) {
       if (!passwordCheck) {
         alert('Confirme sua senha!');
@@ -135,12 +138,16 @@ export default function CriarContaPasso2({
       //   setVerificationEmail(false);
       // }, 1000);
       // document.getElementById('my_modal_2').showModal();
-      setTextButtonFinalizar('Finalizado');
-      setTimeout(() => replace('/'), 2000);
+
+      setTextButtonFinalizar('Pronto!!');
+      //setTimeout(() => replace('/'), 2000);
+
       // } else {
       //   alert('Erro ao criar conta :(\nTente novamente mais tarde');
       // }
     } else {
+      setTextButtonFinalizar('Finalizar');
+      setIsLoading(false);
       alert('Preencha todos os campos corretamente!');
     }
   }

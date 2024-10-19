@@ -13,8 +13,8 @@ export default function Esqueceu() {
   const [passwordNumber, setPasswordNumber] = useState(false);
   const [passwordChar, setPasswordChar] = useState(false);
   const [passwordLength, setPasswordLength] = useState(false);
-  
-  const {replace} = useRouter()
+
+  const { replace } = useRouter();
   async function updatePassword() {
     let { data, error } = await supabase
       .from('Usuarios_comum')
@@ -23,7 +23,7 @@ export default function Esqueceu() {
       })
       .eq('Email', email);
 
-      replace('/')
+    replace('/');
   }
 
   function handlePassword(e) {
