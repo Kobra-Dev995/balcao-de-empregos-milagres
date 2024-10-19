@@ -10,6 +10,7 @@ export default function App({
     <SessionProvider session={session}>
       <Head>
         <title>Balcão de Empregos - Milagres-CE</title>
+        <link rel="icon" href="/BALCAO DE EMPREGO.png" type="image/png"></link>
         <meta name='theme-color' content='#fff' />
         <meta
           name='viewport'
@@ -19,6 +20,11 @@ export default function App({
           name='google-site-verification'
           content='h74CEtPiqEkBkKOgNLboguXou4fqko1mqfz9kYMBzEY'
         />
+        <meta
+          name='description'
+          content='Vagas de emprego em Milagres, CE. Vagas abertas em diferentes empresas. Conferir agora todas as vagas de emprego e diferentes prof...'
+        />
+        <meta name="author" content="Balção de Empregos" />
       </Head>
 
       <Component {...pageProps} />
