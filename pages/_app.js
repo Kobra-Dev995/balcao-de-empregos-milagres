@@ -10,7 +10,7 @@ export default function App({
     <SessionProvider session={session}>
       <Head>
         <title>Balcão de Empregos - Milagres-CE</title>
-        <link rel="icon" href="/BALCAO DE EMPREGO.png" type="image/png"></link>
+        <link rel="icon" href="/BALCAO DE EMPREGO 2.png" type="image/png"></link>
         <meta name='theme-color' content='#fff' />
         <meta
           name='viewport'
