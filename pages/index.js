@@ -30,6 +30,9 @@ export default function LoginScreen(props) {
   const [isLoading, setIsLoading] = useState(false);
   const [textButtonLogin, setTextButtonLogin] = useState('Entrar');
 
+  console.log(emailDB);
+  console.log(emailDB);
+
   const { push } = useRouter();
 
   function Cookie(email) {
@@ -45,20 +48,16 @@ export default function LoginScreen(props) {
     let inputEmailValue = e.target[0].value;
     let inputPasswordValue = e.target[1].value;
 
-    emailDB.map((user) => {
+    emailDB.forEach((user) => {
       if (user.Email === inputEmailValue) {
-        if (user.Password === inputPasswordValue) {
-          Cookie(inputEmailValue);
-          push('/home');
-          setIsLoading(false);
+        if (user.Password != inputPasswordValue) {
+          alert('Senha ou Email errado!');
+          return;
         }
 
-        //console.log('Senha Errada');
-        //setIsLoading(true);
-      } else {
-        //console.log('Nao');
-        //console.log(user.Email, user.Password);
-        setIsLoading(true);
+        Cookie(inputEmailValue);
+        setIsLoading(false);
+        push('/home');
       }
     });
 
@@ -214,7 +213,7 @@ export default function LoginScreen(props) {
           </section>
           <div className='w-full flex flex-col gap-2 items-center my-4'>
             <div>
-              <span className='text-base font-medium'>Não tem uma conta?</span>{" "}
+              <span className='text-base font-medium'>Não tem uma conta?</span>{' '}
               <Link
                 href={'/conta/criarconta'}
                 className='daisy-link daisy-link-info font-semibold'

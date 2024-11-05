@@ -15,7 +15,7 @@
     "fs": "^0.0.1-security",
     "js-cookie": "^3.0.5",
     "js-cookies": "^1.0.4",
-    "next": "14.2.3",
+    "next": "^14.2.16",
     "next-auth": "^4.24.7",
     "nodemailer": "^6.9.14",
     "nookies": "^2.5.2",
