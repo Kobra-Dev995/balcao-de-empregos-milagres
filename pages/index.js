@@ -56,7 +56,7 @@ export default function LoginScreen(props) {
         }
 
         Cookie(inputEmailValue);
-        setIsLoading(false);
+        setIsLoading(true);
         push('/home');
       }
     });
